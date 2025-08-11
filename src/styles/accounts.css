@@ -1,0 +1,514 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 16px 36px;
+  box-shadow: 0 2px 12px #e5e5e5;
+  border-radius: 0 0 22px 22px;
+  gap: 24px;
+}
+
+.logo {
+  background: url("../images/logo.jpg") center/contain no-repeat;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.navsearch {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f8f8f8;
+  border-radius: 25px;
+  border: 2px solid #d2d2d2;
+  padding: 0 14px;
+  min-width: 200px;
+  max-width: 480px;
+}
+
+.searchinput {
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  flex: 1;
+  padding: 10px 0;
+  outline: none;
+}
+
+.searchicon {
+  color: #666;
+  font-size: 1rem;
+  padding-left: 7px;
+}
+
+.sign {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.sign-in {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.92rem;
+}
+
+.carts {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  position: relative;
+}
+
+
+.user-orders-section {
+  max-width: 1000px;
+  margin: 38px auto 0 auto;
+  padding: 10px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.orders-profile {
+  background: #22e4ac;
+  border-radius: 15px;
+  padding: 24px 22px 20px 22px;
+  box-shadow: 0 2px 8px 0 rgba(80,110,100,0.09);
+  margin-bottom: 36px;
+  text-align: left;
+}
+
+.orders-profile h2 {
+  margin: 0 0 10px 0;
+  color: #0b097e;
+  font-size: 1.45em;
+}
+
+.orders-contact {
+  color: #222;
+  font-size: 1em;
+}
+
+.orders-title {
+  color: #093855;
+  font-weight: bold;
+  margin: 0 0 22px 8px;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.order-card {
+  background: #fff;
+  border-radius: 11px;
+  box-shadow: 0 1.5px 8px rgba(153, 170, 167, 0.05);
+  padding: 22px 18px;
+  transition: box-shadow 0.2s;
+  border-left: 8px solid #1bd97a;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-card-row {
+  font-size: 1.07em;
+  margin-bottom: 7px;
+}
+
+.order-file-link {
+  color: #007185;
+  text-decoration: underline;
+  margin-left: 2px;
+}
+
+.order-card-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  font-size: 1em;
+}
+
+.order-cost {
+  margin-top: 6px;
+  font-size: 1.13em;
+}
+
+.order-cost-highlight {
+  color: #04793f;
+  font-weight: bold;
+}
+
+.orders-loading, .orders-empty, .orders-login-prompt {
+  margin-top: 110px;
+  text-align: center;
+  font-size: 1.14em;
+}
+
+.orders-login-btn {
+  display: inline-block;
+  color: #fff !important;
+  background: #0aa68e;
+  border-radius: 7px;
+  padding: 5px 13px;
+  margin: 0 5px;
+  text-decoration: none;
+}
+
+/* Responsive: stack cards vertically, readable on mobile */
+@media (max-width: 680px) {
+  .user-orders-section {
+    padding: 5px;
+  }
+  .orders-profile, .order-card {
+    padding: 14px 8px;
+  }
+  .orders-title { font-size: 1.07em; }
+  .order-card-info {
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.98em;
+  }
+  .order-card { border-left: 4px solid #1bd97a; }
+}
+
+
+.pageend h2,
+.pageend h3 {
+  color: #f9d463;
+  margin-bottom: 13px;
+}
+
+.pageend ul {
+  padding-left: 14px;
+}
+
+.pageend ul li {
+  font-size: 1rem;
+  margin-bottom: 7px;
+}
+
+.pageend a {
+  color: #f9d463;
+  text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1050px) {
+  .diff,
+  .catgeries,
+  .booksCat,
+  .printCat,
+  .choose,
+  .boxes,
+  .works,
+  .steps,
+  .pageend {
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 99vw !important;
+    max-width: 99vw !important;
+  }
+  .navbar,
+  .banner {
+    padding: 11px 4vw;
+  }
+  .pageend {
+    padding: 18px 2vw;
+  }
+  .diff {
+    gap: 13px;
+  }
+  .boxes,
+  .steps,
+  .booksCat,
+  .printCat {
+    gap: 11px;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar,
+  .banner,
+  .diff,
+  .catgeries,
+  .choose,
+  .boxes,
+  .works,
+  .steps,
+  .pageend {
+    padding: 7px 1vw;
+    gap: 7px;
+    font-size: 0.94rem;
+    flex-direction: column !important;
+  }
+  .logo,
+  .books {
+    width: 32px;
+    height: 32px;
+  }
+  .banner {
+    border-radius: 12px;
+  }
+  .heading h1 {
+    font-size: 1.02rem;
+  }
+  .diff {
+    justify-content: center;
+  }
+}
+
+/* Utility */
+ul {
+  list-style: none;
+}
+/* ========= Global Reset ========= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #fafafa;
+}
+
+.homepage-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ========= NAVBAR ========= */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 16px 36px;
+  border-radius: 0 0 22px 22px;
+  box-shadow: 0 2px 12px #e5e5e5;
+  gap: 24px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 12px;
+  background: url("../images/logo.jpg") center/contain no-repeat;
+}
+
+.navsearch {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f8f8f8;
+  border-radius: 25px;
+  border: 2px solid #d2d2d2;
+  padding: 0 14px;
+  min-width: 200px;
+  max-width: 480px;
+}
+
+.searchinput {
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  flex: 1;
+  padding: 10px 0;
+  outline: none;
+}
+
+.searchicon {
+  color: #666;
+  font-size: 1rem;
+  padding-left: 7px;
+}
+
+.sign {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.sign-in {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.92rem;
+}
+
+.sign-in strong {
+  font-weight: bold;
+}
+
+.carts {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  position: relative;
+}
+
+/* ========= BANNER ========= */
+.banner {
+  margin: 30px auto 16px auto;
+  width: 98%;
+  background: rgb(16, 200, 138);
+  border-radius: 32px;
+  box-shadow: 0 4px 24px #bcd9d5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 180px;
+  padding: 32px;
+  gap: 28px;
+}
+
+.heading {
+  flex: 1;
+  min-width: 200px;
+  text-align: left;
+}
+
+.heading h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #232323;
+  margin-bottom: 16px;
+  line-height: 1.12;
+}
+
+.button-group {
+  margin-top: 16px;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.buttons {
+  padding: 13px 34px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  background: #fff;
+  color: #222;
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 2px 10px #e7e7e7;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.18s;
+}
+
+.buttons:hover {
+  background: #f4f4f4;
+  transform: scale(1.05);
+}
+
+.books {
+  background: url("../images/books.png") center/contain no-repeat;
+  height: 140px;
+  width: 140px;
+  min-width: 100px;
+  border-radius: 17px;
+}
+
+/* ========= FEATURE BUTTONS ========= */
+.diff {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 20px auto 18px auto;
+  width: 96%;
+  flex-wrap: wrap;
+}
+
+.getBooks1,
+.getBooks2,
+.getBooks3,
+.getBooks4 {
+  flex: 1 1 180px;
+  max-width: 230px;
+  background: #fff;
+  border-radius: 15px;
+  padding: 18px 12px;
+  box-shadow: 0 2px 12px #ececec;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 210px;
+}
+
+.getBooks1 {
+  background: rgb(231, 192, 231);
+}
+.getBooks2 {
+  background: rgb(204, 166, 239);
+}
+.getBooks3 {
+  background: rgb(96, 96, 197);
+}
+.getBooks4 {
+  background: rgb(223, 130, 90);
+}
+
+/* ========= CATEGORIES ========= */
+.catgeries {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 3px 18px #ddd;
+  margin: 32px auto 16px auto;
+  width: 95%;
+  padding: 28px;
+  text-align: center;
+}
+
+.catgeries h2 {
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+.cart{
+    font-size: small;
+}
+
+.booksCat,
+.printCat {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.user {
+    background-color: #fff;
+    border: 0px;
+}
+.user:hover{
+    cursor: pointer;
+}
+/* ========= RESPONSIVE DESIGN ========= */
+@media (max-width: 900px) {
+  .navbar {
+    display: flex;
+    align-items: stretch;
+    text-align: center;
+  }
+  .navsearch {
+    max-width: 100%;
+  }
+  .heading {
+    text-align: center;
+  }
+  .button-group {
+    justify-content: center;
+  }
+  .books {
+    margin: 0 auto;
+  }
+}
+
