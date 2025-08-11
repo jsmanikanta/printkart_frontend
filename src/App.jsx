@@ -5,7 +5,7 @@ import Login from "./Login";
 import Accounts from './Accounts';
 import Orderprints from './OrderPrints';
 import ForgotPassword from "./Forgotpass";
-import ComingSoon from "./Soon";
+import Soon from "./Soon";
 
 function App() {
   return (
