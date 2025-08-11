@@ -3,7 +3,7 @@ import Homepage from "./Homepage";
 import Signup from "./Signup";
 import Login from "./Login";
 import Accounts from './Accounts';
-import OrderPrints from './OrderPrints.jsx'
+import OrderPrints from './OrderPrints'
 import ForgotPassword from "./Forgotpass";
 import ComingSoon from "./Soon";
 
