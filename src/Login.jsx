@@ -28,7 +28,7 @@ function Login() {
 
     try {
       // Ensure the API path ends with '/' or add it explicitly here
-      const response = await axios.post(`${api_path}/user/login`, {
+      const response = await axios.post(`${api_path}/user/login/`, {
         identifier: inputs.credential,
         password: inputs.password,
       });
