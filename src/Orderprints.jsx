@@ -346,7 +346,7 @@ export default function OrderPrints() {
           value={transctionid}
           onChange={(e) => setTransctionid(e.target.value)}
           required
-        />
+        /> <br/>
         <div className="total-cost-box">
           Total Amount: <span>₹{totalAmount}</span>
         </div>
