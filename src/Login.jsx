@@ -54,11 +54,8 @@ function Login() {
     <div className="auth-modal-overlay">
       <div className="auth-modal">
         <div className="modal-header" onClick={Homepage}>
-<<<<<<< HEAD
           <img src="./images/logo.jpg" alt="Logo" className="modal-logo" />
-=======
           <img src={logoImg} alt="Logo"  className="modal-logo" />
->>>>>>> f2bb0659c205de63d227aed69e23a0ad5cd9bb61
         </div>
         <h2 className="modal-title">
           Buy &amp; Sell Old Books.
