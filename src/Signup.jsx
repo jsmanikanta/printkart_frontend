@@ -57,7 +57,6 @@ function Signup({}) {
     <div className="auth-modal-overlay">
       <div className="auth-modal">
         <div className="modal-header" onClick={Homepage}>
-          <img src="./images/logo.jpg" alt="Logo" className="modal-logo" />
           <img src={logoImg} alt="Logo" className="modal-logo"/>
         </div>
         <h2 className="modal-title">
