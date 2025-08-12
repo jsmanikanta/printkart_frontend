@@ -340,11 +340,8 @@ export default function OrderPrints() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-<<<<<<< HEAD
         <img className="qr" src="./images/qr.jpg" />
-=======
         <img className="qr" src={qrImg} alt="QR Code" />
->>>>>>> f2bb0659c205de63d227aed69e23a0ad5cd9bb61
         <input
           className="input"
           placeholder="Transaction ID"
