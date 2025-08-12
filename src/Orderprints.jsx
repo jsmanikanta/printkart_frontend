@@ -361,7 +361,13 @@ export default function OrderPrints() {
           <h2>About Us</h2>
           <p>
             Book Hub is an online platform designed for students to buy and sell
-            old books and order customized printouts with ease.
+            old books and order customized printouts with ease. We believe that
+            learning materials should be affordable, accessible, and
+            sustainable. That's why we've created a space where students can
+            connect, share, and support each other - all while saving time and
+            money. Whether you're looking to sell your previous semester's
+            books, order printouts from your mobile, or donate materials to
+            those in need
           </p>
         </div>
         <div className="categories">
@@ -370,6 +376,10 @@ export default function OrderPrints() {
             <ul>
               <li>School Books (class 6-12)</li>
               <li>Competitive Books (GATE, JEE, etc.)</li>
+              <li>Diploma books</li>
+              <li>B.Sc / B.Com / B.A Books</li>
+              <li>Fantasy Books</li>
+              <li>Non-Fantasy Books</li>
             </ul>
           </div>
           <div className="list2">
@@ -377,13 +387,34 @@ export default function OrderPrints() {
             <ul>
               <li>Assignments</li>
               <li>Project Reports</li>
+              <li>Class Notes</li>
+              <li>College Notice / PDFs</li>
+              <li>Spiral Binding Books</li>
+              <li>Black &amp; White / Color Prints</li>
             </ul>
           </div>
+        </div>
+        <div className="otherservices">
+          <h2>Other Services</h2>
+          <ul>
+            <li>Book Donation Requests</li>
+            <li>Seller Registration</li>
+            <li>PrintKart Service Partner</li>
+          </ul>
         </div>
         <div className="contacts">
           <h2>Contact Us</h2>
           <p>
             Hemanth Rishi: <a href="tel:+919182415750">+91 91824 15750</a>
+          </p>
+          <p>
+            Praneeth: <a href="tel:+918074177294">+91 80741 77294</a>
+          </p>
+          <p>
+            Ayush Kumar: <a href="tel:+917989221628">+91 79892 21628</a>
+          </p>
+          <p>
+            Lokesh: <a href="tel:+919398892297">+91 93988 92297</a>
           </p>
         </div>
       </footer>
