@@ -3,6 +3,7 @@ import "./styles/auth.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api_path } from "../data";
+import logoImg from './images/logo.jpg';
 
 function Signup({}) {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ function Signup({}) {
     <div className="auth-modal-overlay">
       <div className="auth-modal">
         <div className="modal-header" onClick={Homepage}>
-          <img src="./images/logo.jpg" alt="Logo" className="modal-logo" />
+          <img src={logoImg} alt="Logo" className="modal-logo"/>
         </div>
         <h2 className="modal-title">
           Buy &amp; Sell Old Books.
