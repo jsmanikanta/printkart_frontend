@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import "pdfjs-dist/build/pdf.worker.mjs";
 import "./styles/orderprints.css";
-import qrImg from './images/qr.jpg'; 
+import qrImg from "./images/qr.jpg";
+import Loader from "./Loading";
 
 const COLOR_OPTIONS = [
   { value: "b/w", label: "Black & White" },
@@ -37,6 +38,7 @@ export default function OrderPrints() {
   const [description, setDescription] = useState("");
   const [transctionid, setTransctionid] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   // Form inputs, user info:
   const [fullName, setFullName] = useState("");
@@ -59,6 +61,7 @@ export default function OrderPrints() {
 
   // ---- PDF PAGE COUNTER ----
   const handleFileChange = async (e) => {
+    setLoading(true);
     const uploaded = e.target.files[0];
     if (!uploaded) {
       setFile(null);
@@ -103,7 +106,7 @@ export default function OrderPrints() {
     if (binding == "book") total += 150;
     total *= copies;
     setTotalAmount(Math.ceil(total));
-  }, [color, sides, binding, pages,copies]);
+  }, [color, sides, binding, pages, copies]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,249 +151,263 @@ export default function OrderPrints() {
       const err = await res.json();
       alert(err?.error || "Order failed");
     }
+    setLoading(false);
   };
 
   return (
-    <div className="order-main-bg">
-      {/* HEADER */}
-      <header className="navbar">
-        <div className="logo" onClick={() => navigate("/")}></div>
-        <div className="navsearch">
-          <input placeholder="Search" className="searchinput" />
-          <div className="searchicon">
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </div>
-        </div>
-        <div className="sign">
-          <i className="fa-solid fa-user fa-lg" style={{ padding: "20px" }}></i>
-          <div className="sign-in">
-            <p className="hello">
-              Hello,{" "}
-              {userName ? (
-                <button
-                  className="user"
-                  onClick={() => navigate("/accounts")}
-                  style={{
-                    cursor: "pointer",
-                    background: "none",
-                    border: "none",
-                  }}
-                >
-                  {userName}
-                </button>
-              ) : (
-                <button
-                  className="user"
-                  onClick={() => navigate("/login")}
-                  style={{
-                    cursor: "pointer",
-                    background: "none",
-                    border: "none",
-                  }}
-                >
-                  sign in
-                </button>
-              )}
-            </p>
-            <b>
+    <>
+      {loading ? (
+        <loading />
+      ) : (
+        <div className="order-main-bg">
+          {/* HEADER */}
+          <header className="navbar">
+            <div className="logo" onClick={() => navigate("/")}></div>
+            <div className="navsearch">
+              <input placeholder="Search" className="searchinput" />
+              <div className="searchicon">
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </div>
+            </div>
+            <div className="sign">
+              <i
+                className="fa-solid fa-user fa-lg"
+                style={{ padding: "20px" }}
+              ></i>
+              <div className="sign-in">
+                <p className="hello">
+                  Hello,{" "}
+                  {userName ? (
+                    <button
+                      className="user"
+                      onClick={() => navigate("/accounts")}
+                      style={{
+                        cursor: "pointer",
+                        background: "none",
+                        border: "none",
+                      }}
+                    >
+                      {userName}
+                    </button>
+                  ) : (
+                    <button
+                      className="user"
+                      onClick={() => navigate("/login")}
+                      style={{
+                        cursor: "pointer",
+                        background: "none",
+                        border: "none",
+                      }}
+                    >
+                      sign in
+                    </button>
+                  )}
+                </p>
+                <b>
+                  <button
+                    className="user"
+                    onClick={() => navigate("/accounts")}
+                    style={{
+                      cursor: "pointer",
+                      background: "none",
+                      border: "none",
+                    }}
+                  >
+                    <span className="options">Accounts &amp; Lists</span>
+                  </button>
+                </b>
+              </div>
+            </div>
+            <div className="carts ca">
+              <i
+                className="fa-solid fa-cart-shopping"
+                style={{ paddingBottom: "20px" }}
+              ></i>
               <button
                 className="user"
-                onClick={() => navigate("/accounts")}
-                style={{
-                  cursor: "pointer",
-                  background: "none",
-                  border: "none",
-                }}
+                style={{ background: "none", border: "none" }}
               >
-                <span className="options">Accounts &amp; Lists</span>
+                <span className="cart">My cart</span>
+                <sup className="notification">1</sup>
               </button>
-            </b>
+            </div>
+          </header>
+          {/* TABS */}
+          <div className="order-tabs">
+            <button
+              className={`order-tab${activeTab === "student" ? " active" : ""}`}
+              onClick={() => setActiveTab("student")}
+              type="button"
+            >
+              Student
+            </button>
+            <button
+              className={`order-tab${activeTab === "others" ? " active" : ""}`}
+              onClick={() => setActiveTab("others")}
+              type="button"
+            >
+              Others
+            </button>
           </div>
-        </div>
-        <div className="carts ca">
-          <i
-            className="fa-solid fa-cart-shopping"
-            style={{ paddingBottom: "20px" }}
-          ></i>
-          <button
-            className="user"
-            style={{ background: "none", border: "none" }}
-          >
-            <span className="cart">My cart</span>
-            <sup className="notification">1</sup>
-          </button>
-        </div>
-      </header>
-      {/* TABS */}
-      <div className="order-tabs">
-        <button
-          className={`order-tab${activeTab === "student" ? " active" : ""}`}
-          onClick={() => setActiveTab("student")}
-          type="button"
-        >
-          Student
-        </button>
-        <button
-          className={`order-tab${activeTab === "others" ? " active" : ""}`}
-          onClick={() => setActiveTab("others")}
-          type="button"
-        >
-          Others
-        </button>
-      </div>
-      {/* FORM */}
-      <form className="order-form-wrap" onSubmit={handleSubmit}>
-        <h2>
-          {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Printout
-          Order
-        </h2>
-        <input
-          className="input"
-          placeholder="Full Name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-        />
-        <input
-          className="input"
-          placeholder="Mobile Number"
-          value={mobileNumber}
-          onChange={(e) => setMobileNumber(e.target.value)}
-          maxLength="10"
-          required
-        />
-        <input
-          className="input"
-          placeholder="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <div className="input-row">
-          <label className="order-label" htmlFor="pdfFile">
-            Upload PDF
-          </label>
-          <input
-            id="pdfFile"
-            className="input"
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            required
-          />
-        </div>
-        {pdfError && <div className="error-text">{pdfError}</div>}
-        {pages && <div className="pdf-pages-info">Pages detected: {pages}</div>}
-        <div className="input-row">
-          <select
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-            required
-          >
-            {COLOR_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-          <select
-            value={sides}
-            onChange={(e) => setSides(e.target.value)}
-            required
-          >
-            {SIDES_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="input-row">
-          <select
-            value={binding}
-            onChange={(e) => setBinding(e.target.value)}
-            required
-          >
-            {BINDING_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-          <input
-            className="input"
-            type="number"
-            value={copies}
-            min={1}
-            onChange={(e) => setcopies(Number(e.target.value))}
-          />
-        </div>
-        <textarea
-          className="input"
-          placeholder="Delivery Address
+          {/* FORM */}
+          <form className="order-form-wrap" onSubmit={handleSubmit}>
+            <h2>
+              {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Printout
+              Order
+            </h2>
+            <input
+              className="input"
+              placeholder="Full Name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+            <input
+              className="input"
+              placeholder="Mobile Number"
+              value={mobileNumber}
+              onChange={(e) => setMobileNumber(e.target.value)}
+              maxLength="10"
+              required
+            />
+            <input
+              className="input"
+              placeholder="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <div className="input-row">
+              <label className="order-label" htmlFor="pdfFile">
+                Upload PDF
+              </label>
+              <input
+                id="pdfFile"
+                className="input"
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                required
+              />
+            </div>
+            {pdfError && <div className="error-text">{pdfError}</div>}
+            {pages && (
+              <div className="pdf-pages-info">Pages detected: {pages}</div>
+            )}
+            <div className="input-row">
+              <select
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                required
+              >
+                {COLOR_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={sides}
+                onChange={(e) => setSides(e.target.value)}
+                required
+              >
+                {SIDES_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="input-row">
+              <select
+                value={binding}
+                onChange={(e) => setBinding(e.target.value)}
+                required
+              >
+                {BINDING_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <input
+                className="input"
+                type="number"
+                value={copies}
+                min={1}
+                onChange={(e) => setcopies(Number(e.target.value))}
+              />
+            </div>
+            <textarea
+              className="input"
+              placeholder="Delivery Address
           * If delivery is to your college please mention your year,class,section"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          required
-        />
-        <textarea
-          className="input"
-          placeholder="Description (optional)"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-<<<<<<< HEAD
-        <img className="qr" src="./images/qr.jpg" />
-=======
-        <img className="qr" src={qrImg} alt="QR Code" />
->>>>>>> f2bb0659c205de63d227aed69e23a0ad5cd9bb61
-        <input
-          className="input"
-          placeholder="Transaction ID"
-          value={transctionid}
-          onChange={(e) => setTransctionid(e.target.value)}
-          required
-        /> <br/>
-        <div className="total-cost-box">
-          Total Amount: <span>₹{totalAmount}</span>
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+            <textarea
+              className="input"
+              placeholder="Description (optional)"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <img className="qr" src="./images/qr.jpg" />
+            <img className="qr" src={qrImg} alt="QR Code" />
+            <input
+              className="input"
+              placeholder="Transaction ID"
+              value={transctionid}
+              onChange={(e) => setTransctionid(e.target.value)}
+              required
+            />{" "}
+            <br />
+            <div className="total-cost-box">
+              Total Amount: <span>₹{totalAmount}</span>
+            </div>
+            <button className="order-btn" type="submit">
+              Submit Order
+            </button>
+          </form>
+          {/* FOOTER */}
+          <footer className="pageend">
+            <div className="about">
+              <h2>About Us</h2>
+              <p>
+                Book Hub is a student-friendly platform to buy and sell old
+                books and order customized printouts easily. We aim to make
+                learning materials affordable, accessible, and sustainable by
+                connecting students to share resources, save time, and reduce
+                costs—whether it’s selling used books, ordering printouts, or
+                donating to those in need.
+              </p>
+            </div>
+            <div className="categories">
+              <div className="list1">
+                <h3>Books</h3>
+                <ul>
+                  <li>School Books (class 6-12)</li>
+                  <li>Competitive Books (GATE, JEE, etc.)</li>
+                </ul>
+              </div>
+              <div className="list2">
+                <h3>Printouts</h3>
+                <ul>
+                  <li>Assignments</li>
+                  <li>Project Reports</li>
+                </ul>
+              </div>
+            </div>
+            <div className="contacts">
+              <h2>Contact Us</h2>
+              <p>
+                Hemanth Rishi: <a href="tel:+919182415750">+91 91824 15750</a>
+              </p>
+            </div>
+          </footer>
         </div>
-        <button className="order-btn" type="submit">
-          Submit Order
-        </button>
-      </form>
-      {/* FOOTER */}
-      <footer className="pageend">
-        <div className="about">
-          <h2>About Us</h2>
-          <p>
-            Book Hub is an online platform designed for students to buy and sell
-            old books and order customized printouts with ease.
-          </p>
-        </div>
-        <div className="categories">
-          <div className="list1">
-            <h3>Books</h3>
-            <ul>
-              <li>School Books (class 6-12)</li>
-              <li>Competitive Books (GATE, JEE, etc.)</li>
-            </ul>
-          </div>
-          <div className="list2">
-            <h3>Printouts</h3>
-            <ul>
-              <li>Assignments</li>
-              <li>Project Reports</li>
-            </ul>
-          </div>
-        </div>
-        <div className="contacts">
-          <h2>Contact Us</h2>
-          <p>
-            Hemanth Rishi: <a href="tel:+919182415750">+91 91824 15750</a>
-          </p>
-        </div>
-      </footer>
-    </div>
+      )}
+    </>
   );
 }

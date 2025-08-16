@@ -3,21 +3,22 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./styles/accounts.css";
 import { api_path } from "../data";
+import Loader from "./Loading";
 
 function Accounts() {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState(null);
 
   const navigate = useNavigate();
-
   const Login = () => navigate("/login");
   const AccountsNav = () => navigate("/accounts");
 
   // Fetch user info and orders for Accounts page
   useEffect(() => {
     const fetchUserProfile = async () => {
+      setLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
         setLoading(false);
@@ -34,8 +35,9 @@ function Accounts() {
         }
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchUserProfile();
   }, []);
@@ -44,62 +46,68 @@ function Accounts() {
 
   if (!user) {
     return (
-      <div>
-        <header className="navbar">
-          <div className="logo" onClick={() => navigate("/")}></div>
-          <div className="navsearch">
-            <input placeholder="Search" className="searchinput" />
-            <div className="searchicon">
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </div>
-          </div>
-          <div className="sign">
-            <i
-              className="fa-solid fa-user fa-lg"
-              style={{ padding: "20px" }}
-            ></i>
-            <div className="sign-in">
-              <p className="hello">
-                Hello,{" "}
-                <button
-                  className="user"
-                  onClick={Login}
-                  style={{ background: "none", border: "none" }}
-                >
-                  sign in
+      <>
+        {loading ? (
+          <loading />
+        ) : (
+          <div>
+            <header className="navbar">
+              <div className="logo" onClick={() => navigate("/")}></div>
+              <div className="navsearch">
+                <input placeholder="Search" className="searchinput" />
+                <div className="searchicon">
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                </div>
+              </div>
+              <div className="sign">
+                <i
+                  className="fa-solid fa-user fa-lg"
+                  style={{ padding: "20px" }}
+                ></i>
+                <div className="sign-in">
+                  <p className="hello">
+                    Hello,{" "}
+                    <button
+                      className="user"
+                      onClick={Login}
+                      style={{ background: "none", border: "none" }}
+                    >
+                      sign in
+                    </button>
+                  </p>
+                  <b>
+                    <button
+                      className="user"
+                      onClick={AccountsNav}
+                      style={{ background: "none", border: "none" }}
+                    >
+                      <span className="options">Accounts &amp; Lists</span>
+                    </button>
+                  </b>
+                </div>
+              </div>
+              <div className="carts ca">
+                <i
+                  className="fa-solid fa-cart-shopping"
+                  style={{ paddingBottom: "20px" }}
+                ></i>
+                <button className="user">
+                  <span className="cart">My cart</span>
+                  <sup className="notification">1</sup>
                 </button>
-              </p>
-              <b>
-                <button
-                  className="user"
-                  onClick={AccountsNav}
-                  style={{ background: "none", border: "none" }}
-                >
-                  <span className="options">Accounts &amp; Lists</span>
-                </button>
-              </b>
+              </div>
+            </header>
+            <div className="orders-login-prompt">
+              Please{" "}
+              <a href="/login" className="orders-login-btn">
+                sign in
+              </a>{" "}
+              to view your profile and orders.
             </div>
+            <Footer />
           </div>
-          <div className="carts ca">
-            <i
-              className="fa-solid fa-cart-shopping"
-              style={{ paddingBottom: "20px" }}
-            ></i>
-            <button className="user">
-              <span className="cart">My cart</span>
-              <sup className="notification">1</sup>
-            </button>
-          </div>
-        </header>
-        <div className="orders-login-prompt">
-          Please{" "}
-          <a href="/login" className="orders-login-btn">
-            sign in
-          </a>{" "}
-          to view your profile and orders.
-        </div>
-        <Footer />
-      </div>
+        )}
+      </>
     );
   }
 
@@ -284,13 +292,11 @@ function Footer() {
       <div className="about">
         <h2>About Us</h2>
         <p>
-          Book Hub is an online platform designed for students to buy and sell
-          old books and order customized printouts with ease. We believe that
-          learning materials should be affordable, accessible, and sustainable.
-          That's why we've created a space where students can connect, share,
-          and support each other - all while saving time and money. Whether
-          you're looking to sell your previous semester's books, order printouts
-          from your mobile, or donate materials to those in need
+          Book Hub is a student-friendly platform to buy and sell old books and
+          order customized printouts easily. We aim to make learning materials
+          affordable, accessible, and sustainable by connecting students to
+          share resources, save time, and reduce costs—whether it’s selling used
+          books, ordering printouts, or donating to those in need.
         </p>
       </div>
       <div className="categories">

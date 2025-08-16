@@ -455,48 +455,102 @@ h4 {
   font-size: 0.98rem;
 }
 
-/* FOOTER */
+/* footer*/
 .pageend {
-  background: #191919;
-  color: #f7f7f7;
+  background-color: #1a1a1a;
+  color: #ffffff;
   display: flex;
   justify-content: space-between;
+  width: 100%;
   flex-wrap: wrap;
-  gap: 26px;
-  padding: 32px 16px;
-  border-radius: 32px 32px 0 0;
-  width: 98%;
-  margin: 44px auto 0 auto;
-  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  border-top: 1px solid #333;
 }
-
-.about,
-.categories,
-.otherservices,
-.contacts {
-  min-width: 215px;
-  max-width: 330px;
-  flex: 1;
+.catgeries{
+  display: flex;
 }
-
 .pageend h2,
 .pageend h3 {
-  color: #f9d463;
-  margin-bottom: 13px;
+  color: #ffffff;
+  margin-bottom: 15px;
+  font-size: 18px;
 }
 
-.pageend ul {
-  padding-left: 14px;
-}
-
-.pageend ul li {
-  font-size: 1rem;
-  margin-bottom: 7px;
+.pageend p,
+.pageend li {
+  color: #cccccc;
+  font-size: 14px;
+  margin: 6px 0;
 }
 
 .pageend a {
-  color: #f9d463;
+  color: #cccccc;
   text-decoration: none;
+}
+
+.pageend a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Layout for main sections */
+.pageend > div {
+  flex: 1 1 200px;
+  margin: 20px;
+  min-width: 220px;
+}
+
+/* About section */
+.pageend .about p {
+  line-height: 1.5;
+  max-width: 300px;
+}
+
+/* Lists inside categories */
+.pageend ul {
+  list-style: none;
+  padding: 0;
+}
+
+.pageend ul li::before {
+  content: "• ";
+  color: #888;
+}
+
+/* Contact section */
+.pageend .contacts p {
+  margin-bottom: 8px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .pageend {
+    padding: 30px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageend {
+    flex-direction: column;
+    text-align: left;
+    padding: 30px 20px;
+  }
+
+  .pageend > div {
+    margin: 15px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageend h2,
+  .pageend h3 {
+    font-size: 16px;
+  }
+
+  .pageend p,
+  .pageend li {
+    font-size: 13px;
+  }
 }
 
 ul {
@@ -707,8 +761,8 @@ body {
   font-weight: 700;
   margin-bottom: 22px;
 }
-.cart{
-    font-size: small;
+.cart {
+  font-size: small;
 }
 
 .booksCat,
@@ -721,11 +775,11 @@ body {
 }
 
 .user {
-    background-color: #fff;
-    border: 0px;
+  background-color: #fff;
+  border: 0px;
 }
-.user:hover{
-    cursor: pointer;
+.user:hover {
+  cursor: pointer;
 }
 
 /* Responsive Header: Logo+Search in one row, User+Cart in another row */

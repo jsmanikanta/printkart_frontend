@@ -177,26 +177,6 @@
 }
 
 
-.pageend h2,
-.pageend h3 {
-  color: #f9d463;
-  margin-bottom: 13px;
-}
-
-.pageend ul {
-  padding-left: 14px;
-}
-
-.pageend ul li {
-  font-size: 1rem;
-  margin-bottom: 7px;
-}
-
-.pageend a {
-  color: #f9d463;
-  text-decoration: none;
-}
-
 /* RESPONSIVE */
 @media (max-width: 1050px) {
   .diff,

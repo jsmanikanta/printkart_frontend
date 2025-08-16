@@ -1,0 +1,50 @@
+.loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #ffffff;
+  font-family: "Poppins", sans-serif;
+}
+
+.book-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.page {
+  width: 12px;
+  height: 40px;
+  background: #3498db; /* Blue theme color */
+  border-radius: 4px;
+  animation: flip 1s infinite;
+}
+
+.page:nth-child(2) {
+  background: #9b59b6; /* Purple for theme consistency */
+  animation-delay: 0.2s;
+}
+
+.page:nth-child(3) {
+  background: #e67e22; /* Orange for matching cards */
+  animation-delay: 0.4s;
+}
+
+@keyframes flip {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.3);
+  }
+}
+
+.loading-text {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}

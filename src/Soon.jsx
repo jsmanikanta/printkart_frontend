@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles/comingsoon.css";
+import Loader from "./Loading";
 
 export default function ComingSoon() {
   return (

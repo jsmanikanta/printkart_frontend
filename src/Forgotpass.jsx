@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./styles/forgotpass.css";
 import { api_path } from "../data";
+import Loader from "./Loading";
 
 export default function ForgotPassword() {
   const [identifier, setIdentifier] = useState("");
@@ -12,6 +13,7 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
     setSuccess("");
 
@@ -49,43 +51,53 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="resetpw-bg">
-      <form className="resetpw-container" onSubmit={handleSubmit}>
-        <img src="../images/logo.jpg" alt="Book Hub Logo" className="resetpw-logo" />
-        <h2 className="resetpw-title">Reset Password</h2>
-        <input
-          className="resetpw-input"
-          type="text"
-          placeholder="Email or Mobile Number"
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          required
-        />
-        <input
-          className="resetpw-input"
-          type="password"
-          placeholder="New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-        />
-        <input
-          className="resetpw-input"
-          type="password"
-          placeholder="Confirm New Password"
-          value={confirm}
-          onChange={(e) => setConfirm(e.target.value)}
-          required
-        />
-        {error && <div className="resetpw-error">{error}</div>}
-        {success && <div className="resetpw-success">{success}</div>}
-        <button className="resetpw-btn" type="submit" disabled={loading}>
-          {loading ? "Saving..." : "Reset Password"}
-        </button>
-        <div className="resetpw-back">
-          <a href="/login">Back to Login</a>
+    <>
+      {loading ? (
+        <loading />
+      ) : (
+        <div className="resetpw-bg">
+          <form className="resetpw-container" onSubmit={handleSubmit}>
+            <img
+              src="../images/logo.jpg"
+              alt="Book Hub Logo"
+              className="resetpw-logo"
+            />
+            <h2 className="resetpw-title">Reset Password</h2>
+            <input
+              className="resetpw-input"
+              type="text"
+              placeholder="Email or Mobile Number"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              required
+            />
+            <input
+              className="resetpw-input"
+              type="password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+            <input
+              className="resetpw-input"
+              type="password"
+              placeholder="Confirm New Password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              required
+            />
+            {error && <div className="resetpw-error">{error}</div>}
+            {success && <div className="resetpw-success">{success}</div>}
+            <button className="resetpw-btn" type="submit" disabled={loading}>
+              {loading ? "Saving..." : "Reset Password"}
+            </button>
+            <div className="resetpw-back">
+              <a href="/login">Back to Login</a>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      )}
+    </>
   );
 }
