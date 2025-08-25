@@ -70,7 +70,6 @@ function Login() {
               Buy &amp; Sell Old Books.
               <br /> Order Printout Instantly!
             </h2>
-=======
     <div className="auth-modal-overlay">
       <div className="auth-modal">
         <div className="modal-header" onClick={Homepage}>
@@ -80,7 +79,6 @@ function Login() {
           Buy &amp; Sell Old Books.
           <br /> Order Printout Instantly!
         </h2>
->>>>>>> f2d7ca3fd36f62f1ab01810b7b21c1289aec9d4a
 
             <form className="auth-form" onSubmit={handleSubmit}>
               <input
