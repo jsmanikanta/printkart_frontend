@@ -9,77 +9,51 @@ import Loader from "./Loading";
 function Login() {
   const navigate = useNavigate();
 
-  const Signup = () => {
-    navigate("/signup");
-  };
-
-  const Homepage = () => {
-    navigate("/");
-  };
-  const ForgotPassword = () => {
-    navigate("/forgotpassword");
-  };
-
   const [inputs, setInputs] = useState({ credential: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleChange = (e) =>
+  const handleChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
+    setErrorMsg(""); // clear error when user starts typing
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    setErrorMsg("");
     try {
       const response = await axios.post(`${api_path}/user/login/`, {
         identifier: inputs.credential,
         password: inputs.password,
       });
-
-      console.log("Login response:", response.data);
-
       if (response.data.success && response.data.token) {
-        alert("Login successful!");
         localStorage.setItem("token", response.data.token);
         navigate("/");
       } else {
-        alert("Login failed. Please try again.");
+        setErrorMsg("Login failed. Please try again.");
       }
     } catch (error) {
-      const errorMsg =
-        error.response?.data?.error || "Login failed. Please try again.";
-      alert(errorMsg);
+      const msg = error.response?.data?.error || "Login failed. Please try again.";
+      setErrorMsg(msg);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-<<<<<<< HEAD
     <>
-      {loading ? (
-        <Loader />
-      ) : (
+      {loading && <Loader />}
+      {!loading && (
         <div className="auth-modal-overlay">
           <div className="auth-modal">
-            <div className="modal-header" onClick={Homepage}>
-              <img src="./images/logo.jpg" alt="Logo" className="modal-logo" />
+            <div className="modal-header" onClick={() => navigate("/")}>
               <img src={logoImg} alt="Logo" className="modal-logo" />
             </div>
             <h2 className="modal-title">
               Buy &amp; Sell Old Books.
               <br /> Order Printout Instantly!
             </h2>
-    <div className="auth-modal-overlay">
-      <div className="auth-modal">
-        <div className="modal-header" onClick={Homepage}>
-          <img src={logoImg} alt="Logo"  className="modal-logo" />
-        </div>
-        <h2 className="modal-title">
-          Buy &amp; Sell Old Books.
-          <br /> Order Printout Instantly!
-        </h2>
-
             <form className="auth-form" onSubmit={handleSubmit}>
               <input
                 type="text"
@@ -99,23 +73,27 @@ function Login() {
                 required
                 autoComplete="current-password"
               />
+              {errorMsg && <div className="error-message">{errorMsg}</div>}
               <button type="submit" className="auth-btn">
                 Continue
               </button>
             </form>
-
             <div className="auth-links">
               <button
                 type="button"
                 className="transparent-link"
-                onClick={ForgotPassword}
+                onClick={() => navigate("/forgotpassword")}
               >
                 Forgot Password?
               </button>
             </div>
             <div className="switch-auth">
               New here?
-              <button type="button" className="switch-btn" onClick={Signup}>
+              <button
+                type="button"
+                className="switch-btn"
+                onClick={() => navigate("/signup")}
+              >
                 Create Account
               </button>
             </div>
