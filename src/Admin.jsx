@@ -1,0 +1,151 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import { api_path } from "../data";
+import Loader from "./Loading";
+
+import "./styles/admin.css";
+
+export default function Admin() {
+  const navigate = useNavigate();
+
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [orders, setOrders] = useState([]);
+  const [viewingOrders, setViewingOrders] = useState(false);
+
+  // Handle login form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMsg("");
+
+    if (username === "abc@gmail.com" && password === "abc") {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${api_path}/admin/printorders`);
+        setOrders(response.data.orders);
+        setViewingOrders(true);
+      } catch (error) {
+        setErrorMsg(error.response?.data?.error || "Failed to fetch orders.");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setErrorMsg("Invalid username or password");
+    }
+  };
+
+  // Render login form
+  if (!viewingOrders) {
+    return (
+      <div className="admin-container">
+        <h2>Admin Login</h2>
+        {errorMsg && <div className="error-msg">{errorMsg}</div>}
+        <form onSubmit={handleSubmit} className="admin-form">
+          <input
+            type="text"
+            placeholder="Enter user name"
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
+            required
+            className="admin-input"
+          />
+          <input
+            type="password"
+            placeholder="Enter the password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="admin-input"
+          />
+          <button type="submit" className="admin-btn" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  // Render orders table
+  return (
+    <div className="admin-container">
+      <h2>Print Orders</h2>
+      {loading && <Loader />}
+      {errorMsg && <div className="error-msg">{errorMsg}</div>}
+      <table className="orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Mobile Number</th>
+            <th>File</th>
+            <th>Color</th>
+            <th>Sides</th>
+            <th>Bindings</th>
+            <th>No. of Copies</th>
+            <th>College Name</th>
+            <th>Year</th>
+            <th>Class & Section</th>
+            <th>Address</th>
+            <th>Description</th>
+            <th>Transaction ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders.length === 0 && (
+            <tr>
+              <td colSpan="15">No orders available</td>
+            </tr>
+          )}
+          {orders.map((order) => (
+            <tr key={order._id}>
+              <td>{order._id}</td>
+              <td>{order.fullName || order.userid?.fullname || "-"}</td>
+              <td>{order.email || order.userid?.email || "-"}</td>
+              <td>{order.mobile || order.userid?.mobile || "-"}</td>
+              <td>
+                {order.file ? (
+                  <a
+                    href={`${api_path}/${order.file}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View PDF
+                  </a>
+                ) : (
+                  "-"
+                )}
+              </td>
+              <td>{order.color}</td>
+              <td>{order.sides}</td>
+              <td>{order.binding}</td>
+              <td>{order.copies}</td>
+              <td>{order.college || "-"}</td>
+              <td>{order.year || "-"}</td>
+              <td>{order.section || "-"}</td>
+              <td>{order.address}</td>
+              <td>{order.description || "-"}</td>
+              <td>{order.transctionid}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <button
+        className="admin-btn"
+        onClick={() => {
+          setViewingOrders(false);
+          setUserName("");
+          setPassword("");
+          setOrders([]);
+          setErrorMsg("");
+        }}
+      >
+        Logout
+      </button>
+    </div>
+  );
+}

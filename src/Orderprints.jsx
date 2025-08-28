@@ -27,6 +27,7 @@ export default function OrderPrints() {
 
   const [userName, setUserName] = useState(null);
   const [activeTab, setActiveTab] = useState("student");
+
   const [file, setFile] = useState(null);
   const [pages, setPages] = useState("");
   const [pdfError, setPdfError] = useState("");
@@ -40,10 +41,14 @@ export default function OrderPrints() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  // Form inputs, user info:
   const [fullName, setFullName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
+
+  // Added state for student details
+  const [collegeYear, setCollegeYear] = useState("");
+  const [department, setDepartment] = useState("");
+  const [section, setSection] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -59,25 +64,30 @@ export default function OrderPrints() {
       .catch(() => setUserName(null));
   }, []);
 
-  // ---- PDF PAGE COUNTER ----
   const handleFileChange = async (e) => {
     setLoading(true);
     const uploaded = e.target.files[0];
+
     if (!uploaded) {
       setFile(null);
       setPages("");
       setPdfError("");
+      setLoading(false);
       return;
     }
+
     if (uploaded.type !== "application/pdf") {
       setPdfError("Only PDF files are allowed.");
       setFile(null);
       setPages("");
       e.target.value = null;
+      setLoading(false);
       return;
     }
+
     setFile(uploaded);
     setPdfError("");
+
     try {
       const arrayBuffer = await uploaded.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -87,35 +97,59 @@ export default function OrderPrints() {
       setPdfError("Invalid or corrupted PDF");
       setFile(null);
     }
+    setLoading(false);
   };
 
+  // Price calculation
   useEffect(() => {
     if (!pages || isNaN(pages) || pages <= 0) {
       setTotalAmount(0);
       return;
     }
+
     let pricePerPage = 0;
     if (color === "b/w" && sides === "2") pricePerPage = 1;
-    else if (color === "colour" && sides === "2") pricePerPage = "not accepted";
+    else if (color === "colour" && sides === "2")
+      pricePerPage = 0; // Not accepted, handle in submit
     else if (color === "b/w" && sides === "1") pricePerPage = 1.5;
     else if (color === "colour" && sides === "1") pricePerPage = 6;
+
     let total = pricePerPage * pages;
     if (binding === "spiral") total += 20;
     if (binding === "stick") total += 20;
     if (binding === "soft") total += 25;
-    if (binding == "book") total += 150;
+    if (binding === "book") total += 150;
     total *= copies;
+
     setTotalAmount(Math.ceil(total));
   }, [color, sides, binding, pages, copies]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!file) return alert("Only PDF file allowed!");
     if (!pages) return alert("Could not read PDF pages.");
-    if (!address.trim()) return alert("Delivery address required.");
+
+    if (activeTab === "student") {
+      if (!collegeYear.trim() || !department.trim() || !section.trim())
+        return alert("College year, department, and section are mandatory.");
+    } else {
+      if (!address.trim()) return alert("Delivery address required.");
+    }
+
     if (!transctionid.trim()) return alert("Transaction ID required.");
     if (!fullName.trim() || !mobileNumber.trim() || !email.trim())
       return alert("Please fill your details.");
+
+    if (color === "colour" && sides === "2")
+      return alert("Double-sided color prints are not accepted.");
+
+    let finalAddress;
+    if (activeTab === "student") {
+      finalAddress = `Year: ${collegeYear}, Dept: ${department}, Section: ${section}`;
+    } else {
+      finalAddress = address;
+    }
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -123,27 +157,35 @@ export default function OrderPrints() {
       navigate("/login");
       return;
     }
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("color", color);
     formData.append("sides", sides);
     formData.append("binding", binding);
     formData.append("copies", copies);
-    formData.append("address", address);
+    formData.append("address", finalAddress);
     formData.append("description", description);
     formData.append("transctionid", transctionid);
     formData.append("fullName", fullName);
     formData.append("mobileNumber", mobileNumber);
     formData.append("email", email);
 
+    setLoading(true);
+
     const res = await fetch(
       `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
       {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       }
     );
+
+    setLoading(false);
+
     if (res.ok) {
       alert("Order placed!");
       navigate("/accounts");
@@ -151,13 +193,12 @@ export default function OrderPrints() {
       const err = await res.json();
       alert(err?.error || "Order failed");
     }
-    setLoading(false);
   };
 
   return (
     <>
       {loading ? (
-        <loading />
+        <Loader />
       ) : (
         <div className="order-main-bg">
           {/* HEADER */}
@@ -232,6 +273,7 @@ export default function OrderPrints() {
               </button>
             </div>
           </header>
+
           {/* TABS */}
           <div className="order-tabs">
             <button
@@ -249,6 +291,7 @@ export default function OrderPrints() {
               Others
             </button>
           </div>
+
           {/* FORM */}
           <form className="order-form-wrap" onSubmit={handleSubmit}>
             <h2>
@@ -266,8 +309,8 @@ export default function OrderPrints() {
               className="input"
               placeholder="Mobile Number"
               value={mobileNumber}
+              maxLength={10}
               onChange={(e) => setMobileNumber(e.target.value)}
-              maxLength="10"
               required
             />
             <input
@@ -339,21 +382,48 @@ export default function OrderPrints() {
                 onChange={(e) => setcopies(Number(e.target.value))}
               />
             </div>
-            <textarea
-              className="input"
-              placeholder="Delivery Address
-          * If delivery is to your college please mention your year,class,section"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
+
+            {/* Conditional address or college inputs */}
+            {activeTab === "student" ? (
+              <>
+                <input
+                  className="input"
+                  placeholder="College Name"
+                  value={collegeYear}
+                  onChange={(e) => setCollegeYear(e.target.value)}
+                  required
+                />
+                <input
+                  className="input"
+                  placeholder="Year of study"
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  required
+                />
+                <input
+                  className="input"
+                  placeholder="Class & Section"
+                  value={section}
+                  onChange={(e) => setSection(e.target.value)}
+                  required
+                />
+              </>
+            ) : (
+              <textarea
+                className="input"
+                placeholder="Delivery Address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            )}
+
             <textarea
               className="input"
               placeholder="Description (optional)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <img className="qr" src="./images/qr.jpg" />
             <img className="qr" src={qrImg} alt="QR Code" />
             <input
               className="input"
@@ -361,7 +431,7 @@ export default function OrderPrints() {
               value={transctionid}
               onChange={(e) => setTransctionid(e.target.value)}
               required
-            />{" "}
+            />
             <br />
             <div className="total-cost-box">
               Total Amount: <span>₹{totalAmount}</span>
@@ -370,6 +440,7 @@ export default function OrderPrints() {
               Submit Order
             </button>
           </form>
+
           {/* FOOTER */}
           <footer className="pageend">
             <div className="about">
@@ -403,6 +474,15 @@ export default function OrderPrints() {
               <h2>Contact Us</h2>
               <p>
                 Hemanth Rishi: <a href="tel:+919182415750">+91 91824 15750</a>
+              </p>
+              <p>
+                Praneeth: <a href="tel:+918074177294">+91 80741 77294</a>
+              </p>
+              <p>
+                Ayush Kumar: <a href="tel:+917989221628">+91 79892 21628</a>
+              </p>
+              <p>
+                Lokesh: <a href="tel:+919398892297">+91 93988 92297</a>
               </p>
             </div>
           </footer>

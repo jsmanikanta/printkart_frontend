@@ -267,7 +267,6 @@ function HomePage() {
               <div className="step" onClick={Signup}>
                 <div className="num">
                   <h2>Step 1:</h2>
-                  <div className="imgw1"></div>
                 </div>
                 <div className="para">
                   <p>SignUp &amp; complete profile</p>
@@ -276,7 +275,6 @@ function HomePage() {
               <div className="step" onClick={soon}>
                 <div className="num">
                   <h2>Step 2:</h2>
-                  <div className="imgw2"></div>
                 </div>
                 <div className="para">
                   <p>Choose what you want to</p>
@@ -286,7 +284,6 @@ function HomePage() {
               <div className="step" onClick={Orderprints}>
                 <div className="num">
                   <h2>Step 3:</h2>
-                  <div className="imgw3"></div>
                 </div>
                 <div className="para">
                   <p>Upload photo or file</p>
@@ -296,7 +293,6 @@ function HomePage() {
               <div className="step" onClick={Orderprints}>
                 <div className="num">
                   <h2>Step 4:</h2>
-                  <div className="imgw4"></div>
                 </div>
                 <div className="para">
                   <p>Choose delivery/pickup location</p>
@@ -305,7 +301,6 @@ function HomePage() {
               <div className="step" onClick={Orderprints}>
                 <div className="num">
                   <h2>Step 5:</h2>
-                  <div className="imgw5"></div>
                 </div>
                 <div className="para">
                   <p>Make payment &amp; track your order</p>
