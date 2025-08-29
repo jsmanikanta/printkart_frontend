@@ -34,12 +34,9 @@ function Login() {
         setErrorMsg("Login failed. Please try again.");
       }
     } catch (error) {
-<<<<<<< HEAD
       const msg = error.response?.data?.error || "Login failed. Please try again.";
-=======
       const msg =
         error.response?.data?.error || "Login failed. Please try again.";
->>>>>>> 3af2730 (Describe your admin)
       setErrorMsg(msg);
     } finally {
       setLoading(false);
