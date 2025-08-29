@@ -221,17 +221,17 @@ function Accounts() {
                     </div>
                   )}
 
-                  {isPDF && (
-                    <div style={{ margin: "10px 0" }}>
-                      <a
-                        href={fileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ color: "#04793f", fontWeight: 600 }}
-                      >
-                        Open PDF
-                      </a>
-                    </div>
+                  {order.file ? (
+                    <a
+                      href={fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="order-file-link"
+                    >
+                      {fileLabel}
+                    </a>
+                  ) : (
+                    "-"
                   )}
 
                   <div className="order-card-info">

@@ -4,7 +4,6 @@ import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import "pdfjs-dist/build/pdf.worker.mjs";
 import "./styles/orderprints.css";
 import qrImg from "./images/qr.jpg";
-import Loader from "./Loading";
 
 const COLOR_OPTIONS = [
   { value: "b/w", label: "Black & White" },
@@ -27,28 +26,28 @@ export default function OrderPrints() {
 
   const [userName, setUserName] = useState(null);
   const [activeTab, setActiveTab] = useState("student");
-
   const [file, setFile] = useState(null);
   const [pages, setPages] = useState("");
   const [pdfError, setPdfError] = useState("");
   const [color, setColor] = useState("b/w");
   const [sides, setSides] = useState("1");
   const [binding, setBinding] = useState("none");
-  const [copies, setcopies] = useState(1);
+  const [copies, setCopies] = useState(1);
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
   const [transctionid, setTransctionid] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const [fullName, setFullName] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
+  // Form inputs
+  const [name, setName] = useState("");
+  const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
 
-  // Added state for student details
-  const [collegeYear, setCollegeYear] = useState("");
-  const [department, setDepartment] = useState("");
-  const [section, setSection] = useState("");
+  // Student-specific fields (added missing states)
+  const [collegeName, setCollegeName] = useState("");
+  const [yearOfStudy, setYearOfStudy] = useState("");
+  const [classSection, setClassSection] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -60,14 +59,14 @@ export default function OrderPrints() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())
-      .then((d) => setUserName(d?.user?.fullname || null))
+      .then((d) => setUserName(d?.user?.name || null))
       .catch(() => setUserName(null));
   }, []);
 
+  // ---- PDF PAGE COUNTER ----
   const handleFileChange = async (e) => {
     setLoading(true);
     const uploaded = e.target.files[0];
-
     if (!uploaded) {
       setFile(null);
       setPages("");
@@ -75,7 +74,6 @@ export default function OrderPrints() {
       setLoading(false);
       return;
     }
-
     if (uploaded.type !== "application/pdf") {
       setPdfError("Only PDF files are allowed.");
       setFile(null);
@@ -84,10 +82,8 @@ export default function OrderPrints() {
       setLoading(false);
       return;
     }
-
     setFile(uploaded);
     setPdfError("");
-
     try {
       const arrayBuffer = await uploaded.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -99,55 +95,36 @@ export default function OrderPrints() {
     setLoading(false);
   };
 
-  // Price calculation
   useEffect(() => {
     if (!pages || isNaN(pages) || pages <= 0) {
       setTotalAmount(0);
       return;
     }
-
     let pricePerPage = 0;
     if (color === "b/w" && sides === "2") pricePerPage = 1;
-    else if (color === "colour" && sides === "2")
-      pricePerPage = 0; // Not accepted, handle in submit
+    else if (color === "colour" && sides === "2") pricePerPage = "not accepted";
     else if (color === "b/w" && sides === "1") pricePerPage = 1.5;
     else if (color === "colour" && sides === "1") pricePerPage = 6;
-
     let total = pricePerPage * pages;
     if (binding === "spiral") total += 20;
     if (binding === "stick") total += 20;
     if (binding === "soft") total += 25;
     if (binding === "book") total += 150;
     total *= copies;
-
     setTotalAmount(Math.ceil(total));
   }, [color, sides, binding, pages, copies]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!file) return alert("Only PDF file allowed!");
     if (!pages) return alert("Could not read PDF pages.");
-
-    if (activeTab === "student") {
-      if (!collegeYear.trim() || !department.trim() || !section.trim())
-        return alert("College year, department, and section are mandatory.");
-    } else {
-      if (!address.trim()) return alert("Delivery address required.");
-    }
-
+    if (!address.trim()) return alert("Delivery address required.");
     if (!transctionid.trim()) return alert("Transaction ID required.");
-    if (!fullName.trim() || !mobileNumber.trim() || !email.trim())
+    if (!name.trim() || !mobile.trim() || !email.trim())
       return alert("Please fill your details.");
-
-    if (color === "colour" && sides === "2")
-      return alert("Double-sided color prints are not accepted.");
-
-    let finalAddress;
     if (activeTab === "student") {
-      finalAddress = `Year: ${collegeYear}, Dept: ${department}, Section: ${section}`;
-    } else {
-      finalAddress = address;
+      if (!collegeName.trim() || !yearOfStudy.trim() || !classSection.trim())
+        return alert("Please provide college name, year, and class/section.");
     }
 
     const token = localStorage.getItem("token");
@@ -163,12 +140,19 @@ export default function OrderPrints() {
     formData.append("sides", sides);
     formData.append("binding", binding);
     formData.append("copies", copies);
-    formData.append("address", finalAddress);
+    formData.append("address", address);
     formData.append("description", description);
     formData.append("transctionid", transctionid);
-    formData.append("fullName", fullName);
-    formData.append("mobileNumber", mobileNumber);
+    formData.append("name", name);
+    formData.append("mobile", mobile);
     formData.append("email", email);
+    formData.append("orderType", activeTab);
+
+    if (activeTab === "student") {
+      formData.append("collegeName", collegeName);
+      formData.append("yearOfStudy", yearOfStudy);
+      formData.append("classSection", classSection);
+    }
 
     setLoading(true);
 
@@ -182,7 +166,6 @@ export default function OrderPrints() {
         body: formData,
       }
     );
-
     setLoading(false);
 
     if (res.ok) {
@@ -197,7 +180,7 @@ export default function OrderPrints() {
   return (
     <>
       {loading ? (
-        <Loader />
+        <p style={{ textAlign: "center" }}>Loading...</p>
       ) : (
         <div className="order-main-bg">
           {/* HEADER */}
@@ -253,7 +236,7 @@ export default function OrderPrints() {
                       border: "none",
                     }}
                   >
-                    <span className="options">Accounts &amp; Lists</span>
+                    <span className="options">Accounts & Lists</span>
                   </button>
                 </b>
               </div>
@@ -300,16 +283,16 @@ export default function OrderPrints() {
             <input
               className="input"
               placeholder="Full Name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
             <input
               className="input"
               placeholder="Mobile Number"
-              value={mobileNumber}
-              maxLength={10}
-              onChange={(e) => setMobileNumber(e.target.value)}
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              maxLength="10"
               required
             />
             <input
@@ -320,6 +303,33 @@ export default function OrderPrints() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
+            {activeTab === "student" && (
+              <>
+                <input
+                  className="input"
+                  placeholder="College Name"
+                  value={collegeName}
+                  onChange={(e) => setCollegeName(e.target.value)}
+                  required
+                />
+                <input
+                  className="input"
+                  placeholder="Year of Study"
+                  value={yearOfStudy}
+                  onChange={(e) => setYearOfStudy(e.target.value)}
+                  required
+                />
+                <input
+                  className="input"
+                  placeholder="Class & Section"
+                  value={classSection}
+                  onChange={(e) => setClassSection(e.target.value)}
+                  required
+                />
+              </>
+            )}
+
             <div className="input-row">
               <label className="order-label" htmlFor="pdfFile">
                 Upload PDF
@@ -330,9 +340,27 @@ export default function OrderPrints() {
                 type="file"
                 accept="application/pdf"
                 onChange={handleFileChange}
-                required
+                style={{ display: "none" }}
               />
+              <label
+                htmlFor="pdfFile"
+                className="custom-file-label"
+                style={{
+                  border: "1px solid #ccc",
+                  padding: "6px 12px",
+                  display: "inline-block",
+                  cursor: "pointer",
+                  background: "#f8f8f8",
+                }}
+              >
+                {file ? file.name : "Choose File"}
+              </label>
+              {pdfError && <div className="error-text">{pdfError}</div>}
+              {pages && (
+                <div className="pdf-pages-info">Pages detected: {pages}</div>
+              )}
             </div>
+
             {pdfError && <div className="error-text">{pdfError}</div>}
             {pages && (
               <div className="pdf-pages-info">Pages detected: {pages}</div>
@@ -378,45 +406,16 @@ export default function OrderPrints() {
                 type="number"
                 value={copies}
                 min={1}
-                onChange={(e) => setcopies(Number(e.target.value))}
+                onChange={(e) => setCopies(Number(e.target.value))}
               />
             </div>
-
-            {/* Conditional address or college inputs */}
-            {activeTab === "student" ? (
-              <>
-                <input
-                  className="input"
-                  placeholder="College Name"
-                  value={collegeYear}
-                  onChange={(e) => setCollegeYear(e.target.value)}
-                  required
-                />
-                <input
-                  className="input"
-                  placeholder="Year of study"
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  required
-                />
-                <input
-                  className="input"
-                  placeholder="Class & Section"
-                  value={section}
-                  onChange={(e) => setSection(e.target.value)}
-                  required
-                />
-              </>
-            ) : (
-              <textarea
-                className="input"
-                placeholder="Delivery Address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-              />
-            )}
-
+            <textarea
+              className="input"
+              placeholder="Delivery Address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
             <textarea
               className="input"
               placeholder="Description (optional)"
@@ -440,7 +439,6 @@ export default function OrderPrints() {
             </button>
           </form>
 
-          {/* FOOTER */}
           <footer className="pageend">
             <div className="about">
               <h2>About Us</h2>
