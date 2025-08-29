@@ -95,7 +95,6 @@ export default function OrderPrints() {
     } catch {
       setPages("");
       setPdfError("Invalid or corrupted PDF");
-      setFile(null);
     }
     setLoading(false);
   };
