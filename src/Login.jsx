@@ -34,8 +34,12 @@ function Login() {
         setErrorMsg("Login failed. Please try again.");
       }
     } catch (error) {
+<<<<<<< HEAD
       const msg =
         error.response?.data?.error || "Login failed. Please try again.";
+=======
+      const msg = error.response?.data?.error || "Login failed. Please try again.";
+>>>>>>> ddd35b5242169748e20d5e5191fc5f8349b2a6ec
       setErrorMsg(msg);
     } finally {
       setLoading(false);
