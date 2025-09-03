@@ -26,6 +26,9 @@ function HomePage() {
   const soon = () => {
     navigate("/soon");
   };
+  const admin = () => {
+    navigate("/admin");
+  };
 
   // Fetch user profile for the header
   useEffect(() => {
@@ -313,6 +316,7 @@ function HomePage() {
           <footer className="pageend">
             <div className="about">
               <h2>About Us</h2>
+              <button onClick={admin}>admin</button>
               <p>
                 Book Hub is a student-friendly platform to buy and sell old
                 books and order customized printouts easily. We aim to make
