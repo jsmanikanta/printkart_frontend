@@ -35,7 +35,6 @@ function Login() {
       }
     } catch (error) {
       const msg =
-
         error.response?.data?.error || "Login failed. Please try again.";
       setErrorMsg(msg);
     } finally {
