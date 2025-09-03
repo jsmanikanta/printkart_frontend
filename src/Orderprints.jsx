@@ -183,79 +183,6 @@ export default function OrderPrints() {
         <p style={{ textAlign: "center" }}>Loading...</p>
       ) : (
         <div className="order-main-bg">
-          {/* HEADER */}
-          <header className="navbar">
-            <div className="logo" onClick={() => navigate("/")}></div>
-            <div className="navsearch">
-              <input placeholder="Search" className="searchinput" />
-              <div className="searchicon">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </div>
-            </div>
-            <div className="sign">
-              <i
-                className="fa-solid fa-user fa-lg"
-                style={{ padding: "20px" }}
-              ></i>
-              <div className="sign-in">
-                <p className="hello">
-                  Hello,{" "}
-                  {userName ? (
-                    <button
-                      className="user"
-                      onClick={() => navigate("/accounts")}
-                      style={{
-                        cursor: "pointer",
-                        background: "none",
-                        border: "none",
-                      }}
-                    >
-                      {userName}
-                    </button>
-                  ) : (
-                    <button
-                      className="user"
-                      onClick={() => navigate("/login")}
-                      style={{
-                        cursor: "pointer",
-                        background: "none",
-                        border: "none",
-                      }}
-                    >
-                      sign in
-                    </button>
-                  )}
-                </p>
-                <b>
-                  <button
-                    className="user"
-                    onClick={() => navigate("/accounts")}
-                    style={{
-                      cursor: "pointer",
-                      background: "none",
-                      border: "none",
-                    }}
-                  >
-                    <span className="options">Accounts & Lists</span>
-                  </button>
-                </b>
-              </div>
-            </div>
-            <div className="carts ca">
-              <i
-                className="fa-solid fa-cart-shopping"
-                style={{ paddingBottom: "20px" }}
-              ></i>
-              <button
-                className="user"
-                style={{ background: "none", border: "none" }}
-              >
-                <span className="cart">My cart</span>
-                <sup className="notification">1</sup>
-              </button>
-            </div>
-          </header>
-
           {/* TABS */}
           <div className="order-tabs">
             <button
@@ -438,51 +365,6 @@ export default function OrderPrints() {
               Submit Order
             </button>
           </form>
-
-          <footer className="pageend">
-            <div className="about">
-              <h2>About Us</h2>
-              <p>
-                Book Hub is a student-friendly platform to buy and sell old
-                books and order customized printouts easily. We aim to make
-                learning materials affordable, accessible, and sustainable by
-                connecting students to share resources, save time, and reduce
-                costs—whether it’s selling used books, ordering printouts, or
-                donating to those in need.
-              </p>
-            </div>
-            <div className="categories">
-              <div className="list1">
-                <h3>Books</h3>
-                <ul>
-                  <li>School Books (class 6-12)</li>
-                  <li>Competitive Books (GATE, JEE, etc.)</li>
-                </ul>
-              </div>
-              <div className="list2">
-                <h3>Printouts</h3>
-                <ul>
-                  <li>Assignments</li>
-                  <li>Project Reports</li>
-                </ul>
-              </div>
-            </div>
-            <div className="contacts">
-              <h2>Contact Us</h2>
-              <p>
-                Hemanth Rishi: <a href="tel:+919182415750">+91 91824 15750</a>
-              </p>
-              <p>
-                Praneeth: <a href="tel:+918074177294">+91 80741 77294</a>
-              </p>
-              <p>
-                Ayush Kumar: <a href="tel:+917989221628">+91 79892 21628</a>
-              </p>
-              <p>
-                Lokesh: <a href="tel:+919398892297">+91 93988 92297</a>
-              </p>
-            </div>
-          </footer>
         </div>
       )}
     </>

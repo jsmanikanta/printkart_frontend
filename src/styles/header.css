@@ -1,0 +1,185 @@
+.homepage-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* NAVBAR */
+.navbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 16px 36px;
+  box-shadow: 0 2px 12px #e5e5e5;
+  border-radius: 0 0 22px 22px;
+  gap: 24px;
+}
+
+.logo {
+  background: url("../images/logo.jpg") center/contain no-repeat;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.navsearch {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f8f8f8;
+  border-radius: 25px;
+  border: 2px solid #d2d2d2;
+  padding: 0 14px;
+  min-width: 200px;
+  max-width: 480px;
+}
+
+.searchinput {
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  flex: 1;
+  padding: 10px 0;
+  outline: none;
+}
+
+.searchicon {
+  color: #666;
+  font-size: 1rem;
+  padding-left: 7px;
+}
+
+.sign {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.sign-in {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.92rem;
+}
+
+.carts {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  position: relative;
+}
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 16px 36px;
+  border-radius: 0 0 22px 22px;
+  box-shadow: 0 2px 12px #e5e5e5;
+  gap: 24px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 12px;
+  background: url("../images/logo.jpg") center/contain no-repeat;
+}
+
+.navsearch {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f8f8f8;
+  border-radius: 25px;
+  border: 2px solid #d2d2d2;
+  padding: 0 14px;
+  min-width: 200px;
+  max-width: 480px;
+}
+
+.searchinput {
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  flex: 1;
+  padding: 10px 0;
+  outline: none;
+}
+
+.searchicon {
+  color: #666;
+  font-size: 1rem;
+  padding-left: 7px;
+}
+
+.sign {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.sign-in {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.92rem;
+}
+
+.sign-in strong {
+  font-weight: bold;
+}
+
+.carts {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  position: relative;
+}
+@media (max-width: 700px) {
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 14px 8px;
+    gap: 0;
+    border-radius: 0 0 15px 15px;
+  }
+
+  /* Wrap the header content in these rows in your JSX/HTML: */
+  .header-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .header-row-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .logo {
+    margin: 0;
+  }
+  .navsearch {
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    flex: 1;
+  }
+  .sign {
+    margin: 0;
+    flex: 1;
+    justify-content: flex-start;
+  }
+  .carts {
+    margin: 0;
+    flex-shrink: 0;
+  }
+}

@@ -7,19 +7,25 @@ import OrderPrints from "./Orderprints";
 import ForgotPassword from "./Forgotpass";
 import Admin from "./Admin";
 import ComingSoon from "./Soon";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Homepage />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/orderprints" element={<OrderPrints />} />
-      <Route path="/accounts" element={<Accounts />} />
-      <Route path="/forgotpassword" element={<ForgotPassword />} />
-      <Route path="/soon" element={<ComingSoon />} />
-      <Route path="/admin" element={<Admin />} />
-    </Routes>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/orderprints" element={<OrderPrints />} />
+        <Route path="/accounts" element={<Accounts />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/soon" element={<ComingSoon />} />
+        <Route path="/admin" element={<Admin />} />
+      </Routes>
+      <Footer />
+    </>
   );
 }
 

@@ -10,78 +10,6 @@ body {
   background: #fafafa;
 }
 
-.homepage-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* NAVBAR */
-.navbar {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #fff;
-  padding: 16px 36px;
-  box-shadow: 0 2px 12px #e5e5e5;
-  border-radius: 0 0 22px 22px;
-  gap: 24px;
-}
-
-.logo {
-  background: url("../images/logo.jpg") center/contain no-repeat;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-}
-
-.navsearch {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  background: #f8f8f8;
-  border-radius: 25px;
-  border: 2px solid #d2d2d2;
-  padding: 0 14px;
-  min-width: 200px;
-  max-width: 480px;
-}
-
-.searchinput {
-  border: none;
-  background: transparent;
-  font-size: 1rem;
-  flex: 1;
-  padding: 10px 0;
-  outline: none;
-}
-
-.searchicon {
-  color: #666;
-  font-size: 1rem;
-  padding-left: 7px;
-}
-
-.sign {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.sign-in {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.92rem;
-}
-
-.carts {
-  display: flex;
-  align-items: center;
-  font-size: 1.2rem;
-  position: relative;
-}
-
 /* BANNER */
 .banner {
   margin: 30px auto 16px auto;
@@ -180,7 +108,7 @@ body {
   background: rgb(96, 96, 197);
 }
 .getBooks4 {
-  background: rgb(176, 168, 164);
+  background: rgb(85, 4, 216);
 }
 
 .category {
@@ -455,107 +383,6 @@ h4 {
   font-size: 0.98rem;
 }
 
-/* footer*/
-.pageend {
-  background-color: #1a1a1a;
-  color: #ffffff;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  flex-wrap: wrap;
-  font-family: Arial, sans-serif;
-  border-top: 1px solid #333;
-}
-.catgeries{
-  display: flex;
-}
-.pageend h2,
-.pageend h3 {
-  color: #ffffff;
-  margin-bottom: 15px;
-  font-size: 18px;
-}
-
-.pageend p,
-.pageend li {
-  color: #cccccc;
-  font-size: 14px;
-  margin: 6px 0;
-}
-
-.pageend a {
-  color: #cccccc;
-  text-decoration: none;
-}
-
-.pageend a:hover {
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-/* Layout for main sections */
-.pageend > div {
-  flex: 1 1 200px;
-  margin: 20px;
-  min-width: 220px;
-}
-
-/* About section */
-.pageend .about p {
-  line-height: 1.5;
-  max-width: 300px;
-}
-
-/* Lists inside categories */
-.pageend ul {
-  list-style: none;
-  padding: 0;
-}
-
-.pageend ul li::before {
-  content: "• ";
-  color: #888;
-}
-
-/* Contact section */
-.pageend .contacts p {
-  margin-bottom: 8px;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .pageend {
-    padding: 30px 40px;
-  }
-}
-
-@media (max-width: 768px) {
-  .pageend {
-    flex-direction: column;
-    text-align: left;
-    padding: 30px 20px;
-  }
-
-  .pageend > div {
-    margin: 15px 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .pageend h2,
-  .pageend h3 {
-    font-size: 16px;
-  }
-
-  .pageend p,
-  .pageend li {
-    font-size: 13px;
-  }
-}
-
-ul {
-  list-style: none;
-}
 /* ========= Global Reset ========= */
 * {
   margin: 0;

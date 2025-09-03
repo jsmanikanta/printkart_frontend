@@ -26,16 +26,16 @@ function HomePage() {
   const soon = () => {
     navigate("/soon");
   };
-  const admin = () => {
-    navigate("/admin");
-  };
 
   // Fetch user profile for the header
   useEffect(() => {
     const fetchUserProfile = async () => {
       setLoading(true);
       const token = localStorage.getItem("token");
-      if (!token) return;
+      if (!token) {
+        setLoading(false); // <--- ADD THIS LINE
+        return;
+      }
       try {
         const response = await axios.get(`${api_path}/user/profile`, {
           headers: {
@@ -61,74 +61,6 @@ function HomePage() {
       ) : (
         <div className="container">
           {/* Header Section */}
-          <header className="navbar">
-            <div className="logo" onClick={() => navigate("/")}></div>
-            <div className="navsearch">
-              <input placeholder="Search" className="searchinput" />
-              <div className="searchicon">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </div>
-            </div>
-            <div className="sign">
-              <i
-                className="fa-solid fa-user fa-lg"
-                style={{ padding: "20px" }}
-              ></i>
-              <div className="sign-in">
-                <p className="hello">
-                  Hello,{" "}
-                  {userName ? (
-                    <button
-                      className="user"
-                      onClick={Accounts}
-                      style={{
-                        cursor: "pointer",
-                        background: "none",
-                        border: "none",
-                      }}
-                    >
-                      {userName}
-                    </button>
-                  ) : (
-                    <button
-                      className="user"
-                      onClick={Login}
-                      style={{
-                        cursor: "pointer",
-                        background: "none",
-                        border: "none",
-                      }}
-                    >
-                      sign in
-                    </button>
-                  )}
-                </p>
-                <b>
-                  <button
-                    className="user"
-                    onClick={Accounts}
-                    style={{
-                      cursor: "pointer",
-                      background: "none",
-                      border: "none",
-                    }}
-                  >
-                    <span className="options">Accounts &amp; Lists</span>
-                  </button>
-                </b>
-              </div>
-            </div>
-            <div className="carts ca">
-              <i
-                className="fa-solid fa-cart-shopping"
-                style={{ paddingBottom: "20px" }}
-              ></i>
-              <button className="user">
-                <span className="cart">My cart</span>
-                <sup className="notification">1</sup>
-              </button>
-            </div>
-          </header>
 
           {/* Banner Section */}
           <section className="banner">
@@ -311,69 +243,6 @@ function HomePage() {
               </div>
             </div>
           </section>
-
-          {/* Footer Section */}
-          <footer className="pageend">
-            <div className="about">
-              <h2>About Us</h2>
-              <button onClick={admin}>admin</button>
-              <p>
-                Book Hub is a student-friendly platform to buy and sell old
-                books and order customized printouts easily. We aim to make
-                learning materials affordable, accessible, and sustainable by
-                connecting students to share resources, save time, and reduce
-                costs—whether it’s selling used books, ordering printouts, or
-                donating to those in need.
-              </p>
-            </div>
-            <div className="categories">
-              <div className="list1">
-                <h3>Books</h3>
-                <ul>
-                  <li>School Books (class 6-12)</li>
-                  <li>Competitive Books (GATE, JEE, etc.)</li>
-                  <li>Diploma books</li>
-                  <li>B.Sc / B.Com / B.A Books</li>
-                  <li>Fantasy Books</li>
-                  <li>Non-Fantasy Books</li>
-                </ul>
-              </div>
-              <div className="list2">
-                <h3>Printouts</h3>
-                <ul>
-                  <li>Assignments</li>
-                  <li>Project Reports</li>
-                  <li>Class Notes</li>
-                  <li>College Notice / PDFs</li>
-                  <li>Spiral Binding Books</li>
-                  <li>Black &amp; White / Color Prints</li>
-                </ul>
-              </div>
-            </div>
-            <div className="otherservices">
-              <h2>Other Services</h2>
-              <ul>
-                <li>Book Donation Requests</li>
-                <li>Seller Registration</li>
-                <li>PrintKart Service Partner</li>
-              </ul>
-            </div>
-            <div className="contacts">
-              <h2>Contact Us</h2>
-              <p>
-                Hemanth Rishi: <a href="tel:+919182415750">+91 91824 15750</a>
-              </p>
-              <p>
-                Praneeth: <a href="tel:+918074177294">+91 80741 77294</a>
-              </p>
-              <p>
-                Ayush Kumar: <a href="tel:+917989221628">+91 79892 21628</a>
-              </p>
-              <p>
-                Lokesh: <a href="tel:+919398892297">+91 93988 92297</a>
-              </p>
-            </div>
-          </footer>
         </div>
       )}
     </>
