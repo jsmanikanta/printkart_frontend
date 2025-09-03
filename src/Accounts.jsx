@@ -5,6 +5,7 @@ import "./styles/accounts.css";
 import { api_path } from "../data";
 import Loader from "./Loading";
 
+
 function Accounts() {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
@@ -14,7 +15,6 @@ function Accounts() {
   const navigate = useNavigate();
   const Login = () => navigate("/login");
   const AccountsNav = () => navigate("/accounts");
-
   // Fetch user info and orders for Accounts page
   useEffect(() => {
     const fetchUserProfile = async () => {

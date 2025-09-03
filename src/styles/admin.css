@@ -1,130 +1,149 @@
+/* Container */
 .admin-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  border: 1px solid #ccc;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
 }
 
+/* Headings */
+.admin-container h2 {
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-align: center;
+  color: #222;
+}
+
+/* Error Message */
+.error-msg {
+  background: #ffe6e6;
+  color: #cc0000;
+  border: 1px solid #cc0000;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Form Styles */
 .admin-form {
   display: flex;
   flex-direction: column;
+  gap: 15px;
+  max-width: 400px;
+  margin: 0 auto 40px;
 }
 
 .admin-input {
-  padding: 10px;
-  margin-bottom: 1rem;
+  padding: 12px 15px;
   font-size: 1rem;
-  border-radius: 4px;
-  border: 1px solid #aaa;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
 }
 
+.admin-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Button */
 .admin-btn {
-  padding: 10px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  background-color: #0073e6;
+  background-color: #007bff;
   color: white;
+  padding: 14px;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 4px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.admin-btn:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 
 .admin-btn:disabled {
-  background-color: #aaccee;
+  background-color: #7ea9d6;
   cursor: not-allowed;
 }
 
-.error-msg {
-  color: red;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
+/* Orders Table */
 .orders-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.orders-table thead tr {
+  background-color: #007bff;
+  color: #ffffff;
 }
 
 .orders-table th,
 .orders-table td {
-  padding: 10px;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
 }
 
-.orders-table th {
-  background-color: #0073e6;
-  color: white;
+.orders-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-.orders-table tr:hover {
-  background-color: #f1f1f1;
+.orders-table a {
+  color: #007bff;
+  text-decoration: none;
 }
 
-.navbar {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #fff;
-  padding: 16px 36px;
-  box-shadow: 0 2px 12px #e5e5e5;
-  border-radius: 0 0 22px 22px;
-  gap: 24px;
+.orders-table a:hover {
+  text-decoration: underline;
 }
 
-.logo {
-  background: url("../images/logo.jpg") center/contain no-repeat;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .orders-table th,
+  .orders-table td {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
 }
 
-.navsearch {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  background: #f8f8f8;
-  border-radius: 25px;
-  border: 2px solid #d2d2d2;
-  padding: 0 14px;
-  min-width: 200px;
-  max-width: 480px;
+@media (max-width: 768px) {
+  .admin-form {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .orders-table {
+    font-size: 0.8rem;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }
 
-.searchinput {
-  border: none;
-  background: transparent;
-  font-size: 1rem;
-  flex: 1;
-  padding: 10px 0;
-  outline: none;
-}
+@media (max-width: 480px) {
+  .admin-container {
+    padding: 15px;
+    margin: 10px;
+  }
 
-.searchicon {
-  color: #666;
-  font-size: 1rem;
-  padding-left: 7px;
-}
+  .admin-btn {
+    padding: 12px;
+    font-size: 1rem;
+  }
 
-.sign {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.sign-in {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.92rem;
-}
-
-.carts {
-  display: flex;
-  align-items: center;
-  font-size: 1.2rem;
-  position: relative;
+  .orders-table th,
+  .orders-table td {
+    padding: 6px 8px;
+  }
 }
