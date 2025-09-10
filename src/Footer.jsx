@@ -68,13 +68,6 @@ function Footer() {
       </div>
       <div className="footer-bottom">
         <p>&copy; 2025 Book Hub. All rights reserved.</p>
-        <div className="footer-links">
-          <a href="#">Accessibility</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Trademarks</a>
-          <a href="#">Feedback</a>
-        </div>
         <button className="admin-short-btn" onClick={admin}>Admin</button>
       </div>
     </footer>
