@@ -60,13 +60,11 @@ function HomePage() {
         <Loader />
       ) : (
         <div className="container">
-          {/* Header Section */}
-
           {/* Banner Section */}
           <section className="banner">
             <div className="heading">
               <h1>
-                Buy &amp; Sell Old Books.
+                Buy Old Books.
                 <br />
                 Order Printout Instantly!
               </h1>
