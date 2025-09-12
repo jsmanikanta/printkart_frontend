@@ -27,6 +27,9 @@ function HomePage() {
     navigate("/soon");
   };
 
+  const sellbook = () => {
+    navigate("/sellbooks");
+  };
   // Fetch user profile for the header
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -96,7 +99,7 @@ function HomePage() {
                 <h3>Sell your books &amp; get the money</h3>
                 <div className="image2"></div>
               </div>
-              <button className="button" onClick={soon}>
+              <button className="button" onClick={sellbook}>
                 Sell now
               </button>
             </div>
@@ -114,7 +117,7 @@ function HomePage() {
                 <h3>Donate your books</h3>
                 <div className="image4"></div>
               </div>
-              <button className="button" onClick={soon}>
+              <button className="button" onClick={sellbook}>
                 Donate now
               </button>
             </div>
