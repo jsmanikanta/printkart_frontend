@@ -6,7 +6,7 @@ function Footer() {
   const navigate = useNavigate();
 
   const admin = () => {
-    navigate("/admin");
+    navigate("/adminprints");
   };
 
   return (
