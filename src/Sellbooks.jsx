@@ -143,7 +143,7 @@ export default function SellBooks() {
 
             {selltype === "sell" && (
               <div>
-                <label>Price (₹)</label>
+                <label>Price(Expected) (₹)</label>
                 <input
                   type="number"
                   min="0"

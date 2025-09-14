@@ -11,8 +11,8 @@ function Header() {
 
   // Navigation handlers
   const goToLogin = () => navigate("/login");
-  const goToCart = () => navigate("/accounts");
-  const goToHelp = () => navigate("/help");
+  const goToCart = () => navigate("/cart");
+  const goToSold = () => navigate("/soldbooks");
   const goToHome = () => navigate("/");
 
   // Fetch user profile on mount
@@ -28,7 +28,7 @@ function Header() {
       }
 
       try {
-        const response = await axios.get(`${api_path}/user/profile`, {
+        const response = await axios.get(`${api_path}/user/printorders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -62,8 +62,7 @@ function Header() {
       </div>
       <div className="navbar-center">
         <input className="searchinput" placeholder="Search" />
-        <button className="searchicon">
-        </button>
+        <button className="searchicon"></button>
       </div>
       <div className="navbar-right">
         <button className="icon-button" onClick={goToLogin}>
@@ -74,9 +73,9 @@ function Header() {
           <i className="fa-solid fa-cart-shopping"></i>
           <span className="icon-label">Cart</span>
         </button>
-        <button className="icon-button" onClick={goToHelp}>
-          <i className="fa-solid fa-question-circle"></i>
-          <span className="icon-label">Help</span>
+        <button className="icon-button" onClick={goToSold}>
+          <i className="fa-solid fa-book"></i>
+          <span className="icon-label">Sold Books</span>
         </button>
       </div>
     </header>

@@ -2,14 +2,14 @@
   max-width: 1000px;
   margin: 38px auto 0 auto;
   padding: 10px;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .orders-profile {
   background: #22e4ac;
   border-radius: 15px;
   padding: 24px 22px 20px 22px;
-  box-shadow: 0 2px 8px 0 rgba(80,110,100,0.09);
+  box-shadow: 0 2px 8px 0 rgba(80, 110, 100, 0.09);
   margin-bottom: 36px;
   text-align: left;
 }
@@ -77,7 +77,9 @@
   font-weight: bold;
 }
 
-.orders-loading, .orders-empty, .orders-login-prompt {
+.orders-loading,
+.orders-empty,
+.orders-login-prompt {
   margin-top: 110px;
   text-align: center;
   font-size: 1.14em;
@@ -98,18 +100,22 @@
   .user-orders-section {
     padding: 5px;
   }
-  .orders-profile, .order-card {
+  .orders-profile,
+  .order-card {
     padding: 14px 8px;
   }
-  .orders-title { font-size: 1.07em; }
+  .orders-title {
+    font-size: 1.07em;
+  }
   .order-card-info {
     flex-direction: column;
     gap: 6px;
     font-size: 0.98em;
   }
-  .order-card { border-left: 4px solid #1bd97a; }
+  .order-card {
+    border-left: 4px solid #1bd97a;
+  }
 }
-
 
 /* RESPONSIVE */
 @media (max-width: 1050px) {
@@ -385,8 +391,8 @@ body {
   font-weight: 700;
   margin-bottom: 22px;
 }
-.cart{
-    font-size: small;
+.cart {
+  font-size: small;
 }
 
 .booksCat,
@@ -399,11 +405,11 @@ body {
 }
 
 .user {
-    background-color: #fff;
-    border: 0px;
+  background-color: #fff;
+  border: 0px;
 }
-.user:hover{
-    cursor: pointer;
+.user:hover {
+  cursor: pointer;
 }
 /* ========= RESPONSIVE DESIGN ========= */
 @media (max-width: 900px) {
@@ -427,20 +433,43 @@ body {
 }
 
 .logout-btn {
-  background: #0aa68e;         
-  color: #fff;                 
-  border: none;                
-  padding: 8px 22px;           
-  border-radius: 8px;          
+  background: #0aa68e;
+  color: #fff;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 8px;
   font-size: 1rem;
-  font-weight: 600;            
-  box-shadow: 0 2px 10px #e5e5e5; 
-  cursor: pointer;             
+  font-weight: 600;
+  box-shadow: 0 2px 10px #e5e5e5;
+  cursor: pointer;
   transition: background 0.17s, transform 0.17s;
-  margin-left: 14px;          
+  margin-left: 14px;
 }
 
 .logout-btn:hover {
-  background: #19bd9e;         
+  background: #19bd9e;
   transform: scale(1.045);
+}
+
+.logout {
+  background-color: #e74c3c; /* Red color for logout/danger */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.logout:hover {
+  background-color: #c0392b;
+}
+
+.logout:active {
+  background-color: #a93226;
+  box-shadow: none;
+  transform: translateY(2px);
 }

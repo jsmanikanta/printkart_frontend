@@ -6,14 +6,14 @@ import { api_path } from "../data";
 import Loader from "./Loading";
 import Footer from "./Footer";
 
-function Accounts() {
+function Cart() {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("token"); 
-    navigate("/login"); 
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function Accounts() {
         return;
       }
       try {
-        const response = await axios.get(`${api_path}/user/profile`, {
+        const response = await axios.get(`${api_path}/user/printorders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.user) {
@@ -149,4 +149,4 @@ function Accounts() {
   );
 }
 
-export default Accounts;
+export default Cart;

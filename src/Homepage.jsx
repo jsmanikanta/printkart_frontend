@@ -40,7 +40,7 @@ function HomePage() {
         return;
       }
       try {
-        const response = await axios.get(`${api_path}/user/profile`, {
+        const response = await axios.get(`${api_path}/user/printorders`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -73,7 +73,7 @@ function HomePage() {
               </h1>
               <div>
                 <button className="buttons" onClick={soon}>
-                  <i className="fa-solid fa-book"></i> Buy/Sell Books
+                  <i className="fa-solid fa-book"></i> Buy Books
                 </button>
                 <button className="buttons" onClick={Orderprints}>
                   <i className="fa-solid fa-print"></i> Order Printouts

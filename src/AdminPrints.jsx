@@ -1,23 +1,27 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loader from "./Loading";
 import { api_path } from "../data";
-import "./styles/admin.css";
+import "./styles/adminprints.css";
 
-export default function Admin() {
+export default function AdminPrints() {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [orders, setOrders] = useState([]);
   const [viewingOrders, setViewingOrders] = useState(false);
+  const navigate = useNavigate();
+  const Books = () => {
+    navigate("/adminbooks");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
     setLoading(true);
 
-    // Hardcoded frontend check only, no tokens
     if (username === "admin@mybookhub.com" && password === "Ayush@5121") {
       try {
         const response = await axios.get(`${api_path}/admin/printorders`);
@@ -40,7 +44,7 @@ export default function Admin() {
   if (!viewingOrders) {
     return (
       <div className="admin-container">
-        <h2>Admin Login</h2>
+        <h2>Admin Login - Prints</h2>
         {errorMsg && <div className="error-msg">{errorMsg}</div>}
         <form onSubmit={handleSubmit} className="admin-form">
           <input
@@ -62,6 +66,14 @@ export default function Admin() {
           <button type="submit" className="admin-btn" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
+          <button
+            type="button"
+            className="admin-btn"
+            style={{ marginTop: "10px" }}
+            onClick={Books}
+          >
+            Go to Books Orders
+          </button>
         </form>
       </div>
     );
@@ -70,6 +82,13 @@ export default function Admin() {
   return (
     <div className="admin-container">
       <h2>Print Orders</h2>
+      <button
+        className="admin-btn"
+        onClick={Books}
+        style={{ marginBottom: 20 }}
+      >
+        Go to Books Orders
+      </button>
       {loading && <Loader />}
       {errorMsg && <div className="error-msg">{errorMsg}</div>}
       <table className="orders-table">
