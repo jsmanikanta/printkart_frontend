@@ -188,6 +188,7 @@ export default function AdminBooks({ onGoToPrintOrders }) {
                       handleInputChange(book._id, "status", e.target.value)
                     }
                   >
+                    <option value="Pending">Pending</option>
                     <option value="Accepted">Accepted</option>
                     <option value="Rejected">Rejected</option>
                   </select>
