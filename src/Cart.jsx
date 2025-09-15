@@ -4,13 +4,14 @@ import axios from "axios";
 import "./styles/accounts.css";
 import { api_path } from "../data";
 import Loader from "./Loading";
-import Footer from "./Footer";
 
 function Cart() {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [expandedOrderId, setExpandedOrderId] = useState(null); // Only one open
   const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -35,7 +36,6 @@ function Cart() {
       } catch (error) {
         setUser(null);
         localStorage.removeItem("token");
-        console.error("Failed to fetch user profile:", error);
       } finally {
         setLoading(false);
       }
@@ -63,84 +63,117 @@ function Cart() {
   }
 
   return (
-    <div className="container">
-      {/* User Profile Section */}
-      <section className="accounts-profile">
+    <div className="user-orders-section">
+      <section className="orders-profile">
         <h2>{user.fullname}'s Profile</h2>
-        <div>Email: {user.email}</div>
-        <div>Mobile: {user.mobileNumber}</div>
+        <div className="orders-contact">Email: {user.email}</div>
+        <div className="orders-contact">Mobile: {user.mobileNumber}</div>
       </section>
-      {/* Orders Table */}
-      <h3 style={{ marginTop: "36px" }}>Your Print Orders</h3>
-      <div className="accounts-orders-list">
-        <table className="orders-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Mobile</th>
-              <th>File</th>
-              <th>Color</th>
-              <th>Sides</th>
-              <th>Binding</th>
-              <th>Copies</th>
-              <th>College</th>
-              <th>Year</th>
-              <th>Section</th>
-              <th>Address</th>
-              <th>Description</th>
-              <th>Transaction ID</th>
-              <th>Order Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.length === 0 ? (
-              <tr>
-                <td colSpan="16" style={{ textAlign: "center" }}>
-                  No orders found.
-                </td>
-              </tr>
-            ) : (
-              orders.map((order) => (
-                <tr key={order._id || order.id}>
-                  <td>{order._id || order.id}</td>
-                  <td>{order.name}</td>
-                  <td>{order.email}</td>
-                  <td>{order.mobile}</td>
-                  <td>
-                    {order.file ? (
-                      <a
-                        href={order.file}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View File
-                      </a>
-                    ) : (
-                      "-"
-                    )}
-                  </td>
-                  <td>{order.color}</td>
-                  <td>{order.sides}</td>
-                  <td>{order.binding}</td>
-                  <td>{order.copies}</td>
-                  <td>{order.college || "-"}</td>
-                  <td>{order.year || "-"}</td>
-                  <td>{order.section || "-"}</td>
-                  <td>{order.description || "-"}</td>
-                  <td>{order.address || "-"}</td>
-                  <td>{order.transctionid}</td>
-                  <td>
-                    {order.orderDate
-                      ? new Date(order.orderDate).toLocaleDateString()
-                      : "-"}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      <div className="orders-title">Your Print Orders</div>
+      <div className="orders-list">
+        {orders.length === 0 ? (
+          <div className="orders-empty">No orders found.</div>
+        ) : (
+          orders.map((order) => (
+            <div
+              key={order._id || order.id}
+              className={`order-card ${
+                expandedOrderId === (order._id || order.id) ? "expanded" : ""
+              }`}
+              onClick={() =>
+                setExpandedOrderId(
+                  expandedOrderId === (order._id || order.id)
+                    ? null
+                    : order._id || order.id
+                )
+              }
+            >
+              <div className="order-card-row order-card-summary">
+                <div>
+                  <span className="order-card-label">Order ID:</span>{" "}
+                  {order._id || order.id}
+                </div>
+                <div>
+                  <span className="order-card-label">Date:</span>{" "}
+                  {order.orderDate
+                    ? new Date(order.orderDate).toLocaleDateString()
+                    : "-"}
+                </div>
+                <div>
+                  <span className="order-card-label">Name:</span> {order.name}
+                </div>
+                {order.file ? (
+                  <a
+                    className="order-file-link"
+                    href={order.file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    View File
+                  </a>
+                ) : (
+                  <span className="order-file-link">No File</span>
+                )}
+                <div className="expand-arrow">
+                  {expandedOrderId === (order._id || order.id) ? "▲" : "▼"}
+                </div>
+              </div>
+              {expandedOrderId === (order._id || order.id) && (
+                <div className="order-card-info">
+                  <div>
+                    <span className="order-card-label">Email:</span>{" "}
+                    {order.email}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Mobile:</span>{" "}
+                    {order.mobile}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Color:</span>{" "}
+                    {order.color}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Sides:</span>{" "}
+                    {order.sides}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Binding:</span>{" "}
+                    {order.binding}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Copies:</span>{" "}
+                    {order.copies}
+                  </div>
+                  <div>
+                    <span className="order-card-label">College:</span>{" "}
+                    {order.college || "-"}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Year:</span>{" "}
+                    {order.year || "-"}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Section:</span>{" "}
+                    {order.section || "-"}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Address:</span>{" "}
+                    {order.address || "-"}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Description:</span>{" "}
+                    {order.description || "-"}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Transaction ID:</span>{" "}
+                    {order.transctionid}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </div>
       <button className="logout" onClick={handleLogout}>
         Log Out

@@ -11,6 +11,7 @@ function SoldBooks() {
   const [user, setUser] = useState(null);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [expandedBookId, setExpandedBookId] = useState(null);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -37,7 +38,6 @@ function SoldBooks() {
       } catch (error) {
         setUser(null);
         localStorage.removeItem("token");
-        console.error("Failed to fetch sold books:", error);
       } finally {
         setLoading(false);
       }
@@ -65,75 +65,118 @@ function SoldBooks() {
   }
 
   return (
-    <div className="container">
-      <section className="accounts-profile">
+    <div className="user-orders-section">
+      <section className="orders-profile">
         <h2>{user.fullname}'s Profile</h2>
-        <div>Email: {user.email}</div>
-        <div>Mobile: {user.mobileNumber}</div>
+        <div className="orders-contact">Email: {user.email}</div>
+        <div className="orders-contact">Mobile: {user.mobileNumber}</div>
       </section>
+      <div className="orders-title">Your Sold Books</div>
+      <div className="orders-list">
+        {books.length === 0 ? (
+          <div className="orders-empty">No sold books found.</div>
+        ) : (
+          books.map((book) => {
+            const imagePath = book.image
+              ? `${baseUrl}/uploads/${book.image.replace(/^uploads[\\/]/, "")}`
+              : null;
 
-      <h3 style={{ marginTop: "36px" }}>Your Sold Books</h3>
-      <div className="accounts-orders-list">
-        <table className="orders-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Image</th>
-              <th>Price</th>
-              <th>Condition</th>
-              <th>Description</th>
-              <th>Location</th>
-              <th>Category</th>
-              <th>Sell Type</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.length === 0 ? (
-              <tr>
-                <td colSpan="9" style={{ textAlign: "center" }}>
-                  No sold books found.
-                </td>
-              </tr>
-            ) : (
-              books.map((book) => {
-                // Safely handle book.image
-                const imagePath = book.image
-                  ? `${baseUrl}/uploads/${book.image.replace(
-                      /^uploads[\\/]/,
-                      ""
-                    )}`
-                  : null;
-
-                return (
-                  <tr key={book._id || book.id}>
-                    <td>{book.name}</td>
-                    <td>
-                      {imagePath ? (
-                        <img
-                          src={imagePath}
-                          alt={book.name}
-                          style={{ width: "50px", height: "auto" }}
-                        />
-                      ) : (
-                        "-"
-                      )}
-                    </td>
-                    <td>{book.price}</td>
-                    <td>{book.condition}</td>
-                    <td>{book.description}</td>
-                    <td>{book.location}</td>
-                    <td>{book.category}</td>
-                    <td>{book.sellType}</td>
-                    <td>{book.status}</td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+            return (
+              <div
+                key={book._id || book.id}
+                className={`order-card ${
+                  expandedBookId === (book._id || book.id) ? "expanded" : ""
+                }`}
+                onClick={() =>
+                  setExpandedBookId(
+                    expandedBookId === (book._id || book.id)
+                      ? null
+                      : book._id || book.id
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <div className="order-card-row order-card-summary">
+                  <div className="soldbook-image">
+                    {imagePath ? (
+                      <img
+                        src={imagePath}
+                        alt={book.name}
+                        style={{
+                          width: 58,
+                          height: 58,
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                          background: "#f3f3f3",
+                        }}
+                        loading="lazy"
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: 58,
+                          height: 58,
+                          borderRadius: 8,
+                          background: "#e9e9e9",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: 14,
+                          color: "#aaa",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        No Image
+                      </div>
+                    )}
+                  </div>
+                  <div className="soldbook-main">
+                    <div className="soldbook-title">{book.name}</div>
+                    <div className="soldbook-price-status">
+                      <span className="soldbook-price">₹{book.price}</span>
+                    </div>
+                    <span
+                      className={`soldbook-status ${
+                        book.status === "Sold" ? "sold" : ""
+                      }`}
+                    >
+                      Status {book.status}
+                    </span>
+                  </div>
+                  <div className="expand-arrow" style={{ marginLeft: "auto" }}>
+                    {expandedBookId === (book._id || book.id) ? "▲" : "▼"}
+                  </div>
+                </div>
+                {expandedBookId === (book._id || book.id) && (
+                  <div className="order-card-info soldbook-info-expand">
+                    <div>
+                      <span className="order-card-label">Condition:</span>{" "}
+                      {book.condition}
+                    </div>
+                    <div>
+                      <span className="order-card-label">Description:</span>{" "}
+                      {book.description}
+                    </div>
+                    <div>
+                      <span className="order-card-label">Location:</span>{" "}
+                      {book.location}
+                    </div>
+                    <div>
+                      <span className="order-card-label">Category:</span>{" "}
+                      {book.category}
+                    </div>
+                    <div>
+                      <span className="order-card-label">Sell Type:</span>{" "}
+                      {book.sellType}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })
+        )}
       </div>
-
       <button className="logout" onClick={handleLogout}>
         Log Out
       </button>
