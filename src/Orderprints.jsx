@@ -170,7 +170,7 @@ export default function OrderPrints() {
 
     if (res.ok) {
       alert("Order placed!");
-      navigate("/accounts");
+      navigate("/cart");
     } else {
       const err = await res.json();
       alert(err?.error || "Order failed");

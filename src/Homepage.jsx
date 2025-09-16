@@ -15,6 +15,9 @@ function HomePage() {
   const Login = () => {
     navigate("/login");
   };
+  const Signin = () => {
+    navigate("/signup");
+  };
 
   const Orderprints = () => {
     navigate("/orderprints");
@@ -29,6 +32,10 @@ function HomePage() {
 
   const sellbook = () => {
     navigate("/sellbooks");
+  };
+
+  const buybooks = () => {
+    navigate("/buybooks");
   };
   // Fetch user profile for the header
   useEffect(() => {
@@ -72,7 +79,7 @@ function HomePage() {
                 Order Printout Instantly!
               </h1>
               <div>
-                <button className="buttons" onClick={soon}>
+                <button className="buttons" onClick={buybooks}>
                   <i className="fa-solid fa-book"></i> Buy Books
                 </button>
                 <button className="buttons" onClick={Orderprints}>
@@ -87,10 +94,10 @@ function HomePage() {
           <div className="diff">
             <div className="getBooks1">
               <div className="category">
-                <h3>Get the second hand books at low prices</h3>
+                <h3>Get the second hand books at lowest prices</h3>
                 <div className="image1"></div>
               </div>
-              <button className="button" onClick={soon}>
+              <button className="button" onClick={buybooks}>
                 Order now
               </button>
             </div>
@@ -126,20 +133,20 @@ function HomePage() {
           {/* Categories Section */}
           <section className="catgeries">
             <h2>Books Categories</h2>
-            <div className="booksCat" onClick={soon}>
+            <div className="booksCat" onClick={buybooks}>
               <div className="academic">
                 <div className="imgb1"></div>
                 <h4>Academic &amp; Textbooks</h4>
               </div>
-              <div className="engg" onClick={soon}>
+              <div className="engg" onClick={buybooks}>
                 <div className="imgb2"></div>
                 <h4>Engineering &amp; Technology</h4>
               </div>
-              <div className="medical" onClick={soon}>
+              <div className="medical" onClick={buybooks}>
                 <div className="imgb3"></div>
                 <h4>Medical &amp; Nursing</h4>
               </div>
-              <div className="bcom" onClick={soon}>
+              <div className="bcom" onClick={buybooks}>
                 <div className="imgb4"></div>
                 <h4>B.sc / B.Com / B.A</h4>
               </div>
@@ -200,7 +207,7 @@ function HomePage() {
           <section className="works">
             <h2 style={{ paddingLeft: "20px" }}>How it works:</h2>
             <div className="steps">
-              <div className="step" onClick={Signup}>
+              <div className="step" onClick={Signin}>
                 <div className="num">
                   <h2>Step 1:</h2>
                 </div>
@@ -208,7 +215,7 @@ function HomePage() {
                   <p>SignUp &amp; complete profile</p>
                 </div>
               </div>
-              <div className="step" onClick={soon}>
+              <div className="step">
                 <div className="num">
                   <h2>Step 2:</h2>
                 </div>

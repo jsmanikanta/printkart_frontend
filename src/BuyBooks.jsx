@@ -12,17 +12,18 @@ const categories = [
   "GATE",
   "CAT",
   "Bank Exams",
-  "RRP",
-  "UPSC & APPSC",
+  "RRB",
+  "UPSC & Other state PSC",
   "Others",
 ];
 
 function BuyBooks() {
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const api_path = import.meta.env.VITE_API_PATH;
+
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState("All"); // Track selected category
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -38,7 +39,7 @@ function BuyBooks() {
               ? book.categeory
               : "-",
         }));
-        // We keep all books here, filtering happens during render
+
         setBooks(fetchedBooks.filter((book) => book.status === "Accepted"));
       } catch (error) {
         setBooks([]);
@@ -46,12 +47,12 @@ function BuyBooks() {
         setLoading(false);
       }
     };
+
     fetchBooks();
   }, [api_path]);
 
   if (loading) return <div className="books-loading">Loading...</div>;
 
-  // Filter books by selected category unless "All" is selected
   const filteredBooks =
     selectedCategory === "All"
       ? books
@@ -63,14 +64,6 @@ function BuyBooks() {
   return (
     <div>
       <nav className="category-navbar">
-        <button
-          className={`navbar-menu${
-            selectedCategory === "All" ? " active" : ""
-          }`}
-          onClick={() => setSelectedCategory("All")}
-        >
-          <span className="navbar-icon">&#9776;</span> All
-        </button>
         <ul className="category-list">
           {categories.map((cat, idx) => (
             <li
@@ -81,6 +74,9 @@ function BuyBooks() {
               onClick={() => setSelectedCategory(cat)}
               style={{ cursor: "pointer" }}
             >
+              {cat === "All" ? (
+                <span className="navbar-icon">&#9776; </span>
+              ) : null}
               {cat}
             </li>
           ))}
@@ -92,6 +88,7 @@ function BuyBooks() {
             book.image && book.image.startsWith("uploads")
               ? `${baseUrl}/${book.image.replace(/^[\\/]/, "")}`
               : book.image || "";
+
           return (
             <div className="book-card" key={book._id}>
               <div className="book-img-wrap">

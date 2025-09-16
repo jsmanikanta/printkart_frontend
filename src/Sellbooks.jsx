@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/sellbook.css";
+import SoldBooks from "./Soldbooks";
 
 export default function SellBooks() {
   const navigate = useNavigate();
 
   const home = () => {
     navigate("/Homepage");
+  };
+  const soldbooks = () => {
+    navigate("/soldbooks");
   };
 
   const [selltype, setSelltype] = useState("sell");
@@ -78,7 +82,7 @@ export default function SellBooks() {
       }
       if (res.ok) {
         alert("Your book listing has been submitted!");
-        home();
+        soldbooks();
       } else {
         const errorMsg = await res.text();
         alert(`Submission failed: ${errorMsg}`);
@@ -185,18 +189,20 @@ export default function SellBooks() {
                 required
               >
                 <option value="">Select Category</option>
-                <option value="schools-TextBooks">Schools TextBooks</option>
-                <option value="jee main/advance">JEE Main/Advance</option>
-                <option value="engg textbooks">Engineering Textbooks</option>
-                <option value="neet">NEET</option>
-                <option value="medical-textbooks">Medical TextBooks</option>
-                <option value="b.com/b.sc">B.Com/B.Sc</option>
-                <option value="gate">GATE</option>
-                <option value="cat">CAT</option>
-                <option value="bank exams">Bank Exams</option>
-                <option value="rrb">RRB</option>
-                <option value="upsc">UPSC</option>
-                <option value="others">Others</option>
+                <option value="School Books">School Books</option>
+                <option value="IIT - JEE">IIT - JEE</option>
+                <option value="Engineering">Engineering</option>
+                <option value="NEET UG/PG">NEET UG/PG</option>
+                <option value="Medical">Medical</option>
+                <option value="B.sc & B.com">B.sc & B.com</option>
+                <option value="GATE">GATE</option>
+                <option value="CAT">CAT</option>
+                <option value="Bank Exams">Bank Exams</option>
+                <option value="RRB">RRB</option>
+                <option value="UPSC & Other state PSC">
+                  UPSC & Other state PSC
+                </option>
+                <option value="Others">Others</option>
               </select>
             </div>
 
