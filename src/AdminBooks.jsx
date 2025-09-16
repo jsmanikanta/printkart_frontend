@@ -88,7 +88,7 @@ export default function AdminBooks({ onGoToPrintOrders }) {
   if (!viewingBooks) {
     return (
       <div className="admin-container">
-        <h2>Admin Login - Books</h2>
+        <h2>Admin Login - Sold Books</h2>
         {errorMsg && <div className="error-msg">{errorMsg}</div>}
         <form onSubmit={handleSubmit} className="admin-form">
           <input
@@ -125,7 +125,7 @@ export default function AdminBooks({ onGoToPrintOrders }) {
 
   return (
     <div className="admin-container">
-      <h2>Book Listings</h2>
+      <h2>Sold Book Listings</h2>
       <button
         className="admin-btn"
         onClick={Prints}
@@ -171,7 +171,7 @@ export default function AdminBooks({ onGoToPrintOrders }) {
                 <td>
                   {book.image ? (
                     <a
-                      href={`${api_path}/${book.image}`}
+                      href={book.image}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

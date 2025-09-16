@@ -87,7 +87,7 @@ export default function AdminPrints() {
         onClick={Books}
         style={{ marginBottom: 20 }}
       >
-        Go to Books Orders
+        Go to Sold Books Orders
       </button>
       {loading && <Loader />}
       {errorMsg && <div className="error-msg">{errorMsg}</div>}
@@ -126,7 +126,7 @@ export default function AdminPrints() {
               <td>
                 {order.file ? (
                   <a
-                    href={`${api_path}/${order.file}`}
+                    href={order.file}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

@@ -55,7 +55,7 @@ export default function OrderPrints() {
       setUserName(null);
       return;
     }
-    fetch(`${import.meta.env.VITE_API_PATH}/user/profile`, {
+    fetch(`${import.meta.env.VITE_API_PATH}/user/printorders`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())

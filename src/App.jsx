@@ -10,6 +10,7 @@ import OrderPrints from "./Orderprints";
 import ForgotPassword from "./Forgotpass";
 import SellBooks from "./Sellbooks";
 import SoldBooks from "./Soldbooks";
+import BuyBooks from "./BuyBooks";
 import ComingSoon from "./Soon";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -29,6 +30,7 @@ function App() {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/sellbooks" element={<SellBooks />} />
         <Route path="/soldbooks" element={<SoldBooks />} />
+        <Route path="/buybooks" element={<BuyBooks />} />
         <Route path="/adminprints" element={<AdminPrints />} />
         <Route path="/adminbooks" element={<AdminBooks />} />
         <Route path="/comingsoon" element={<ComingSoon />} />

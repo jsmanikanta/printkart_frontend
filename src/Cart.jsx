@@ -108,9 +108,8 @@ function Cart() {
                     href={order.file}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
                   >
-                    View File
+                    View PDF
                   </a>
                 ) : (
                   <span className="order-file-link">No File</span>
