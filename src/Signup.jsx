@@ -6,7 +6,7 @@ import { api_path } from "../data";
 import logoImg from "./images/logo.jpg";
 import Loader from "./Loading";
 
-function Signup({}) {
+function Signup() {
   const navigate = useNavigate();
   const Login = () => {
     navigate("/login");
@@ -20,7 +20,8 @@ function Signup({}) {
     mobileNumber: "",
     email: "",
     password: "",
-    confirm: "", // Fixed typo from 'confrim' to 'confirm'
+    confirm: "",
+    role: "user",
   });
 
   const handleChange = (e) =>
@@ -28,13 +29,11 @@ function Signup({}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
     if (inputs.password !== inputs.confirm) {
       alert("Passwords do not match!");
       return;
     }
-
+    setLoading(true);
     try {
       const response = await axios.post(`${api_path}/user/register`, {
         fullname: inputs.fullname,
@@ -61,12 +60,11 @@ function Signup({}) {
   return (
     <>
       {loading ? (
-        <loading />
+        <Loader />
       ) : (
         <div className="auth-modal-overlay">
           <div className="auth-modal">
             <div className="modal-header" onClick={Homepage}>
-              <img src="./images/logo.jpg" alt="Logo" className="modal-logo" />
               <img src={logoImg} alt="Logo" className="modal-logo" />
             </div>
             <h2 className="modal-title">
@@ -101,6 +99,16 @@ function Signup({}) {
                 required
                 maxLength={10}
               />
+              <select
+                name="role"
+                value={inputs.role}
+                onChange={handleChange}
+                required
+              >
+                <option value="user">User</option>
+                <option value="seller">Seller</option>
+              </select>
+
               <input
                 type="password"
                 name="password"

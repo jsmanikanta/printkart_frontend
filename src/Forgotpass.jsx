@@ -13,7 +13,6 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
     setSuccess("");
 
@@ -53,7 +52,7 @@ export default function ForgotPassword() {
   return (
     <>
       {loading ? (
-        <loading />
+        <Loader />
       ) : (
         <div className="resetpw-bg">
           <form className="resetpw-container" onSubmit={handleSubmit}>

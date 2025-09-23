@@ -75,7 +75,7 @@ function Header() {
         </button>
         <button className="icon-button" onClick={goToSold}>
           <i className="fa-solid fa-book"></i>
-          <span className="icon-label">Sold Books</span>
+          <span className="icon-label">My Books</span>
         </button>
       </div>
     </header>

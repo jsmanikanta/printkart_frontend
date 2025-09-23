@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Loader from "./Loading";
 import { api_path } from "../data";
 import "./styles/adminprints.css";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loading";
 
 export default function AdminBooks({ onGoToPrintOrders }) {
   const [username, setUserName] = useState("");
@@ -12,12 +12,13 @@ export default function AdminBooks({ onGoToPrintOrders }) {
   const [errorMsg, setErrorMsg] = useState("");
   const [books, setBooks] = useState([]);
   const [viewingBooks, setViewingBooks] = useState(false);
-  const [editStates, setEditStates] = useState({}); // { [bookId]: { status, sellingPrice } }
+  const [editStates, setEditStates] = useState({});
 
   const navigate = useNavigate();
   const Prints = () => {
     navigate("/adminprints");
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
@@ -108,7 +109,7 @@ export default function AdminBooks({ onGoToPrintOrders }) {
             className="admin-input"
           />
           <button type="submit" className="admin-btn" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+            {loading ? <Loader /> : "Login"}
           </button>
           <button
             type="button"

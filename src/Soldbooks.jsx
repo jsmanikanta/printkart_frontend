@@ -5,13 +5,14 @@ import "./styles/accounts.css";
 import Loader from "./Loading";
 
 function SoldBooks() {
-  const baseUrl = import.meta.env.VITE_BASE_URL;
-  const api_path = import.meta.env.VITE_API_PATH;
+  const baseUrl = import.meta.env.VITE_API_PATH;
 
   const [user, setUser] = useState(null);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [expandedBookId, setExpandedBookId] = useState(null);
+  const [soldStates, setSoldStates] = useState({});
+  const [savingBookId, setSavingBookId] = useState(null);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,38 +20,49 @@ function SoldBooks() {
     navigate("/login");
   };
 
-  useEffect(() => {
-    const fetchUserBooks = async () => {
-      setLoading(true);
+  // Fetch sold books and user info
+  const fetchUserBooks = async () => {
+    setLoading(true);
+    try {
       const token = localStorage.getItem("token");
       if (!token) {
+        setUser(null);
         setLoading(false);
         return;
       }
-      try {
-        const response = await axios.get(`${api_path}/user/soldbooks`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (response.data.user) {
-          setUser(response.data.user);
-          setBooks(response.data.books || []);
-        }
-      } catch (error) {
-        setUser(null);
-        localStorage.removeItem("token");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUserBooks();
-  }, [api_path]);
 
-  if (loading)
+      const response = await axios.get(`${baseUrl}/user/soldbooks`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.user) {
+        setUser(response.data.user);
+        setBooks(response.data.books || []);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error("Failed to fetch sold books:", error);
+      setUser(null);
+      localStorage.removeItem("token");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserBooks();
+  }, [baseUrl]);
+
+  if (loading) {
     return (
       <div className="orders-loading">
         <Loader />
       </div>
     );
+  }
 
   if (!user) {
     return (
@@ -64,35 +76,77 @@ function SoldBooks() {
     );
   }
 
+  // Handler to save updated soldstatus
+  const handleSaveSoldStatus = async (bookId) => {
+    const newStatus = soldStates[bookId];
+    if (!newStatus) {
+      alert("Please select a status to save.");
+      return;
+    }
+
+    setSavingBookId(bookId);
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `${baseUrl}/books/updateSoldStatus/${bookId}`,
+        { soldstatus: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Refresh books list after update
+      await fetchUserBooks();
+
+      setSoldStates((prev) => {
+        const copy = { ...prev };
+        delete copy[bookId];
+        return copy;
+      });
+    } catch (error) {
+      console.error("Failed to save updated status", error);
+
+      let errorMsg = "Failed to save updated status.";
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        errorMsg += " " + error.response.data.message;
+      }
+      alert(errorMsg);
+    } finally {
+      setSavingBookId(null);
+    }
+  };
+
   return (
     <div className="user-orders-section">
       <section className="orders-profile">
         <h2>{user.fullname}'s Profile</h2>
         <div className="orders-contact">Email: {user.email}</div>
         <div className="orders-contact">Mobile: {user.mobileNumber}</div>
+        <div className="orders-contact">Role : {user.role}</div>
       </section>
+
       <div className="orders-title">Your Sold Books</div>
       <div className="orders-list">
         {books.length === 0 ? (
           <div className="orders-empty">No sold books found.</div>
         ) : (
           books.map((book) => {
+            const bookId = book._id || book.id;
             const imagePath = book.image
               ? `${baseUrl}/uploads/${book.image.replace(/^uploads[\\/]/, "")}`
               : null;
 
             return (
               <div
-                key={book._id || book.id}
+                key={bookId}
                 className={`order-card ${
-                  expandedBookId === (book._id || book.id) ? "expanded" : ""
+                  expandedBookId === bookId ? "expanded" : ""
                 }`}
                 onClick={() =>
-                  setExpandedBookId(
-                    expandedBookId === (book._id || book.id)
-                      ? null
-                      : book._id || book.id
-                  )
+                  setExpandedBookId(expandedBookId === bookId ? null : bookId)
                 }
                 style={{ cursor: "pointer" }}
               >
@@ -141,14 +195,14 @@ function SoldBooks() {
                         book.status === "Sold" ? "sold" : ""
                       }`}
                     >
-                      Status {book.status}
+                      Status: {book.status}
                     </span>
                   </div>
                   <div className="expand-arrow" style={{ marginLeft: "auto" }}>
-                    {expandedBookId === (book._id || book.id) ? "▲" : "▼"}
+                    {expandedBookId === bookId ? "▲" : "▼"}
                   </div>
                 </div>
-                {expandedBookId === (book._id || book.id) && (
+                {expandedBookId === bookId && (
                   <div className="order-card-info soldbook-info-expand">
                     <div>
                       <span className="order-card-label">Condition:</span>{" "}
@@ -170,6 +224,30 @@ function SoldBooks() {
                       <span className="order-card-label">Sell Type:</span>{" "}
                       {book.sellType}
                     </div>
+                    <select
+                      value={soldStates[bookId] ?? book.soldstatus ?? "Instock"}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        setSoldStates((prev) => ({
+                          ...prev,
+                          [bookId]: e.target.value,
+                        }));
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <option value="Instock">Instock</option>
+                      <option value="Soldout">Soldout</option>
+                      <option value="Orderd">Orderd</option>
+                    </select>
+                    <button
+                      disabled={savingBookId === bookId}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSaveSoldStatus(bookId);
+                      }}
+                    >
+                      {savingBookId === bookId ? "Saving..." : "Save"}
+                    </button>
                   </div>
                 )}
               </div>

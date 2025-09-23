@@ -9,7 +9,7 @@ function Cart() {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [expandedOrderId, setExpandedOrderId] = useState(null); // Only one open
+  const [expandedOrderId, setExpandedOrderId] = useState(null); 
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -68,6 +68,7 @@ function Cart() {
         <h2>{user.fullname}'s Profile</h2>
         <div className="orders-contact">Email: {user.email}</div>
         <div className="orders-contact">Mobile: {user.mobileNumber}</div>
+        <div className="orders-contact">Role: {user.role}</div>
       </section>
       <div className="orders-title">Your Print Orders</div>
       <div className="orders-list">

@@ -25,10 +25,7 @@ export default function AdminPrints() {
     if (username === "admin@mybookhub.com" && password === "Ayush@5121") {
       try {
         const response = await axios.get(`${api_path}/admin/printorders`);
-
-        setOrders(
-          Array.isArray(response.data.orders) ? response.data.orders : []
-        );
+        setOrders(Array.isArray(response.data.orders) ? response.data.orders : []);
         setViewingOrders(true);
       } catch (error) {
         setErrorMsg(error.response?.data?.error || "Failed to fetch orders.");
@@ -64,7 +61,7 @@ export default function AdminPrints() {
             className="admin-input"
           />
           <button type="submit" className="admin-btn" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+            {loading ? <Loader /> : "Login"}
           </button>
           <button
             type="button"
