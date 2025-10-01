@@ -13,6 +13,7 @@ function Header() {
   const goToLogin = () => navigate("/login");
   const goToCart = () => navigate("/prints-cart");
   const goToSold = () => navigate("/soldbooks");
+  const broughtbooks = () => navigate("/books-cart");
   const goToHome = () => navigate("/");
 
   // Fetch user profile on mount
@@ -77,7 +78,8 @@ function Header() {
           <i className="fa-solid fa-book"></i>
           <span className="icon-label">My Books</span>
         </button>
-        <button>
+        <button className="icon-button" onClick={broughtbooks}>
+          <i className="fa-solid fa-book"></i>
           <span className="icon-label">Books</span>
         </button>
       </div>
