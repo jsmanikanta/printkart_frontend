@@ -19,6 +19,7 @@ import BookDetails from "./Buyeachbook";
 import OrderSummary from "./OrderSummary";
 import Buyeachbook from "./Buyeachbook";
 import SellerBooks from "./BooksbyId";
+import BoughtBooks from "./BroughBooks";
 
 function App() {
   const [orderSummaryBookId, setOrderSummaryBookId] = useState(null);
@@ -30,7 +31,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/prints-cart" element={<Cart />} />
         <Route path="/orderprints" element={<OrderPrints />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/sellbooks" element={<SellBooks />} />
@@ -40,6 +41,7 @@ function App() {
         <Route path="/adminbooks" element={<AdminBooks />} />
         <Route path="/book/:id" element={<Buyeachbook />} />
         <Route path="/seller-profile/:id" element={<SellerBooks />} />
+        <Route path="/books-cart" element={<BoughtBooks/>}/>
         <Route
           path="/book/:id"
           element={<BookDetails onOrder={setOrderSummaryBookId} />}

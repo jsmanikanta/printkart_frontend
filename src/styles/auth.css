@@ -59,6 +59,21 @@
   transition: border 0.2s;
   outline: none;
 }
+.auth-form select:focus {
+  border: 2px solid #31c271;
+}
+.auth-form select {
+  width: 100%;
+  max-width: 270px;
+  margin-bottom: 16px;
+  padding: 13px 11px;
+  border-radius: 7px;
+  border: 2px solid #d3e3ea;
+  background: #fafffd;
+  font-size: 1rem;
+  transition: border 0.2s;
+  outline: none;
+}
 .auth-form input:focus {
   border: 2px solid #31c271;
 }

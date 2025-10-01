@@ -3,7 +3,7 @@ import "./styles/auth.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api_path } from "../data";
-import logoImg from "./images/logo.jpg";
+import logoImg from "./images/logo.png";
 import Loader from "./Loading";
 
 function Signup() {
@@ -71,7 +71,6 @@ function Signup() {
               Buy &amp; Sell Old Books.
               <br /> Order Printout Instantly!
             </h2>
-
             <form className="auth-form" onSubmit={handleSubmit}>
               <input
                 type="text"

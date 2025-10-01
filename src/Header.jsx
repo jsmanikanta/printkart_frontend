@@ -11,7 +11,7 @@ function Header() {
 
   // Navigation handlers
   const goToLogin = () => navigate("/login");
-  const goToCart = () => navigate("/cart");
+  const goToCart = () => navigate("/prints-cart");
   const goToSold = () => navigate("/soldbooks");
   const goToHome = () => navigate("/");
 
@@ -71,11 +71,14 @@ function Header() {
         </button>
         <button className="icon-button" onClick={goToCart}>
           <i className="fa-solid fa-cart-shopping"></i>
-          <span className="icon-label">Cart</span>
+          <span className="icon-label">Prints</span>
         </button>
         <button className="icon-button" onClick={goToSold}>
           <i className="fa-solid fa-book"></i>
           <span className="icon-label">My Books</span>
+        </button>
+        <button>
+          <span className="icon-label">Books</span>
         </button>
       </div>
     </header>

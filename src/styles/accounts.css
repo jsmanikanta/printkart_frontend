@@ -5,19 +5,29 @@
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
+/* Profile */
 .orders-profile {
-  background: #22e4ac;
-  border-radius: 15px;
-  padding: 24px 22px 20px 22px;
-  box-shadow: 0 2px 8px 0 rgba(80, 110, 100, 0.09);
-  margin-bottom: 36px;
-  text-align: left;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 8px 24px rgb(149 157 165 / 0.2);
+  text-align: center;
+  margin-bottom: 2rem;
+  user-select: none;
+  color: #374151;
 }
 
 .orders-profile h2 {
-  margin: 0 0 10px 0;
-  color: #0b097e;
-  font-size: 1.45em;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: #111827;
+}
+
+.orders-contact {
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 1rem;
 }
 
 .orders-contact {
@@ -644,4 +654,59 @@ body {
   .user-orders-section {
     padding: 5px;
   }
+}
+
+.select-status {
+  padding: 0.4rem 0.6rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+  width: 120px;
+}
+
+.select-status:hover {
+  border-color: #fbbf24;
+  box-shadow: 0 0 5px #fbbf2450;
+}
+
+.select-status:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px #fbbf2433;
+}
+
+.select-status option {
+  font-weight: normal;
+  color: #111827;
+}
+
+/* Save Button */
+.btn-save-status {
+  background-color: #f97316;
+  color: #fff;
+  font-weight: 700;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 8px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  min-width: 80px;
+}
+
+.btn-save-status:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+  color: #e5e7eb;
+}
+
+.btn-save-status:not(:disabled):hover {
+  background-color: #ea580c;
+  box-shadow: 0 0 8px #f9731699;
 }

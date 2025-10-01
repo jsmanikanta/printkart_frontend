@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./styles/forgotpass.css";
+import logoImg from "./images/logo.png";
 import { api_path } from "../data";
 import Loader from "./Loading";
 
@@ -56,11 +57,7 @@ export default function ForgotPassword() {
       ) : (
         <div className="resetpw-bg">
           <form className="resetpw-container" onSubmit={handleSubmit}>
-            <img
-              src="../images/logo.jpg"
-              alt="Book Hub Logo"
-              className="resetpw-logo"
-            />
+            <img src={logoImg} className="resetpw-logo" alt="Logo" />
             <h2 className="resetpw-title">Reset Password</h2>
             <input
               className="resetpw-input"
