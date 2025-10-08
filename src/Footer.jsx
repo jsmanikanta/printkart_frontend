@@ -11,64 +11,55 @@ function Footer() {
 
   return (
     <footer className="footer">
-      <div className="footer-header-row">
-        <span>About Us</span>
-        <span>Books</span>
-        <span>Printouts</span>
-        <span>Other Services</span>
-        <span>Contact Us</span>
-      </div>
-      <div className="footer-container">
-        <div className="footer-column about">
+      <div className="footer-content">
+        <div className="footer-section">
+          <h4>About Us</h4>
           <p>
-            Book Hub is a student-friendly platform to buy and sell old books and order customized printouts easily. We aim to make learning materials affordable, accessible, and sustainable by connecting students to share resources, save time, and reduce costs—whether it’s selling used books, ordering printouts, or donating to those in need.
+            My Book Hub is an online platform designed for students to buy and
+            sell old books and order customized printouts with ease. We believe
+            that learning materials should be affordable, accessible, and
+            sustainable. Students can connect, share, and support each other
+            while saving time and money. Whether selling previous semester
+            books, ordering printouts from mobile, or donating materials to
+            those in need, we make it simple.
           </p>
         </div>
-        <div className="footer-column">
-          <ul>
-            <li>School Books (class 6-12)</li>
-            <li>Competitive Books (GATE, JEE, etc.)</li>
-            <li>Diploma Books</li>
-            <li>B.Sc / B.Com / B.A Books</li>
-            <li>Fantasy Books</li>
-            <li>Non-Fantasy Books</li>
-          </ul>
-        </div>
-        <div className="footer-column">
-          <ul>
-            <li>Assignments</li>
-            <li>Project Reports</li>
-            <li>Class Notes</li>
-            <li>College Notices / PDFs</li>
-            <li>Spiral Binding Books</li>
-            <li>Black & White / Color Prints</li>
-          </ul>
-        </div>
-        <div className="footer-column">
-          <ul>
-            <li>Book Donation Requests</li>
-            <li>Seller Registration</li>
-            <li>PrintKart Service Partner</li>
-          </ul>
-        </div>
-        <div className="footer-column contacts">
-          <p>
-            Hemanth Rishi: <a href="tel:+919182415750">+91 9182415750</a>
-          </p>
-          <p>
-            Praneeth: <a href="tel:+918074177294">+91 8074177294</a>
-          </p>
-          <p>
-            Ayush Kumar: <a href="tel:+917989221628">+91 7989221628</a>
-          </p>
-          <p>
-            Lokesh: <a href="tel:+919398892297">+91 9398892297</a>
-          </p>
+
+        <div className="footer-section">
+          <h4>Categories</h4>
+          <div className="category-links">
+            <div className="category-column">
+              <h5>Books</h5>
+              <ul>
+                <li>School Books (Class 6–12)</li>
+                <li>Competitive Exam Books (GATE, UPSC, etc.)</li>
+                <li>Diploma / Polytechnic Books</li>
+                <li>B.Sc / B.Com / B.A Books</li>
+                <li>Engineering Books (CSE, ME, ECE, etc.)</li>
+                <li>Fantasy Books</li>
+                <li>Non-Fantasy Books</li>
+              </ul>
+            </div>
+            <div className="category-column">
+              <h5>Printouts</h5>
+              <ul>
+                <li>Assignments</li>
+                <li>Project Reports</li>
+                <li>Class Notes</li>
+                <li>College Notices / PDFs</li>
+                <li>Spiral Bound Notebooks</li>
+                <li>Black & White / Color Prints</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
+
       <div className="footer-bottom">
-        <p>&copy; 2025 Book Hub. All rights reserved.</p>
-        <button className="admin-short-btn" onClick={admin}>Admin</button>
+        <p>© 2025 My Book Hub. All rights reserved.</p>
+        <button className="admin-short-btn" onClick={admin}>
+          Admin
+        </button>
       </div>
     </footer>
   );

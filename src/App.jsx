@@ -20,6 +20,8 @@ import OrderSummary from "./OrderSummary";
 import Buyeachbook from "./Buyeachbook";
 import SellerBooks from "./BooksbyId";
 import BoughtBooks from "./BroughBooks";
+import BottomNav from "./Bottomnav";
+import Categories from "./Categerioes";
 
 function App() {
   const [orderSummaryBookId, setOrderSummaryBookId] = useState(null);
@@ -34,14 +36,15 @@ function App() {
         <Route path="/prints-cart" element={<Cart />} />
         <Route path="/orderprints" element={<OrderPrints />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/sellbooks" element={<SellBooks />} />
+        <Route path="/sellbook" element={<SellBooks />} />
         <Route path="/soldbooks" element={<SoldBooks />} />
         <Route path="/buybooks" element={<BuyBooks />} />
         <Route path="/adminprints" element={<AdminPrints />} />
         <Route path="/adminbooks" element={<AdminBooks />} />
         <Route path="/book/:id" element={<Buyeachbook />} />
         <Route path="/seller-profile/:id" element={<SellerBooks />} />
-        <Route path="/books-cart" element={<BoughtBooks/>}/>
+        <Route path="/books-cart" element={<BoughtBooks />} />
+        <Route path="/all-categories" element={<Categories />} />
         <Route
           path="/book/:id"
           element={<BookDetails onOrder={setOrderSummaryBookId} />}
@@ -55,6 +58,7 @@ function App() {
           onClose={handleCloseOrderSummary}
         />
       )}
+      <BottomNav />
       <Footer />
     </>
   );

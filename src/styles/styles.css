@@ -1,0 +1,984 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  height: 64px;
+  background: #ffffff;
+  border-top: 1px solid #eee;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  padding: 6px 8px;
+}
+
+.bottom-nav .nav-item {
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.bottom-nav .nav-item img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.bottom-nav .nav-item span {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: #222;
+}
+
+.bottom-nav .nav-item.active span {
+  color: #f27909; /* highlight to match theme */
+}
+
+.phone-container {
+  /* ensure content is not hidden under fixed nav */
+  padding-bottom: 80px;
+}
+
+/* Global default font */
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.logo,
+.hero-text h2,
+.section-title {
+  font-family: "Instrument Sans", sans-serif;
+  font-weight: 700;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  line-height: 1.2;
+}
+
+/* Phone Container */
+.phone-container {
+  max-width: 158px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  min-height: 100vh;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.header {
+  margin-top: 10px;
+  margin-left: 50px;
+  background-color: WHITE;
+  padding: 3px 11px;
+  border-bottom: 1px solid #f0f0f0;
+  height: 30px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  font-family: "Inter", sans-serif;
+  font-weight: 1000;
+  font-size: 8px;
+  margin: 0;
+  padding: 0;
+  line-height: 1.21;
+}
+
+.logo .orange {
+  color: #f27909;
+}
+
+.logo .black {
+  color: #000000;
+}
+
+.logo .gray {
+  color: gray; /* or use a specific hex like #808080 */
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.user-avatar {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0px;
+  padding: 0px;
+  gap: 0px;
+}
+
+.login-text,
+.help-text,
+.location-text,
+.cart-text {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  color: #000000;
+  line-height: 1.21;
+}
+
+.help-section,
+.location-section,
+.cart-section {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.help-icon,
+.location-icon,
+.cart-icon {
+  width: 15px;
+  height: 15px;
+  object-fit: cover;
+  margin: 0px;
+  padding: 0px;
+  gap: 0px;
+}
+.search-container {
+  font-size: 10px;
+  font-weight: lighter;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.hero-background {
+  background-image: url("your-image.jpg"); /* <-- replace with your image path */
+  background-size: cover; /* makes the image cover the whole container */
+  background-position: center; /* centers the image */
+  border-radius: 5px;
+  margin: 5px;
+  padding: 8px;
+  position: relative;
+}
+
+.hero-content {
+  display: flex;
+  background-color: #57c97a;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: space-between; /* text left, image right */
+  position: relative;
+  z-index: 2;
+}
+
+.hero-text h2 {
+  font-family: "Instrument Sans", sans-serif;
+  font-weight: 1000;
+  font-size: 24px; /* adjust size for mobile/desktop */
+  color: #000000;
+
+  line-height: 1.2;
+  margin: 10px;
+  max-width: 300px;
+}
+
+.hero-image {
+  position: relative; /* changed from absolute for responsive layout */
+}
+
+.hero-image img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+/* Search Container */
+.search-bar {
+  margin: 10px auto;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 250px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px 0 0 20px;
+  font-size: 12px;
+  font-family: "Inter", sans-serif;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+  border-color: #f27909; /* highlight in orange */
+  box-shadow: 0 0 4px rgba(242, 121, 9, 0.5);
+}
+
+.search-bar button {
+  background-color: #f27909;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+  background-color: #d86807;
+}
+
+/* Categories Section */
+/* Keep the existing Categories Section */
+.categories-section {
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 5px;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+/* Grid layout inside Categories (like Printouts) */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 per row on phone */
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Each Category Item styled like Printouts */
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  position: relative;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 12px;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.category-item:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Icons */
+.category-item img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* Text */
+.category-item span {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: #000000;
+  line-height: 1.4;
+  text-align: center;
+}
+S
+
+/* Printouts Section */
+/* Printouts Section */
+.printouts-section {
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+/* Title */
+.printouts-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px; /* bigger for phone */
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+/* Grid layout */
+.printout-categories {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 per row on phone */
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Each Item Box */
+.printout-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  position: relative;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 12px;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.printout-item:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Icons */
+.printout-item img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* Text */
+.printout-item span {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: #000000;
+  line-height: 1.4;
+  text-align: center;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f4f4f4;
+}
+
+.main-box {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2x2 grid */
+  gap: 15px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.small-box {
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.small-box img {
+  width: 120px;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* Books Grid */
+.books-grid {
+  padding: 5px;
+  margin-bottom: 1px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+}
+
+.book-item {
+  aspect-ratio: 1;
+  background-color: #d9d9d9;
+  border-radius: 5px;
+  position: relative;
+}
+
+.book-cover {
+  width: 100%;
+  height: 100%;
+  background-color: #d9d9d9;
+  border-radius: 5px;
+}
+
+/* Featured Books Section */
+.featured-books {
+  padding: 8px;
+  margin-bottom: 20px;
+}
+
+.book-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.book-card {
+  border-radius: 5px;
+  padding: 8px;
+  position: relative;
+  overflow: hidden;
+  min-height: 41px;
+}
+
+.school-books {
+  background-color: #6bb6ff;
+}
+
+.college-books {
+  background-color: #4c80e6;
+}
+
+.competitive-books {
+  background-color: #ff7a5a;
+}
+
+.fiction-books {
+  background-color: #9b69d4;
+}
+
+.novels-books {
+  background-color: #57c97a;
+}
+
+.notes-books {
+  background-color: #ff9c5b;
+}
+
+.papers-books {
+  background-color: #6bb6ff;
+}
+
+.non-fiction-books {
+  background-color: #a56d52;
+}
+
+.book-image {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 80px;
+  height: 35px;
+  z-index: 1;
+}
+
+.book-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-info {
+  position: relative;
+  z-index: 2;
+}
+
+.book-info h4 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 7px;
+  color: #ffffff;
+  margin-bottom: 3px;
+  line-height: 1.21;
+}
+
+.book-info p {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 5px;
+  color: #000000;
+  line-height: 1.21;
+}
+/* --- FIX 1: Rename the selector to .book-card --- */
+.book-card {
+  border-radius: 10px; /* Increased radius for better look */
+  padding: 10px 15px; /* Increased padding */
+  position: relative;
+  overflow: hidden;
+  /* FIX 2: Increase the height to hold content */
+  min-height: 75px;
+
+  /* Use Flexbox to help vertically align content */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.book-cards1 {
+  display: grid;
+
+  gap: 10px; /* Increased gap */
+}
+
+/* ---------------------------------------------------- */
+
+.book-image {
+  position: absolute;
+  /* FIX 3: Reposition image to bottom-right, partially outside */
+  right: 5px;
+  bottom: -15px;
+
+  /* FIX 4: Increase size for visibility (as seen in the screenshot) */
+  width: 100px;
+  height: 50px;
+
+  opacity: 0.5; /* Makes it look like a background watermark */
+  z-index: 1;
+}
+
+.book-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Use contain so the icon isn't cropped */
+}
+
+.book-info {
+  position: relative;
+  z-index: 10; /* Ensure text is rendered ON TOP of the image */
+  /* FIX 5: Restrict text width so it doesn't collide with the absolute image */
+  max-width: 65%;
+}
+
+.book-info h4 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  /* FIX 6: Increase font size drastically for legibility */
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+
+.book-info p {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  /* FIX 6: Increase font size drastically for legibility */
+  font-size: 10px;
+  color: #0c0c0c; /* Use a lighter color for description text */
+  line-height: 1.3;
+}
+/* Tab Container */
+.category-tabs {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Individual Buttons */
+.category-tab-btn {
+  flex-grow: 1;
+  padding: 10px 0;
+  margin: 0 5px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+/* Active Button State (Indicates the currently viewed tab) */
+.category-tab-btn.active {
+  color: #4c80e6; /* Use a brand color */
+  border-bottom: 3px solid #4c80e6;
+}
+
+/* Content Sections */
+.tab-content {
+  /* Initially hide all tab content */
+  display: none;
+  padding: 10px;
+}
+
+/* Show only the active tab content */
+.tab-content.active-tab {
+  display: block;
+}
+/* Footer */
+.footer {
+  background-color: rgba(0, 0, 0, 0.73);
+  color: #ffffff;
+  padding: 20px 8px;
+  margin-top: 20px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.footer-section h4 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 5px;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.footer-section p {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 3px;
+  color: #ffffff;
+  line-height: 1.21;
+  margin-bottom: 5px;
+}
+
+.category-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.category-column h5 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 4px;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.category-column ul {
+  list-style: none;
+}
+
+.category-column li {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 3px;
+  color: #ffffff;
+  line-height: 1.21;
+  margin-bottom: 2px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Full width on phone */
+  background-color: #ffffff;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 6px 0;
+  z-index: 1000;
+  height: 60px; /* Enough for icons + text */
+}
+
+/* Nav items */
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  flex: 1; /* Distribute items evenly */
+}
+
+.nav-item img {
+  width: 24px; /* Icon size for phones */
+  height: 24px;
+  object-fit: contain;
+}
+
+.nav-item span {
+  font-size: 12px; /* Small readable text */
+  color: #000000;
+}
+
+.book-cards1 {
+  display: grid;
+
+  gap: 8px;
+}
+/* --- Tab Button Styling --- */
+
+.category-tabs {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 15px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0; /* Separates tabs from content */
+}
+
+.category-tab-btn {
+  flex-grow: 1;
+  padding: 10px 0;
+  margin: 0 5px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.category-tab-btn.active {
+  color: #4c80e6; /* Highlight color for active tab */
+  border-bottom: 3px solid #4c80e6;
+}
+
+/* --- Content Visibility --- */
+
+.tab-content {
+  /* Initially hide all tab content */
+  display: none;
+  padding: 0 15px;
+}
+
+.tab-content.active-tab {
+  /* Shows the active tab's content */
+  display: block;
+}
+
+/* --- General Form Styles (Reused from your previous forms) --- */
+
+.data-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.text-input,
+.select-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.btn-submit {
+  /* Style for the Save buttons */
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  background-color: #57c97a;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 300px;
+}
+/* Styling for the banner container */
+.print-banner {
+  width: 100%;
+  overflow: hidden; /* Hides any part of the image that spills over */
+  margin-bottom: 10px;
+}
+
+/* Styling for the image itself */
+.print-banner .banner-img {
+  width: 100%;
+  height: auto;
+  display: block; /* Removes any extra space below the image */
+  /* Optional: If you want a specific height and need the image to cover: */
+  /* height: 150px; 
+    object-fit: cover; */
+}
+
+/* Responsive Design */
+@media (min-width: 375px) {
+  .phone-container {
+    max-width: 375px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .hero-text h2 {
+    font-size: 18px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+
+  .category-item span,
+  .printout-item span {
+    font-size: 8px;
+  }
+
+  .book-info h4 {
+    font-size: 14px;
+  }
+
+  .book-info p {
+    font-size: 10px;
+  }
+
+  .footer-section h4 {
+    font-size: 12px;
+  }
+
+  .footer-section p {
+    font-size: 8px;
+  }
+
+  .category-column h5 {
+    font-size: 10px;
+  }
+
+  .category-column li {
+    font-size: 8px;
+  }
+
+  .nav-item span {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 768px) {
+  .phone-container {
+    max-width: 768px;
+  }
+
+  .header-content {
+    flex-wrap: nowrap;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .printout-categories {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .book-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .footer-content {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .phone-container {
+    max-width: 1024px;
+  }
+
+  .book-cards {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Additional Mobile Optimizations */
+@media (max-width: 374px) {
+  .phone-container {
+    max-width: 100vw;
+  }
+
+  .header-actions {
+    gap: 4px;
+  }
+
+  .category-grid,
+  .printout-categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .book-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hover Effects */
+.nav-item:hover {
+  opacity: 0.7;
+}
+
+.category-item:hover,
+.printout-item:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Loading States */
+.book-cover {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

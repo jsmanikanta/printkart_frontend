@@ -1,0 +1,60 @@
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import "./styles/styles.css";
+function BottomNav() {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const isActive = (path) => pathname === path;
+
+  return (
+    <nav className="bottom-nav">
+      <button
+        className={`nav-item ${isActive("/") ? "active" : ""}`}
+        onClick={() => navigate("/")}
+        aria-label="Home"
+      >
+        <img src="/images/home-icon.png" alt="Home" />
+        <span>Home</span>
+      </button>
+
+      <button
+        className={`nav-item ${isActive("/my-book") ? "active" : ""}`}
+        onClick={() => navigate("/soldbooks")}
+        aria-label="My book"
+      >
+        <img src="/images/my-book-icon.png" alt="My book" />
+        <span>My book</span>
+      </button>
+
+      <button
+        className={`nav-item ${isActive("/sellbooks") ? "active" : ""}`}
+        onClick={() => navigate("/sellbook")}
+        aria-label="Sell Now"
+      >
+        <img src="/images/sell-now-icon.png" alt="Sell Now" />
+        <span>Sell Now</span>
+      </button>
+
+      <button
+        className={`nav-item ${isActive("/all-categories") ? "active" : ""}`}
+        onClick={() => navigate("/all-categories")}
+        aria-label="Category"
+      >
+        <img src="/images/category-icon.png" alt="Category" />
+        <span>Category</span>
+      </button>
+
+      <button
+        className={`nav-item ${isActive("/orderprints") ? "active" : ""}`}
+        onClick={() => navigate("/orderprints")}
+        aria-label="Print"
+      >
+        <img src="/images/print-icon.png" alt="Print" />
+        <span>Print</span>
+      </button>
+    </nav>
+  );
+}
+
+export default BottomNav;

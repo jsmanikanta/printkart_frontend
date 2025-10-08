@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./styles/home.css";
+import "./styles/styles.css";
 import { api_path } from "../data";
 import Signup from "./Signup";
 import Loader from "./Loading";
@@ -69,185 +69,210 @@ function HomePage() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="container">
-          {/* Banner Section */}
-          <section className="banner">
-            <div className="heading">
-              <h1>
-                Buy Old Books.
-                <br />
-                Order Printout Instantly!
-              </h1>
-              <div>
-                <button className="buttons" onClick={buybooks}>
-                  <i className="fa-solid fa-book"></i> Buy Books
-                </button>
-                <button className="buttons" onClick={Orderprints}>
-                  <i className="fa-solid fa-print"></i> Order Printouts
-                </button>
+        <div className="phone-container">
+          {/* Search Bar */}
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search for books, authors, subjects..."
+            />
+            <button type="submit">🔍</button>
+          </div>
+          {/* Hero Section */}
+          <section className="hero-section">
+            <div className="hero-background"></div>
+            <div className="hero-content">
+              <div className="hero-text">
+                <h2>
+                  Buy Sell Old Books.
+                  <br />
+                  Order Printout Instantly!
+                </h2>
+              </div>
+              <div className="hero-image">
+                <img src="/images/book-illustration.png" alt="Books" />
               </div>
             </div>
-            <div className="books"></div>
           </section>
 
-          {/* Feature Section */}
-          <div className="diff">
-            <div className="getBooks1">
-              <div className="category">
-                <h3>Get the second hand books at lowest prices</h3>
-                <div className="image1"></div>
+          {/* Featured Books Section */}
+          <section className="featured-books">
+            <h3 className="section-title">Books Category</h3>
+            <div className="book-cards">
+              <div
+                className="book-card school-books"
+                style={{ background: "#6BB6FF" }}
+              >
+                <div className="book-info ">
+                  <h4>School Books</h4>
+                  <p>From Class 6 to 12-All Boards Covered!</p>
+                </div>
               </div>
-              <button className="button" onClick={buybooks}>
-                Order now
-              </button>
-            </div>
-            <div className="getBooks2">
-              <div className="category">
-                <h3>Sell your books &amp; get the money</h3>
-                <div className="image2"></div>
+              <div
+                className="book-card college-books"
+                style={{ background: "#4C80E6" }}
+              >
+                <div className="book-info">
+                  <h4>College University Books</h4>
+                  <p>
+                    Semester Books for Every Stream B.Tech, B.Com, B.A & More
+                  </p>
+                </div>
               </div>
-              <button className="button" onClick={sellbook}>
-                Sell now
-              </button>
-            </div>
-            <div className="getBooks3">
-              <div className="category">
-                <h3>Order printouts &amp; custom it</h3>
-                <div className="image3"></div>
+              <div
+                className="book-card competitive-books"
+                style={{ background: "#FF7A5A" }}
+              >
+                <div className="book-info">
+                  <h4>Competitive Exam Books</h4>
+                  <p>Crack NEET, JEE, UPSC & More Top-Selling Prep Books!</p>
+                </div>
               </div>
-              <button className="button" onClick={Orderprints}>
-                Order now
-              </button>
-            </div>
-            <div className="getBooks4">
-              <div className="category">
-                <h3>Donate your books</h3>
-                <div className="image4"></div>
+              <div
+                className="book-card fiction-books"
+                style={{ background: "#9B69D4" }}
+              >
+                <div className="book-info">
+                  <h4>Fictional Books</h4>
+                  <p>Get Lost in Imaginary Worlds - Novels, Fantasy & More</p>
+                </div>
               </div>
-              <button className="button" onClick={sellbook}>
-                Donate now
-              </button>
+              <div
+                className="book-card novels-books"
+                style={{ background: "#57C97A" }}
+              >
+                <div className="book-info">
+                  <h4>Novels Storybooks</h4>
+                  <p>Feel Every Emotion - Romantic, Classic & Hindi Stories</p>
+                </div>
+              </div>
+              <div
+                className="book-card notes-books"
+                style={{ background: "#FF9C5B" }}
+              >
+                <div className="book-info">
+                  <h4>Notes Study Materials</h4>
+                  <p>
+                    Handwritten Notes, Assignments & Projects - All in One
+                    Place!
+                  </p>
+                </div>
+              </div>
+              <div
+                className="book-card papers-books"
+                style={{ background: "#6BB6FF" }}
+              >
+                <div className="book-info">
+                  <h4>Previous Year Papers</h4>
+                  <p>
+                    Practice with Real Questions – Boards, Competitive &
+                    University Exams!
+                  </p>
+                </div>
+              </div>
+              <div
+                className="book-card non-fiction-books"
+                style={{ background: "#A56D52" }}
+              >
+                <div className="book-info">
+                  <h4>Non-Fiction Books</h4>
+                  <p>Real Stories, Real Knowledge - Self-Help to Science</p>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
 
           {/* Categories Section */}
-          <section className="catgeries">
-            <h2>Books Categories</h2>
-            <div className="booksCat" onClick={buybooks}>
-              <div className="academic">
-                <div className="imgb1"></div>
-                <h4>Academic &amp; Textbooks</h4>
+          <section className="categories-section">
+            <h3 className="section-title">Books Categories</h3>
+            <div className="category-grid">
+              <div
+                className="category-item"
+                onClick={() => navigate("/buybooks")}
+              >
+                <img
+                  src="/images/book-illustration-2.png"
+                  alt="Academic Textbooks"
+                />
+                <span>
+                  Academic
+                  <br />
+                  Textbooks
+                </span>
               </div>
-              <div className="engg" onClick={buybooks}>
-                <div className="imgb2"></div>
-                <h4>Engineering &amp; Technology</h4>
+              <div
+                className="category-item"
+                onClick={() => navigate("/engineering")}
+              >
+                <img
+                  src="/images/engineering-icon.png"
+                  alt="Engineering Technology"
+                />
+                <span>
+                  Engineering <br />
+                  Technology
+                </span>
               </div>
-              <div className="medical" onClick={buybooks}>
-                <div className="imgb3"></div>
-                <h4>Medical &amp; Nursing</h4>
+              <div
+                className="category-item"
+                onClick={() => navigate("/medical")}
+              >
+                <img src="/images/medical-icon.png" alt="Medical Nursing" />
+                <span>
+                  Medical <br />
+                  Nursing
+                </span>
               </div>
-              <div className="bcom" onClick={buybooks}>
-                <div className="imgb4"></div>
-                <h4>B.sc / B.Com / B.A</h4>
-              </div>
-            </div>
-            <h2>Printouts Categories</h2>
-            <div className="printCat" onClick={Orderprints}>
-              <div className="bw">
-                <div className="imgp1"></div>
-                <h4>B/W Prints</h4>
-              </div>
-              <div className="spiral" onClick={Orderprints}>
-                <div className="imgp2"></div>
-                <h4>Spiral Binding</h4>
-              </div>
-              <div className="assignment" onClick={Orderprints}>
-                <div className="imgp3"></div>
-                <h4>Assignments</h4>
-              </div>
-              <div className="proj" onClick={Orderprints}>
-                <div className="imgp4"></div>
-                <h4>Project Report</h4>
-              </div>
-            </div>
-          </section>
-
-          {/* Why Choose Us */}
-          <section className="choose">
-            <h2 style={{ paddingLeft: "20px" }}>Why choose us?</h2>
-            <div className="boxes">
-              <div className="box">
-                <div className="imgc2"></div>
-                <h3>Fast Delivery</h3>
-                <h5>Order Anytime &amp; get delivered on time</h5>
-              </div>
-              <div className="box">
-                <div className="imgc3"></div>
-                <h3>Custom Printouts</h3>
-                <h5>Color, B/W, A4/A4, spiral Binding-all in one</h5>
-              </div>
-              <div className="box">
-                <div className="imgc4"></div>
-                <h3>Instant book scan upload</h3>
-                <h5>Click &amp; upload photo in seconds using mobile camera</h5>
-              </div>
-              <div className="box">
-                <div className="imgc5"></div>
-                <h5>Best prices on books &amp; printouts, made for students</h5>
-              </div>
-              <div className="box">
-                <div className="imgc6"></div>
-                <h3>Live chat support</h3>
-                <h5>Stuck somewhere? Chat with our team instantly</h5>
+              <div className="category-item" onClick={() => navigate("/bcom")}>
+                <img src="/images/commerce-icon.png" alt="B.com B.a B.sc" />
+                <span>
+                  B.com
+                  <br />
+                  B.a
+                  <br />
+                  B.sc
+                </span>
               </div>
             </div>
           </section>
 
-          {/* How It Works */}
-          <section className="works">
-            <h2 style={{ paddingLeft: "20px" }}>How it works:</h2>
-            <div className="steps">
-              <div className="step" onClick={Signin}>
-                <div className="num">
-                  <h2>Step 1:</h2>
-                </div>
-                <div className="para">
-                  <p>SignUp &amp; complete profile</p>
-                </div>
+          {/* Printouts Categories */}
+          <section className="printouts-section">
+            <h3 className="section-title">Printouts Categories</h3>
+            <div className="printout-categories">
+              <div
+                className="printout-item"
+                onClick={() => navigate("/orderprints")}
+              >
+                <img
+                  src="/images/spiral-binding-icon.png"
+                  alt="Spiral binding"
+                />
+                <span>Spiral binding</span>
               </div>
-              <div className="step">
-                <div className="num">
-                  <h2>Step 2:</h2>
-                </div>
-                <div className="para">
-                  <p>Choose what you want to</p>
-                  <p>Buy/sell books or Order printouts</p>
-                </div>
+              <div
+                className="printout-item"
+                onClick={() => navigate("/assignments")}
+              >
+                <img src="/images/assignments-icon.png" alt="Assignments" />
+                <span>Assignments</span>
               </div>
-              <div className="step" onClick={Orderprints}>
-                <div className="num">
-                  <h2>Step 3:</h2>
-                </div>
-                <div className="para">
-                  <p>Upload photo or file</p>
-                  <p>(for book or print)</p>
-                </div>
+              <div
+                className="printout-item"
+                onClick={() => navigate("/project-reports")}
+              >
+                <img
+                  src="/images/project-report-icon.png"
+                  alt="Project Report"
+                />
+                <span>Project Report</span>
               </div>
-              <div className="step" onClick={Orderprints}>
-                <div className="num">
-                  <h2>Step 4:</h2>
-                </div>
-                <div className="para">
-                  <p>Choose delivery/pickup location</p>
-                </div>
-              </div>
-              <div className="step" onClick={Orderprints}>
-                <div className="num">
-                  <h2>Step 5:</h2>
-                </div>
-                <div className="para">
-                  <p>Make payment &amp; track your order</p>
-                </div>
+              <div
+                className="printout-item"
+                onClick={() => navigate("/bw-color")}
+              >
+                <img src="/images/bw-color-icon.png" alt="BW Color" />
+                <span>BW Color</span>
               </div>
             </div>
           </section>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api_path } from "../data";
-import "./styles/header.css";
+import "./styles/styles.css";
 
 function Header() {
   const navigate = useNavigate();
@@ -12,9 +12,9 @@ function Header() {
   // Navigation handlers
   const goToLogin = () => navigate("/login");
   const goToCart = () => navigate("/prints-cart");
-  const goToSold = () => navigate("/soldbooks");
-  const broughtbooks = () => navigate("/books-cart");
   const goToHome = () => navigate("/");
+  const goToHelp = () => navigate("/help");
+  const goToLocations = () => navigate("/location");
 
   // Fetch user profile on mount
   useEffect(() => {
@@ -54,34 +54,41 @@ function Header() {
   }, []);
 
   return (
-    <header className="navbar">
-      <div className="navbar-left">
-        <div className="logo" onClick={goToHome}></div>
-        <span className="app-title" onClick={goToHome}>
-          My <span style={{ color: "#f8bb44" }}>Book</span> Hub
-        </span>
-      </div>
-      <div className="navbar-center">
-        <input className="searchinput" placeholder="Search" />
-        <button className="searchicon"></button>
-      </div>
-      <div className="navbar-right">
-        <button className="icon-button" onClick={goToLogin}>
-          <i className="fa-solid fa-user"></i>
-          <span className="icon-label">{userName ? userName : "Login"}</span>
-        </button>
-        <button className="icon-button" onClick={goToCart}>
-          <i className="fa-solid fa-cart-shopping"></i>
-          <span className="icon-label">Prints</span>
-        </button>
-        <button className="icon-button" onClick={goToSold}>
-          <i className="fa-solid fa-book"></i>
-          <span className="icon-label">My Books</span>
-        </button>
-        <button className="icon-button" onClick={broughtbooks}>
-          <i className="fa-solid fa-book"></i>
-          <span className="icon-label">Books</span>
-        </button>
+    <header className="header">
+      <div className="header-content">
+        <h1 className="logo" onClick={goToHome}>
+          <span className="orange">My</span>
+          <span className="black">Book</span>
+          <span className="gray">Hub</span>
+        </h1>
+
+        <div className="header-actions">
+          <div className="user-profile" onClick={goToLogin}>
+            <div className="user-avatar">
+              <img src="/images/user-avatar.png" alt="User" />
+            </div>
+            <span className="login-text">{userName ? userName : "Login"}</span>
+          </div>
+
+          <div className="help-section" onClick={goToHelp}>
+            <img src="/images/help-icon.png" alt="Help" className="help-icon" />
+            <span className="help-text">Help</span>
+          </div>
+
+          <div className="location-section" onClick={goToLocations}>
+            <img
+              src="/images/location-icon.png"
+              alt="Location"
+              className="location-icon"
+            />
+            <span className="location-text">Delivery Location</span>
+          </div>
+
+          <div className="cart-section" onClick={goToCart}>
+            <img src="/images/cart-icon.png" alt="Cart" className="cart-icon" />
+            <span className="cart-text">Cart</span>
+          </div>
+        </div>
       </div>
     </header>
   );

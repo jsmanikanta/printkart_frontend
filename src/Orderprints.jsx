@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import "pdfjs-dist/build/pdf.worker.mjs";
 import "./styles/orderprints.css";
-import qrImg from "./images/qr.jpg";
+import qrImg from "../public/images/qr.jpg";
 
 const COLOR_OPTIONS = [
   { value: "b/w", label: "Black & White" },
@@ -349,7 +349,8 @@ export default function OrderPrints() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <img className="qr" src={qrImg} alt="QR Code" />
+            <img className="qr" src={qrImg} alt="QR Code" /><br />
+            <span><b>UPI ID: </b>papukumarsahu686-2@oksbi</span> <br />
             <input
               className="input"
               placeholder="Transaction ID"
