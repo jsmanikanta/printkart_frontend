@@ -45,7 +45,7 @@ export default function OrderPrints() {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [email, setEmail] = useState("");
+  const [rollno, setRollNo] = useState("");
   const [college, setCollege] = useState("");
   const [year, setYear] = useState("");
   const [section, setSection] = useState("");
@@ -138,7 +138,7 @@ export default function OrderPrints() {
       return alert("Could not determine number of pages.");
     if (!address.trim()) return alert("Delivery address is required.");
     if (!transctionid.trim()) return alert("Transaction ID is required.");
-    if (!name.trim() || !mobile.trim() || !email.trim())
+    if (!name.trim() || !mobile.trim() )
       return alert("Please fill in all personal details.");
     if (
       activeTab === "student" &&
@@ -168,8 +168,8 @@ export default function OrderPrints() {
       formData.append("transctionid", transctionid.trim());
       formData.append("name", name.trim());
       formData.append("mobile", mobile.trim());
-      formData.append("email", email.trim());
       formData.append("price", Number(price));
+      formData.append("rollno", rollno);
       formData.append("orderType", activeTab);
       if (activeTab === "student") {
         formData.append("collegeName", college.trim());
@@ -182,7 +182,7 @@ export default function OrderPrints() {
         console.log(`${pair[0]}: ${pair[1]}`);
       }
 
-      const res = await fetchWithTimeout(
+      const response = await fetchWithTimeout(
         `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
         {
           method: "POST",
@@ -258,14 +258,6 @@ export default function OrderPrints() {
               maxLength={10}
               required
             />
-            <input
-              className="input"
-              placeholder="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
 
             {activeTab === "student" && (
               <>
@@ -292,6 +284,13 @@ export default function OrderPrints() {
                   placeholder="Section"
                   value={section}
                   onChange={(e) => setSection(e.target.value)}
+                  required
+                />
+                <input
+                  className="input"
+                  placeholder="Registeration Number"
+                  value={rollno}
+                  onChange={(e) => setRollNo(e.target.value)}
                   required
                 />
               </>
