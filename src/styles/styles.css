@@ -83,8 +83,6 @@ body {
 
 /* Header */
 .header {
-  margin-top: 10px;
-  margin-left: 50px;
   background-color: WHITE;
   padding: 3px 11px;
   border-bottom: 1px solid #f0f0f0;
@@ -283,7 +281,7 @@ body {
 .section-title {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 5px;
+  font-size: 15px;
   color: #000000;
   margin-bottom: 8px;
 }
@@ -291,8 +289,9 @@ body {
 /* Grid layout inside Categories (like Printouts) */
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns */
-  gap: 16px; /* Space between items */
+  grid-template-columns: repeat(2, 1fr); /* 2 per row on phone */
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 /* Each Category Item styled like Printouts */
@@ -332,9 +331,6 @@ body {
   line-height: 1.4;
   text-align: center;
 }
-S
-
-/* Printouts Section */
 /* Printouts Section */
 .printouts-section {
   padding: 8px;
@@ -345,7 +341,7 @@ S
 .printouts-title {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 14px; /* bigger for phone */
+  font-size: 14px;
   color: #000000;
   margin-bottom: 8px;
 }
@@ -406,7 +402,7 @@ body {
 
 .main-box {
   display: grid;
-  grid-template-columns: repeat(2, 2fr); 
+  grid-template-columns: repeat(2, 2fr);
   gap: 15px;
   background: white;
   padding: 20px;
@@ -836,20 +832,21 @@ body {
 .print-banner .banner-img {
   width: 100%;
   height: auto;
-  display: block; /* Removes any extra space below the image */
-  /* Optional: If you want a specific height and need the image to cover: */
-  /* height: 150px; 
-    object-fit: cover; */
+  display: block;
 }
 
+/* Responsive Design */
 /* Responsive Design */
 @media (min-width: 375px) {
   .phone-container {
     max-width: 375px;
   }
+  .header-actions {
+    gap: 20px;
+  }
 
   .logo {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .hero-text h2 {
@@ -898,21 +895,24 @@ body {
   .phone-container {
     max-width: 768px;
   }
+  .header-actions {
+    gap: 20px;
+  }
 
   .header-content {
     flex-wrap: nowrap;
   }
 
   .category-grid {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .printout-categories {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .book-cards {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .footer-content {
@@ -924,9 +924,31 @@ body {
   .phone-container {
     max-width: 1024px;
   }
+  .header-actions {
+    gap: 20px;
+  }
+  .book-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Additional Mobile Optimizations */
+@media (max-width: 374px) {
+  .phone-container {
+    max-width: 100vw;
+  }
+
+  .header-actions {
+    gap: 9px;
+  }
+
+  .category-grid,
+  .printout-categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   .book-cards {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: (2, 1fr);
   }
 }
 
