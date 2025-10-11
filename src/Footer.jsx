@@ -23,6 +23,9 @@ function Footer() {
             books, ordering printouts from mobile, or donating materials to
             those in need, we make it simple.
           </p>
+          <button className="admin-short-btn" onClick={admin}>
+            Admin
+          </button>
         </div>
 
         <div className="footer-section">
@@ -57,9 +60,6 @@ function Footer() {
 
       <div className="footer-bottom">
         <p>© 2025 My Book Hub. All rights reserved.</p>
-        <button className="admin-short-btn" onClick={admin}>
-          Admin
-        </button>
       </div>
     </footer>
   );

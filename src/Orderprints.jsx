@@ -136,9 +136,8 @@ export default function OrderPrints() {
     if (!file) return alert("Please upload a PDF file.");
     if (!pages || pages <= 0)
       return alert("Could not determine number of pages.");
-    if (!address.trim()) return alert("Delivery address is required.");
     if (!transctionid.trim()) return alert("Transaction ID is required.");
-    if (!name.trim() || !mobile.trim() )
+    if (!name.trim() || !mobile.trim())
       return alert("Please fill in all personal details.");
     if (
       activeTab === "student" &&
@@ -163,7 +162,6 @@ export default function OrderPrints() {
       formData.append("sides", Number(sides));
       formData.append("binding", binding);
       formData.append("copies", Number(copies));
-      formData.append("address", address.trim());
       formData.append("description", description.trim());
       formData.append("transctionid", transctionid.trim());
       formData.append("name", name.trim());
@@ -172,9 +170,12 @@ export default function OrderPrints() {
       formData.append("rollno", rollno);
       formData.append("orderType", activeTab);
       if (activeTab === "student") {
-        formData.append("collegeName", college.trim());
-        formData.append("yearOfStudy", year.trim());
-        formData.append("classSection", section.trim());
+        formData.append("college", college.trim());
+        formData.append("year", year.trim());
+        formData.append("class", section.trim());
+      }
+      if (activeTab == "others") {
+        formData.append("address", address.trim());
       }
 
       console.log("Submitting with data:");
@@ -242,7 +243,6 @@ export default function OrderPrints() {
               {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Printout
               Order
             </h2>
-
             <input
               className="input"
               placeholder="Full Name"
@@ -258,7 +258,6 @@ export default function OrderPrints() {
               maxLength={10}
               required
             />
-
             {activeTab === "student" && (
               <>
                 <select
@@ -295,7 +294,6 @@ export default function OrderPrints() {
                 />
               </>
             )}
-
             <div className="input-row">
               <label className="order-label" htmlFor="pdfFile">
                 Upload PDF
@@ -326,7 +324,6 @@ export default function OrderPrints() {
                 <div className="pdf-pages-info">Pages detected: {pages}</div>
               )}
             </div>
-
             <div className="input-row">
               <select
                 value={color}
@@ -351,7 +348,6 @@ export default function OrderPrints() {
                 ))}
               </select>
             </div>
-
             <div className="input-row">
               <select
                 value={binding}
@@ -373,21 +369,23 @@ export default function OrderPrints() {
                 required
               />
             </div>
-
-            <textarea
-              className="input"
-              placeholder="Delivery Address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
+            {activeTab === "others" && (
+              <>
+                <textarea
+                  className="input"
+                  placeholder="Delivery Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                />
+              </>
+            )}
             <textarea
               className="input"
               placeholder="Description (optional)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-
             <img className="qr" src={qrImg} alt="QR Code" />
             <input
               className="input"
@@ -396,14 +394,12 @@ export default function OrderPrints() {
               onChange={(e) => setTransctionid(e.target.value)}
               required
             />
-
             <div
               className="total-cost-box"
               onChange={(e) => setPrice(e.target.value)}
             >
               Total Amount: <span>₹{totalAmount}</span>
             </div>
-
             <button className="order-btn" type="submit">
               Place Order
             </button>

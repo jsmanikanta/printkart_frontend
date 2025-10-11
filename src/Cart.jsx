@@ -68,7 +68,6 @@ function Cart() {
         <h2>{user.fullname}'s Profile</h2>
         <div className="orders-contact">Email: {user.email}</div>
         <div className="orders-contact">Mobile: {user.mobileNumber}</div>
-        <div className="orders-contact">Role: {user.role}</div>
       </section>
       <div className="orders-title">Your Print Orders</div>
       <div className="orders-list">
@@ -122,10 +121,6 @@ function Cart() {
               {expandedOrderId === (order._id || order.id) && (
                 <div className="order-card-info">
                   <div>
-                    <span className="order-card-label">Email:</span>{" "}
-                    {order.email}
-                  </div>
-                  <div>
                     <span className="order-card-label">Mobile:</span>{" "}
                     {order.mobile}
                   </div>
@@ -156,6 +151,10 @@ function Cart() {
                   <div>
                     <span className="order-card-label">Section:</span>{" "}
                     {order.section || "-"}
+                  </div>
+                  <div>
+                    <span className="order-card-label">Registration Number:</span>{" "}
+                    {order.rollno || "-"}
                   </div>
                   <div>
                     <span className="order-card-label">Address:</span>{" "}
