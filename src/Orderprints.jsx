@@ -30,6 +30,7 @@ const BINDING_OPTIONS = [
 
 export default function OrderPrints() {
   const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState("student");
   const [file, setFile] = useState(null);
   const [pages, setPages] = useState(0);
@@ -41,7 +42,6 @@ export default function OrderPrints() {
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
   const [transctionid, setTransctionid] = useState("");
-  const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
@@ -49,8 +49,11 @@ export default function OrderPrints() {
   const [college, setCollege] = useState("");
   const [year, setYear] = useState("");
   const [section, setSection] = useState("");
-  const [price, setPrice] = useState("");
+  const [originalPrice, setOriginalPrice] = useState(0);
+  const [discountPrice, setDiscountPrice] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(0);
 
+  // PDF page detection
   useEffect(() => {
     if (!file) {
       setPages(0);
@@ -70,33 +73,45 @@ export default function OrderPrints() {
     };
     loadPdfPages();
   }, [file]);
-  const handleCollegeChange = (e) => {
-    setCategeory(e.target.value);
-    setSubCategeory("");
-  };
 
+  // Price calculation
   useEffect(() => {
     if (!pages || pages <= 0) {
-      setTotalAmount(0);
+      setOriginalPrice(0);
+      setDiscountPrice(0);
+      setFinalPrice(0);
       return;
     }
     let pricePerPage = 0;
     if (color === "b/w" && sides === "2") pricePerPage = 1;
-    else if (color === "colour" && sides === "2") pricePerPage = 0;
+    else if (color === "colour" && sides === "2") pricePerPage = 2.5;
     else if (color === "b/w" && sides === "1") pricePerPage = 1.5;
     else if (color === "colour" && sides === "1") pricePerPage = 6;
 
-    let total = pricePerPage * pages;
+    const printCost = pricePerPage * pages * copies;
+    setOriginalPrice(Math.ceil(printCost));
+    const discount = activeTab === "student" ? 0.1 * printCost : 0;
+    setDiscountPrice(Math.ceil(discount));
+    let bindingCost = 0;
+    switch (binding) {
+      case "spiral":
+      case "stick":
+        bindingCost = 20 * copies;
+        break;
+      case "soft":
+        bindingCost = 25 * copies;
+        break;
+      case "book":
+        bindingCost = 150 * copies;
+        break;
+      default:
+        bindingCost = 0;
+    }
+    const finalAmount = Math.ceil(printCost - discount + bindingCost);
+    setFinalPrice(finalAmount);
+  }, [color, sides, binding, pages, copies, activeTab]);
 
-    if (binding === "spiral") total += 20;
-    else if (binding === "stick") total += 20;
-    else if (binding === "soft") total += 25;
-    else if (binding === "book") total += 150;
-
-    total *= copies;
-    setTotalAmount(Math.ceil(total));
-  }, [color, sides, binding, pages, copies]);
-
+  // File input
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
     if (!uploaded) {
@@ -113,26 +128,9 @@ export default function OrderPrints() {
     setFile(uploaded);
   };
 
-  const fetchWithTimeout = async (url, options, timeout = 90000) => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => {
-      controller.abort("Request timed out");
-    }, timeout);
-
-    try {
-      const response = await fetch(url, {
-        ...options,
-        signal: controller.signal,
-      });
-      return response;
-    } finally {
-      clearTimeout(timer);
-    }
-  };
-
+  // Place order
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!file) return alert("Please upload a PDF file.");
     if (!pages || pages <= 0)
       return alert("Could not determine number of pages.");
@@ -141,73 +139,61 @@ export default function OrderPrints() {
       return alert("Please fill in all personal details.");
     if (
       activeTab === "student" &&
-      (!college.trim() || !year.trim() || !section.trim())
-    )
+      (!college.trim() || !year.trim() || !section.trim() || !rollno.trim())
+    ) {
       return alert(
-        "Please fill college, year, and section for student orders."
+        "Please fill college, year, section, and registration number for student orders."
       );
-
+    }
+    if (activeTab === "others" && !address.trim()) {
+      return alert("Please fill delivery address for home orders.");
+    }
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Please log in first.");
       navigate("/login");
       return;
     }
-
     setLoading(true);
     try {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("color", color);
-      formData.append("sides", Number(sides));
+      formData.append("sides", sides);
       formData.append("binding", binding);
-      formData.append("copies", Number(copies));
+      formData.append("copies", copies);
       formData.append("description", description.trim());
       formData.append("transctionid", transctionid.trim());
       formData.append("name", name.trim());
       formData.append("mobile", mobile.trim());
-      formData.append("price", Number(price));
-      formData.append("rollno", rollno);
-      formData.append("orderType", activeTab);
+      formData.append("originalprice", Math.ceil(originalPrice));
+      formData.append("discountprice", Math.ceil(finalPrice));
       if (activeTab === "student") {
         formData.append("college", college.trim());
         formData.append("year", year.trim());
-        formData.append("class", section.trim());
+        formData.append("section", section.trim());
+        formData.append("rollno", rollno.trim());
       }
-      if (activeTab == "others") {
+      if (activeTab === "others") {
         formData.append("address", address.trim());
       }
-
-      console.log("Submitting with data:");
-      for (let pair of formData.entries()) {
-        console.log(`${pair[0]}: ${pair[1]}`);
-      }
-
-      const response = await fetchWithTimeout(
+      const response = await fetch(
         `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
           body: formData,
-        },
-        90000
+        }
       );
-
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
         throw new Error(data.message || "Order failed");
       }
-
       alert("Order placed successfully!");
       navigate("/prints-cart");
     } catch (err) {
-      if (err.name === "AbortError") {
-        alert("Request took too long. Please try again.");
-        console.error("Timeout:", err);
-      } else {
-        alert(err.message || "Error placing order.");
-        console.error("Error placing order:", err);
-      }
+      alert(err.message || "Error placing order.");
+      console.error("Error placing order:", err);
     } finally {
       setLoading(false);
     }
@@ -216,7 +202,7 @@ export default function OrderPrints() {
   return (
     <>
       {loading ? (
-        <p style={{ textAlign: "center" }}>loading...</p>
+        <h2>Placing your order....</h2>
       ) : (
         <div className="order-main-bg">
           <div className="order-tabs">
@@ -225,19 +211,16 @@ export default function OrderPrints() {
               onClick={() => setActiveTab("student")}
               type="button"
             >
-              CLASS ROOM <br />
-              DELIVERY
+              CLASS ROOM <br /> DELIVERY
             </button>
             <button
               className={`order-tab${activeTab === "others" ? " active" : ""}`}
               onClick={() => setActiveTab("others")}
               type="button"
             >
-              HOME <br />
-              DELIVERY
+              HOME <br /> DELIVERY
             </button>
           </div>
-
           <form className="order-form-wrap" onSubmit={handleSubmit}>
             <h2>
               {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Printout
@@ -263,6 +246,7 @@ export default function OrderPrints() {
                 <select
                   value={college}
                   onChange={(e) => setCollege(e.target.value)}
+                  required
                 >
                   <option value="">Select College</option>
                   {colleges.map((clg) => (
@@ -287,12 +271,21 @@ export default function OrderPrints() {
                 />
                 <input
                   className="input"
-                  placeholder="Registeration Number"
+                  placeholder="Registration Number"
                   value={rollno}
                   onChange={(e) => setRollNo(e.target.value)}
                   required
                 />
               </>
+            )}
+            {activeTab === "others" && (
+              <textarea
+                className="input"
+                placeholder="Delivery Address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
             )}
             <div className="input-row">
               <label className="order-label" htmlFor="pdfFile">
@@ -319,11 +312,11 @@ export default function OrderPrints() {
               >
                 {file ? file.name : "Choose File"}
               </label>
-              {pdfError && <div className="error-text">{pdfError}</div>}
-              {pages > 0 && (
-                <div className="pdf-pages-info">Pages detected: {pages}</div>
-              )}
             </div>
+            {pdfError && <div className="error-text">{pdfError}</div>}
+            {pages > 0 && (
+              <div className="pdf-pages-info">Pages detected: {pages}</div>
+            )}
             <div className="input-row">
               <select
                 value={color}
@@ -369,17 +362,6 @@ export default function OrderPrints() {
                 required
               />
             </div>
-            {activeTab === "others" && (
-              <>
-                <textarea
-                  className="input"
-                  placeholder="Delivery Address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  required
-                />
-              </>
-            )}
             <textarea
               className="input"
               placeholder="Description (optional)"
@@ -394,14 +376,27 @@ export default function OrderPrints() {
               onChange={(e) => setTransctionid(e.target.value)}
               required
             />
-            <div
-              className="total-cost-box"
-              onChange={(e) => setPrice(e.target.value)}
+            {pages > 0 && (
+              <div className="total-cost-box">
+                <p>
+                  Original Price: <span>₹{originalPrice}</span>
+                </p>
+                {activeTab === "student" && (
+                  <p>
+                    Discount (10% on Prints): <span>-₹{discountPrice}</span>
+                  </p>
+                )}
+                <p>
+                  Final Price: <span>₹{finalPrice}</span>
+                </p>
+              </div>
+            )}
+            <button
+              className="order-btn"
+              type="submit"
+              disabled={loading || pages <= 0}
             >
-              Total Amount: <span>₹{totalAmount}</span>
-            </div>
-            <button className="order-btn" type="submit">
-              Place Order
+              {loading ? "Placing Order..." : "Place Order"}
             </button>
           </form>
         </div>

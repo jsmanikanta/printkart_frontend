@@ -72,17 +72,9 @@ function Header() {
             <img src="/images/help-icon.png" alt="Help" className="help-icon" />
             <span className="help-text">Help</span>
           </div>
-          <div className="location-section" onClick={goToLocations}>
-            <img
-              src="/images/location-icon.png"
-              alt="Location"
-              className="location-icon"
-            />
-            <span className="location-text">Delivery Location</span>
-          </div>
           <div className="cart-section" onClick={goToCart}>
             <img src="/images/cart-icon.png" alt="Cart" className="cart-icon" />
-            <span className="cart-text">Cart</span>
+            <span className="cart-text">My Bag</span>
           </div>
         </div>
       </div>

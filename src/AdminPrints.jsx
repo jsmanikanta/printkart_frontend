@@ -99,32 +99,34 @@ export default function AdminPrints() {
             <th>File</th>
             <th>Color</th>
             <th>Sides</th>
-            <th>Bindings</th>
+            <th>Binding</th>
             <th>No. of Copies</th>
-            <th>Price</th>
+            <th>Original Price</th>
+            <th>Discount Price</th>
             <th>Roll Number</th>
             <th>College Name</th>
             <th>Year</th>
-            <th>Class & Section</th>
+            <th>Section</th>
             <th>Address</th>
             <th>Description</th>
             <th>Transaction ID</th>
             <th>Order Date</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           {orders.length === 0 && (
             <tr>
-              <td colSpan="15">No orders available</td>
+              <td colSpan="18">No orders available</td>
             </tr>
           )}
           {orders.map((order) => (
             <tr key={order._id}>
               <td>{order._id}</td>
-              <td>{order.fullName || order.userid?.fullname || "-"}</td>
+              <td>{order.fullName}</td>
               <td>{order.mobile}</td>
               <td>
-                {order.file ? (
+                {order.file && order.file !== "-" ? (
                   <a
                     href={order.file}
                     target="_blank"
@@ -138,17 +140,23 @@ export default function AdminPrints() {
               </td>
               <td>{order.color}</td>
               <td>{order.sides}</td>
-              <td>{order.binding || "none"}</td>
+              <td>{order.binding}</td>
               <td>{order.copies}</td>
-              <td>{order.price}</td>
+              <td>{order.originalprice}</td>
+              <td>{order.discountprice}</td>
               <td>{order.rollno}</td>
-              <td>{order.college || "-"}</td>
-              <td>{order.year || "-"}</td>
-              <td>{order.section || "-"}</td>
-              <td>{order.address || "-"}</td>
-              <td>{order.description || "-"}</td>
+              <td>{order.college}</td>
+              <td>{order.year}</td>
+              <td>{order.section}</td>
+              <td>{order.address}</td>
+              <td>{order.description}</td>
               <td>{order.transctionid}</td>
-              <td>{order.orderDate}</td>
+              <td>
+                {order.orderDate
+                  ? new Date(order.orderDate).toLocaleString()
+                  : "-"}
+              </td>
+              <td>{order.status}</td>
             </tr>
           ))}
         </tbody>

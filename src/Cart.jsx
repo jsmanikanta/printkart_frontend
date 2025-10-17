@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./styles/accounts.css";
-import { api_path } from "../data";
 import Loader from "./Loading";
+import { api_path } from "../data";
+import EmptyBag from "../public/images/openbag.jpg";
 
-function Cart() {
+function CartMobile() {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [expandedOrderId, setExpandedOrderId] = useState(null); 
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -33,7 +27,7 @@ function Cart() {
           setUser(response.data.user);
           setOrders(response.data.orders || []);
         }
-      } catch (error) {
+      } catch {
         setUser(null);
         localStorage.removeItem("token");
       } finally {
@@ -42,6 +36,15 @@ function Cart() {
     };
     fetchUserProfile();
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
+  const handleStartShopping = () => {
+    window.location.href = "/printzone";
+  };
 
   if (loading)
     return (
@@ -62,123 +65,184 @@ function Cart() {
     );
   }
 
-  return (
-    <div className="user-orders-section">
-      <section className="orders-profile">
-        <h2>{user.fullname}'s Profile</h2>
-        <div className="orders-contact">Email: {user.email}</div>
-        <div className="orders-contact">Mobile: {user.mobileNumber}</div>
-      </section>
-      <div className="orders-title">Your Print Orders</div>
-      <div className="orders-list">
+  if (!selectedOrder) {
+    return (
+      <div className="cart-mobile-root">
+        <header className="cart-header">
+          <span className="cart-title">My Bag</span>
+        </header>
+
+        <div className="cart-tabs">
+          <span className="cart-tab">Books Vault</span>
+          <span className="cart-tab cart-tab-active">Print Zone</span>
+        </div>
+
         {orders.length === 0 ? (
-          <div className="orders-empty">No orders found.</div>
+          <div className="empty-bag">
+            <img src={EmptyBag} alt="Empty bag" className="empty-bag-img" />
+            <p className="empty-bag-text">
+              Don't leave me empty like this 😢 — add something cute!
+            </p>
+            <button className="cart-blue-btn" onClick={handleStartShopping}>
+              Start Shopping
+            </button>
+          </div>
         ) : (
-          orders.map((order) => (
-            <div
-              key={order._id || order.id}
-              className={`order-card ${
-                expandedOrderId === (order._id || order.id) ? "expanded" : ""
-              }`}
-              onClick={() =>
-                setExpandedOrderId(
-                  expandedOrderId === (order._id || order.id)
-                    ? null
-                    : order._id || order.id
-                )
-              }
-            >
-              <div className="order-card-row order-card-summary">
-                <div>
-                  <span className="order-card-label">Order ID:</span>{" "}
-                  {order._id || order.id}
+          <div className="cart-mobile-list">
+            {orders.map((order) => (
+              <div
+                className="cart-mobile-card"
+                key={order.id || order._id}
+                onClick={() => setSelectedOrder(order)}
+              >
+                <div className="cart-card-row">
+                  <div className="cart-card-icon-area" />
+                  <img
+                    src="../public/images/spiral-binding-icon.png"
+                    style={{ height: 50, width: 50 }}
+                  />
+                  <div>
+                    <div className="cart-card-title">Printouts</div>
+                    <div className="cart-card-meta">
+                      Binding: {order.binding || "None"}
+                    </div>
+                  </div>
+                  <div className="cart-card-side">
+                    <span className="cart-card-oldprice">
+                      {order.originalprice && <>₹{order.originalprice}</>}
+                    </span>
+                    <span className="cart-card-price">
+                      ₹{order.discountprice || order.originalprice}
+                    </span>
+                    <div className="cart-card-qty">
+                      Qty: {order.copies || "-"}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="order-card-label">Date:</span>{" "}
-                  {order.orderDate
-                    ? new Date(order.orderDate).toLocaleDateString()
-                    : "-"}
-                </div>
-                <div>
-                  <span className="order-card-label">Name:</span> {order.name}
-                </div>
-                {order.file ? (
-                  <a
-                    className="order-file-link"
-                    href={order.file}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View PDF
-                  </a>
-                ) : (
-                  <span className="order-file-link">No File</span>
-                )}
-                <div className="expand-arrow">
-                  {expandedOrderId === (order._id || order.id) ? "▲" : "▼"}
-                </div>
+                <div className="cart-card-link">View Details &rarr;</div>
               </div>
-              {expandedOrderId === (order._id || order.id) && (
-                <div className="order-card-info">
-                  <div>
-                    <span className="order-card-label">Mobile:</span>{" "}
-                    {order.mobile}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Color:</span>{" "}
-                    {order.color}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Sides:</span>{" "}
-                    {order.sides}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Binding:</span>{" "}
-                    {order.binding}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Copies:</span>{" "}
-                    {order.copies}
-                  </div>
-                  <div>
-                    <span className="order-card-label">College:</span>{" "}
-                    {order.college || "-"}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Year:</span>{" "}
-                    {order.year || "-"}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Section:</span>{" "}
-                    {order.section || "-"}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Registration Number:</span>{" "}
-                    {order.rollno || "-"}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Address:</span>{" "}
-                    {order.address || "-"}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Description:</span>{" "}
-                    {order.description || "-"}
-                  </div>
-                  <div>
-                    <span className="order-card-label">Transaction ID:</span>{" "}
-                    {order.transctionid}
-                  </div>
+            ))}
+          </div>
+        )}
+
+        <nav className="cart-mobile-navbar">
+          <div className="nav-icon active">Home</div>
+          <div className="nav-icon">My book</div>
+          <div className="nav-icon">Sell Now</div>
+          <div className="nav-icon">Category</div>
+          <div className="nav-icon">Print</div>
+        </nav>
+        <button className="logout" onClick={handleLogout}>
+          Log Out
+        </button>
+      </div>
+    );
+  }
+
+  // ---- Screen 2: Order Details ----
+  return (
+    <div className="order-detail-mobile">
+      <header className="cart-header">
+        <span className="cart-back" onClick={() => setSelectedOrder(null)}>
+          &#8592;
+        </span>
+        <span className="cart-title">Order Details</span>
+      </header>
+      <div className="order-detail-info">
+        <div className="detail-field">
+          <span className="detail-label">Order ID:</span>{" "}
+          {selectedOrder.id || selectedOrder._id}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Name:</span> {selectedOrder.name}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Mobile:</span> {selectedOrder.mobile}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">File:</span>{" "}
+          {selectedOrder?.file ? (
+            <a
+              href={selectedOrder.file}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View PDF
+            </a>
+          ) : (
+            <span>No file available</span>
+          )}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Price:</span> ₹
+          {selectedOrder.discountprice || selectedOrder.price}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Original Price:</span> ₹
+          {selectedOrder.originalprice || "-"}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Color:</span> {selectedOrder.color}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Sides:</span> {selectedOrder.sides}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Binding:</span> {selectedOrder.binding}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Copies:</span> {selectedOrder.copies}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Address:</span>{" "}
+          {selectedOrder.address ? (
+            selectedOrder.address
+          ) : (
+            <div style={{ display: "inline-block" }}>
+              {selectedOrder.college && (
+                <div>
+                  <strong>College:</strong> {selectedOrder.college} <br />
                 </div>
               )}
+              {selectedOrder.year && (
+                <div>
+                  <strong>Year:</strong> {selectedOrder.year} <br />
+                </div>
+              )}
+              {selectedOrder.rollno && (
+                <div>
+                  <strong>Roll No:</strong> {selectedOrder.rollno} <br />
+                </div>
+              )}
+              {selectedOrder.section && (
+                <div>
+                  <strong>Section:</strong> {selectedOrder.section} <br />
+                </div>
+              )}
+              {!selectedOrder.college &&
+                !selectedOrder.year &&
+                !selectedOrder.rollno &&
+                !selectedOrder.section && <div>-</div>}
             </div>
-          ))
-        )}
+          )}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Description:</span>{" "}
+          {selectedOrder.description || "-"}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Transaction ID:</span>{" "}
+          {selectedOrder.transctionid}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Order Date:</span>{" "}
+          {selectedOrder.orderDate
+            ? new Date(selectedOrder.orderDate).toLocaleString()
+            : "-"}
+        </div>
       </div>
-      <button className="logout" onClick={handleLogout}>
-        Log Out
-      </button>
     </div>
   );
 }
 
-export default Cart;
+export default CartMobile;

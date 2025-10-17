@@ -4,6 +4,9 @@ import "./styles/styles.css";
 function BottomNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const soon=()=>{
+    navigate("/soon");
+  }
 
   const isActive = (path) => pathname === path;
 
@@ -20,7 +23,7 @@ function BottomNav() {
 
       <button
         className={`nav-item ${isActive("/my-book") ? "active" : ""}`}
-        onClick={() => navigate("/soldbooks")}
+        onClick={() => navigate("/soon")}
         aria-label="My book"
       >
         <img src="/images/my-book-icon.png" alt="My book" />
@@ -29,7 +32,7 @@ function BottomNav() {
 
       <button
         className={`nav-item ${isActive("/sellbooks") ? "active" : ""}`}
-        onClick={() => navigate("/sellbook")}
+        onClick={() => navigate("/soon")}
         aria-label="Sell Now"
       >
         <img src="/images/sell-now-icon.png" alt="Sell Now" />
@@ -38,7 +41,7 @@ function BottomNav() {
 
       <button
         className={`nav-item ${isActive("/all-categories") ? "active" : ""}`}
-        onClick={() => navigate("/all-categories")}
+        onClick={() => navigate("/soon")}
         aria-label="Category"
       >
         <img src="/images/category-icon.png" alt="Category" />

@@ -12,6 +12,9 @@ function HomePage() {
   const [loading, setLoading] = useState(false);
 
   // Navigation handlers
+  const soon = () => {
+    navigate("/soon");
+  };
   const Login = () => {
     navigate("/login");
   };
@@ -25,9 +28,6 @@ function HomePage() {
 
   const Accounts = () => {
     navigate("/accounts");
-  };
-  const soon = () => {
-    navigate("/soon");
   };
 
   const sellbook = () => {
@@ -82,7 +82,7 @@ function HomePage() {
           <section className="hero-section">
             <div className="hero-background"></div>
             <div className="hero-content">
-              <div className="hero-text">
+              <div className="hero-text" >
                 <h2>
                   Buy Sell Old Books.
                   <br />
@@ -102,8 +102,9 @@ function HomePage() {
               <div
                 className="book-card school-books"
                 style={{ background: "#6BB6FF" }}
+                
               >
-                <div className="book-info ">
+                <div className="book-info " onClick={soon}>
                   <h4>School Books</h4>
                   <p>From Class 6 to 12-All Boards Covered!</p>
                 </div>
@@ -112,7 +113,7 @@ function HomePage() {
                 className="book-card college-books"
                 style={{ background: "#4C80E6" }}
               >
-                <div className="book-info">
+                <div className="book-info" onClick={soon}>
                   <h4>College University Books</h4>
                   <p>
                     Semester Books for Every Stream B.Tech, B.Com, B.A & More
@@ -123,7 +124,7 @@ function HomePage() {
                 className="book-card competitive-books"
                 style={{ background: "#FF7A5A" }}
               >
-                <div className="book-info">
+                <div className="book-info" onClick={soon}>
                   <h4>Competitive Exam Books</h4>
                   <p>Crack NEET, JEE, UPSC & More Top-Selling Prep Books!</p>
                 </div>
@@ -132,7 +133,7 @@ function HomePage() {
                 className="book-card fiction-books"
                 style={{ background: "#9B69D4" }}
               >
-                <div className="book-info">
+                <div className="book-info" onClick={soon}>
                   <h4>Fictional Books</h4>
                   <p>Get Lost in Imaginary Worlds - Novels, Fantasy & More</p>
                 </div>
@@ -141,7 +142,7 @@ function HomePage() {
                 className="book-card novels-books"
                 style={{ background: "#57C97A" }}
               >
-                <div className="book-info">
+                <div className="book-info" onClick={soon}>
                   <h4>Novels Storybooks</h4>
                   <p>Feel Every Emotion - Romantic, Classic & Hindi Stories</p>
                 </div>
@@ -150,7 +151,7 @@ function HomePage() {
                 className="book-card notes-books"
                 style={{ background: "#FF9C5B" }}
               >
-                <div className="book-info">
+                <div className="book-info" onClick={soon}>
                   <h4>Notes Study Materials</h4>
                   <p>
                     Handwritten Notes, Assignments & Projects - All in One
@@ -162,7 +163,7 @@ function HomePage() {
                 className="book-card papers-books"
                 style={{ background: "#6BB6FF" }}
               >
-                <div className="book-info">
+                <div className="book-info" onClick={soon}>
                   <h4>Previous Year Papers</h4>
                   <p>
                     Practice with Real Questions – Boards, Competitive &
@@ -174,64 +175,10 @@ function HomePage() {
                 className="book-card non-fiction-books"
                 style={{ background: "#A56D52" }}
               >
-                <div className="book-info">
+                <div className="book-info" onClick={soon}>
                   <h4>Non-Fiction Books</h4>
                   <p>Real Stories, Real Knowledge - Self-Help to Science</p>
                 </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Categories Section */}
-          <section className="categories-section">
-            <h3 className="section-title">Books Categories</h3>
-            <div className="category-grid">
-              <div
-                className="category-item"
-                onClick={() => navigate("/buybooks")}
-              >
-                <img
-                  src="/images/book-illustration-2.png"
-                  alt="Academic Textbooks"
-                />
-                <span>
-                  Academic
-                  <br />
-                  Textbooks
-                </span>
-              </div>
-              <div
-                className="category-item"
-                onClick={() => navigate("/engineering")}
-              >
-                <img
-                  src="/images/engineering-icon.png"
-                  alt="Engineering Technology"
-                />
-                <span>
-                  Engineering <br />
-                  Technology
-                </span>
-              </div>
-              <div
-                className="category-item"
-                onClick={() => navigate("/medical")}
-              >
-                <img src="/images/medical-icon.png" alt="Medical Nursing" />
-                <span>
-                  Medical <br />
-                  Nursing
-                </span>
-              </div>
-              <div className="category-item" onClick={() => navigate("/bcom")}>
-                <img src="/images/commerce-icon.png" alt="B.com B.a B.sc" />
-                <span>
-                  B.com
-                  <br />
-                  B.a
-                  <br />
-                  B.sc
-                </span>
               </div>
             </div>
           </section>

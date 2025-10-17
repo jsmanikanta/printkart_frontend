@@ -22,6 +22,7 @@ import SellerBooks from "./BooksbyId";
 import BoughtBooks from "./BroughBooks";
 import BottomNav from "./Bottomnav";
 import Categories from "./Categerioes";
+import ComingSoon from "./CommingSoon";
 
 function App() {
   const [orderSummaryBookId, setOrderSummaryBookId] = useState(null);
@@ -45,6 +46,7 @@ function App() {
         <Route path="/seller-profile/:id" element={<SellerBooks />} />
         <Route path="/books-cart" element={<BoughtBooks />} />
         <Route path="/all-categories" element={<Categories />} />
+        <Route path="/soon" element={<ComingSoon />} />
         <Route
           path="/book/:id"
           element={<BookDetails onOrder={setOrderSummaryBookId} />}
