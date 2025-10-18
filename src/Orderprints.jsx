@@ -104,6 +104,7 @@ export default function OrderPrints() {
         bindingAmount = 15 * copies;
         break;
       case "stick":
+<<<<<<< HEAD
         bindingAmount = 20 * copies;
         break;
       case "soft":
@@ -111,12 +112,25 @@ export default function OrderPrints() {
         break;
       case "book":
         bindingAmount = 150 * copies;
+=======
+        bindingCost = 20 * copies;
+      
+        break;
+      case "soft":
+        bindingCost = 25 * copies;
+        
+        break;
+      case "book":
+        bindingCost = 150 * copies;
+       
+>>>>>>> 47fd60fdc6327a0d8f875b0a6ea82b419a6a8214
         break;
       default:
         bindingAmount = 0;
     }
     setBindingCost(bindingAmount);
 
+<<<<<<< HEAD
     const originalTotal = printAmount + bindingAmount;
     setOriginalPrice(originalTotal);
 
@@ -126,6 +140,11 @@ export default function OrderPrints() {
 
     const finalTotal = Math.ceil(printAmount - discountAmount + bindingAmount);
     setDiscountPrice(finalTotal);
+=======
+    const finalAmount = Math.ceil(discountedPrintCost + bindingCost);
+   
+    setFinalPrice(finalAmount);
+>>>>>>> 47fd60fdc6327a0d8f875b0a6ea82b419a6a8214
   }, [color, sides, binding, pages, copies, activeTab]);
 
   // File Input handler
@@ -417,7 +436,7 @@ export default function OrderPrints() {
               onChange={(e) => {
                 if (e.target.files && e.target.files[0]) {
                   setTransactionImage(e.target.files[0]);
-                  setTransctionid(""); // clear text input if image selected
+                  setTransctionid(""); 
                 } else {
                   setTransactionImage(null);
                 }
@@ -432,6 +451,7 @@ export default function OrderPrints() {
                 </button>
               </div>
             )}
+<<<<<<< HEAD
             {file && pages > 0 && (
               <div className="total-cost-box">
                 <p>
@@ -447,6 +467,17 @@ export default function OrderPrints() {
               </div>
             )}
 
+=======
+            <div className="total-cost-box">
+              <p>Original Price of prints:
+                <span>₹{originalPrice}</span>
+              </p>
+              <span>Discount: 10%</span>
+              <p>
+                Final Price: <span>₹{finalPrice}</span>
+              </p>
+            </div>
+>>>>>>> 47fd60fdc6327a0d8f875b0a6ea82b419a6a8214
             <button
               className="order-btn"
               type="submit"
