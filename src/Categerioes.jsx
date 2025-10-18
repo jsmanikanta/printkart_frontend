@@ -75,11 +75,6 @@ function Categories() {
       route: "/printout/project-reports",
     },
     {
-      label: "Class Notes",
-      image: "/images/notes-icon.png",
-      route: "/printout/class-notes",
-    },
-    {
       label: "Spiral Binding",
       image: "/images/spiral-binding-icon.png",
       route: "/printout/spiral-binding",
