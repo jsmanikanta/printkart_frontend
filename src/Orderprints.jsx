@@ -116,7 +116,7 @@ export default function OrderPrints() {
     }
 
     const finalAmount = Math.ceil(discountedPrintCost + bindingCost);
-    originalPrice+=bindingCost;
+   
     setFinalPrice(finalAmount);
   }, [color, sides, binding, pages, copies, activeTab]);
 
