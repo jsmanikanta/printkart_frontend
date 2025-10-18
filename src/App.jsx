@@ -22,6 +22,7 @@ import SellerBooks from "./BooksbyId";
 import BoughtBooks from "./BroughBooks";
 import BottomNav from "./Bottomnav";
 import Categories from "./Categerioes";
+import VideoHelpSection from "./Help";
 import ComingSoon from "./CommingSoon";
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path="/seller-profile/:id" element={<SellerBooks />} />
         <Route path="/books-cart" element={<BoughtBooks />} />
         <Route path="/all-categories" element={<Categories />} />
+        <Route path="/help" element={<VideoHelpSection />} />
         <Route path="/soon" element={<ComingSoon />} />
         <Route
           path="/book/:id"
