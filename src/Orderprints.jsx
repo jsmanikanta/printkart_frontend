@@ -101,12 +101,15 @@ export default function OrderPrints() {
       case "spiral":
       case "stick":
         bindingCost = 20 * copies;
+        originalPrice=bindingCost+printcost;
         break;
       case "soft":
         bindingCost = 25 * copies;
+        originalPrice=bindingCost+printcost;
         break;
       case "book":
         bindingCost = 150 * copies;
+        originalPrice=bindingCost+printcost;
         break;
       default:
         bindingCost = 0;
