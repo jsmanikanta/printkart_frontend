@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./styles/styles.css";
 function BottomNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const soon=()=>{
+  const soon = () => {
     navigate("/soon");
-  }
-  const cat=()=>{
-    navigate("/all-categories")
-  }
+  };
+  const cat = () => {
+    navigate("/all-categories");
+  };
+  const [clicked, setClicked] = useState(false);
+
+  const handlePrintClick = () => {
+    setClicked(true);
+    setTimeout(() => setClicked(false), 300);
+    navigate("/orderprints");
+  };
+
+  const printAnimation = {
+    animation: "pulseScale 1s infinite",
+    border: "none",
+  };
 
   const isActive = (path) => pathname === path;
 
@@ -53,10 +65,10 @@ function BottomNav() {
 
       <button
         className={`nav-item ${isActive("/orderprints") ? "active" : ""}`}
-        onClick={() => navigate("/orderprints")}
+        onClick={handlePrintClick}
         aria-label="Print"
       >
-        <img src="/images/print-icon.png" alt="Print" />
+        <img src="/images/print-icon.png" alt="Print" style={printAnimation} />
         <span>Print</span>
       </button>
     </nav>
