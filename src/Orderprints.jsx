@@ -383,7 +383,7 @@ export default function OrderPrints() {
                 </p>
                 {activeTab === "student" && (
                   <p>
-                    Discount (10% on Prints): <span>-₹{discountPrice}</span>
+                    Discount : 10%
                   </p>
                 )}
                 <p>

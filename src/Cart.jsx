@@ -4,6 +4,8 @@ import "./styles/accounts.css";
 import Loader from "./Loading";
 import { api_path } from "../data";
 import EmptyBag from "../public/images/openbag.jpg";
+import prints from "../public/images/spiral-binding-icon.png";
+import { useNavigate } from "react-router-dom";
 
 function CartMobile() {
   const [user, setUser] = useState(null);
@@ -37,14 +39,7 @@ function CartMobile() {
     fetchUserProfile();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  };
-
-  const handleStartShopping = () => {
-    window.location.href = "/printzone";
-  };
+  const goToPrints = () => navigate("/orderprints");
 
   if (loading)
     return (
@@ -83,7 +78,7 @@ function CartMobile() {
             <p className="empty-bag-text">
               Don't leave me empty like this 😢 — add something cute!
             </p>
-            <button className="cart-blue-btn" onClick={handleStartShopping}>
+            <button className="cart-blue-btn" onClick={goToPrints}>
               Start Shopping
             </button>
           </div>
@@ -97,10 +92,7 @@ function CartMobile() {
               >
                 <div className="cart-card-row">
                   <div className="cart-card-icon-area" />
-                  <img
-                    src="../public/images/spiral-binding-icon.png"
-                    style={{ height: 50, width: 50 }}
-                  />
+                  <img src={prints} style={{ height: 50, width: 50 }} />
                   <div>
                     <div className="cart-card-title">Printouts</div>
                     <div className="cart-card-meta">
@@ -132,9 +124,6 @@ function CartMobile() {
           <div className="nav-icon">Category</div>
           <div className="nav-icon">Print</div>
         </nav>
-        <button className="logout" onClick={handleLogout}>
-          Log Out
-        </button>
       </div>
     );
   }

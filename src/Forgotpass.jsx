@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./styles/forgotpass.css";
 import logoImg from "../public/images/logo.png";
+import { useNavigate } from "react-router-dom";
 import { api_path } from "../data";
 import Loader from "./Loading";
 
@@ -16,7 +17,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     setError("");
     setSuccess("");
-
+    const goToLogin = () => navigate("/login");
     if (!identifier || !newPassword || !confirm) {
       setError("All fields are required.");
       return;
@@ -88,7 +89,7 @@ export default function ForgotPassword() {
             <button className="resetpw-btn" type="submit" disabled={loading}>
               {loading ? "Saving..." : "Reset Password"}
             </button>
-            <div className="resetpw-back">
+            <div className="resetpw-back" onClick={goToLogin}>
               <a href="/login">Back to Login</a>
             </div>
           </form>
