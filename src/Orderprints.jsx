@@ -8,9 +8,11 @@ import qrImg from "/images/qr.jpg";
 const colleges = [
   "Anil Neerukonda Institute of Technology & Sciences (ANITS), Visakhapatnam",
   "Andhra University, Waltair Junction, Visakhapatnam",
-  "G.V.P COLLEGE OF ENGINEERING,Kommadi, Visakhapatnam",
-  "Sims College in Madhurawada, Visakhapatnam",
+  "Gayatri Vidya Parishad College of Engineering (GVPE),Kommadi, Visakhapatnam",
+  "SIMS College Madhurawada, Visakhapatnam",
   "Dr. Lankapalli Bullayya College of Engineering,Visakhapatnam",
+  "Avanti Institute of Engineering & Technology, Vizianagaram",
+  "Nadimpalli Satyanarayana Raju Institute of Technology (NSRIT), Visakhapatnam",
 ];
 const COLOR_OPTIONS = [
   { value: "b/w", label: "Black & White" },
@@ -368,7 +370,18 @@ export default function OrderPrints() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+            <p>
+              For bulk or custom requests, get in touch at {""}
+              <a
+                href="tel:8074177249"
+                style={{ color: "#2980b9", textDecoration: "underline" }}
+              >
+                 8074177249
+              </a>
+              .
+            </p>
             <img className="qr" src={qrImg} alt="QR Code" />
+            <span>UPI i'd: papukumarsahu686-2@oksbi</span> <br />
             <input
               className="input"
               placeholder="Transaction ID"
@@ -381,11 +394,7 @@ export default function OrderPrints() {
                 <p>
                   Original Price: <span>₹{originalPrice}</span>
                 </p>
-                {activeTab === "student" && (
-                  <p>
-                    Discount : 10%
-                  </p>
-                )}
+                {activeTab === "student" && <p>Discount : 10%</p>}
                 <p>
                   Final Price: <span>₹{finalPrice}</span>
                 </p>

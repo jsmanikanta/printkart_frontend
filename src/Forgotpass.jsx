@@ -12,7 +12,7 @@ export default function ForgotPassword() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const goToLogin = () => navigate("/login");
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
