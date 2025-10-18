@@ -101,15 +101,15 @@ export default function OrderPrints() {
       case "spiral":
       case "stick":
         bindingCost = 20 * copies;
-        originalPrice=bindingCost+printcost;
+      
         break;
       case "soft":
         bindingCost = 25 * copies;
-        originalPrice=bindingCost+printcost;
+        
         break;
       case "book":
         bindingCost = 150 * copies;
-        originalPrice=bindingCost+printcost;
+       
         break;
       default:
         bindingCost = 0;
@@ -438,10 +438,12 @@ export default function OrderPrints() {
               </div>
             )}
             <div className="total-cost-box">
-              <p>Original Price:
+              <p>Original Price of prints:
                 <span>₹{originalPrice}</span>
               </p>
               <span>Discount: 10%</span>
+              <p>Discount price of prints</p>
+              <span>₹{discountedPrintCost}</span>
               <p>
                 Final Price: <span>₹{finalPrice}</span>
               </p>
