@@ -29,10 +29,10 @@ const BINDING_OPTIONS = [
   { value: "soft", label: "Soft Binding" },
   { value: "book", label: "Book Binding" },
 ];
-
 export default function OrderPrints() {
   const navigate = useNavigate();
 
+  // States
   const [activeTab, setActiveTab] = useState("student");
   const [file, setFile] = useState(null);
   const [pages, setPages] = useState(0);
@@ -44,6 +44,7 @@ export default function OrderPrints() {
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
   const [transctionid, setTransctionid] = useState("");
+  const [transactionImage, setTransactionImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
@@ -52,7 +53,6 @@ export default function OrderPrints() {
   const [year, setYear] = useState("");
   const [section, setSection] = useState("");
   const [originalPrice, setOriginalPrice] = useState(0);
-  const [discountPrice, setDiscountPrice] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);
 
   // PDF page detection
@@ -76,11 +76,10 @@ export default function OrderPrints() {
     loadPdfPages();
   }, [file]);
 
-  // Price calculation
+  // Price calculation with 10% student discount on print cost only
   useEffect(() => {
     if (!pages || pages <= 0) {
       setOriginalPrice(0);
-      setDiscountPrice(0);
       setFinalPrice(0);
       return;
     }
@@ -91,9 +90,12 @@ export default function OrderPrints() {
     else if (color === "colour" && sides === "1") pricePerPage = 6;
 
     const printCost = pricePerPage * pages * copies;
-    setOriginalPrice(Math.ceil(printCost));
-    const discount = activeTab === "student" ? 0.1 * printCost : 0;
-    setDiscountPrice(Math.ceil(discount));
+    setOriginalPrice(printCost);
+
+    // Student discount 10%
+    let discountedPrintCost = printCost;
+    if (activeTab === "student") discountedPrintCost = printCost * 0.1;
+
     let bindingCost = 0;
     switch (binding) {
       case "spiral":
@@ -109,11 +111,12 @@ export default function OrderPrints() {
       default:
         bindingCost = 0;
     }
-    const finalAmount = Math.ceil(printCost - discount + bindingCost);
+
+    const finalAmount = Math.ceil(discountedPrintCost + bindingCost);
     setFinalPrice(finalAmount);
   }, [color, sides, binding, pages, copies, activeTab]);
 
-  // File input
+  // File Input handler
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
     if (!uploaded) {
@@ -130,46 +133,49 @@ export default function OrderPrints() {
     setFile(uploaded);
   };
 
-  // Place order
+  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!file) return alert("Please upload a PDF file.");
-    if (!pages || pages <= 0)
-      return alert("Could not determine number of pages.");
-    if (!transctionid.trim()) return alert("Transaction ID is required.");
-    if (!name.trim() || !mobile.trim())
-      return alert("Please fill in all personal details.");
+    if (!file) return alert("Please upload a PDF.");
+    if (!pages || pages <= 0) return alert("PDF page count unavailable.");
+    if (!name.trim() || !mobile.trim()) return alert("Fill personal details.");
     if (
       activeTab === "student" &&
       (!college.trim() || !year.trim() || !section.trim() || !rollno.trim())
-    ) {
+    )
       return alert(
-        "Please fill college, year, section, and registration number for student orders."
+        "Fill college, year, section, registration number for students."
       );
-    }
-    if (activeTab === "others" && !address.trim()) {
-      return alert("Please fill delivery address for home orders.");
-    }
+    if (activeTab === "others" && !address.trim())
+      return alert("Fill delivery address for home delivery.");
+
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Please log in first.");
       navigate("/login");
       return;
     }
+
     setLoading(true);
+
     try {
       const formData = new FormData();
       formData.append("file", file);
+      if (transactionImage) {
+        formData.append("transctionid", transactionImage);
+      } else {
+        formData.append("transctionid", transctionid);
+      }
       formData.append("color", color);
       formData.append("sides", sides);
       formData.append("binding", binding);
       formData.append("copies", copies);
       formData.append("description", description.trim());
-      formData.append("transctionid", transctionid.trim());
       formData.append("name", name.trim());
       formData.append("mobile", mobile.trim());
       formData.append("originalprice", Math.ceil(originalPrice));
-      formData.append("discountprice", Math.ceil(finalPrice));
+      formData.append("discountprice", finalPrice);
+
       if (activeTab === "student") {
         formData.append("college", college.trim());
         formData.append("year", year.trim());
@@ -179,6 +185,7 @@ export default function OrderPrints() {
       if (activeTab === "others") {
         formData.append("address", address.trim());
       }
+
       const response = await fetch(
         `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
         {
@@ -187,15 +194,17 @@ export default function OrderPrints() {
           body: formData,
         }
       );
+
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
         throw new Error(data.message || "Order failed");
       }
+
       alert("Order placed successfully!");
       navigate("/prints-cart");
-    } catch (err) {
-      alert(err.message || "Error placing order.");
-      console.error("Error placing order:", err);
+    } catch (e) {
+      alert(e.message || "Error placing order.");
+      console.error(e);
     } finally {
       setLoading(false);
     }
@@ -229,6 +238,7 @@ export default function OrderPrints() {
               Order
             </h2>
             <input
+              type="text"
               className="input"
               placeholder="Full Name"
               value={name}
@@ -236,6 +246,7 @@ export default function OrderPrints() {
               required
             />
             <input
+              type="tel"
               className="input"
               placeholder="Mobile Number"
               value={mobile}
@@ -258,20 +269,23 @@ export default function OrderPrints() {
                   ))}
                 </select>
                 <input
+                  type="text"
                   className="input"
-                  placeholder="Year"
+                  placeholder="Studying Year"
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
                   required
                 />
                 <input
+                  type="text"
                   className="input"
-                  placeholder="Section"
+                  placeholder="Branch (e.g., CSE, ECE)"
                   value={section}
                   onChange={(e) => setSection(e.target.value)}
                   required
                 />
                 <input
+                  type="text"
                   className="input"
                   placeholder="Registration Number"
                   value={rollno}
@@ -290,16 +304,30 @@ export default function OrderPrints() {
               />
             )}
             <div className="input-row">
-              <label className="order-label" htmlFor="pdfFile">
+              <label htmlFor="pdfFile" className="order-label">
                 Upload PDF
               </label>
               <input
                 id="pdfFile"
-                className="input"
                 type="file"
                 accept="application/pdf"
-                onChange={handleFileChange}
+                onChange={(e) => {
+                  const uploaded = e.target.files[0];
+                  if (!uploaded) {
+                    setFile(null);
+                    setPages(0);
+                    setPdfError("");
+                    return;
+                  }
+                  if (uploaded.type !== "application/pdf") {
+                    alert("Only PDF files are allowed.");
+                    e.target.value = null;
+                    return;
+                  }
+                  setFile(uploaded);
+                }}
                 style={{ display: "none" }}
+                required
               />
               <label
                 htmlFor="pdfFile"
@@ -319,6 +347,7 @@ export default function OrderPrints() {
             {pages > 0 && (
               <div className="pdf-pages-info">Pages detected: {pages}</div>
             )}
+
             <div className="input-row">
               <select
                 value={color}
@@ -356,8 +385,8 @@ export default function OrderPrints() {
                 ))}
               </select>
               <input
-                className="input"
                 type="number"
+                className="input"
                 min={1}
                 value={copies}
                 onChange={(e) => setCopies(Number(e.target.value))}
@@ -371,35 +400,49 @@ export default function OrderPrints() {
               onChange={(e) => setDescription(e.target.value)}
             />
             <p>
-              For bulk or custom requests, get in touch at {""}
+              For bulk or custom requests, get in touch at{" "}
               <a
                 href="tel:8074177249"
                 style={{ color: "#2980b9", textDecoration: "underline" }}
               >
-                 8074177249
+                8074177249
               </a>
               .
             </p>
             <img className="qr" src={qrImg} alt="QR Code" />
-            <span>UPI i'd: papukumarsahu686-2@oksbi</span> <br />
+            <span>UPI id: papukumarsahu686-2@oksbi</span>
+            <br />
+            <label>Transaction ID (Upload payment Screenshot)</label>
             <input
-              className="input"
-              placeholder="Transaction ID"
-              value={transctionid}
-              onChange={(e) => setTransctionid(e.target.value)}
-              required
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setTransactionImage(e.target.files[0]);
+                  setTransctionid(""); // clear text input if image selected
+                } else {
+                  setTransactionImage(null);
+                }
+              }}
+              required={!transctionid}
             />
-            {pages > 0 && (
-              <div className="total-cost-box">
-                <p>
-                  Original Price: <span>₹{originalPrice}</span>
-                </p>
-                {activeTab === "student" && <p>Discount : 10%</p>}
-                <p>
-                  Final Price: <span>₹{finalPrice}</span>
-                </p>
+            {transactionImage && (
+              <div>
+                Selected file: {transactionImage.name}
+                <button type="button" onClick={() => setTransactionImage(null)}>
+                  Remove
+                </button>
               </div>
             )}
+            <div className="total-cost-box">
+              <p>Original Price:
+                <span>₹{originalPrice}</span>
+              </p>
+              <span>Discount: 10%</span>
+              <p>
+                Final Price: <span>₹{finalPrice}</span>
+              </p>
+            </div>
             <button
               className="order-btn"
               type="submit"

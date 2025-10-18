@@ -5,6 +5,12 @@ import "./styles/categories.css";
 function Categories() {
   const [active, setActive] = useState("books");
   const navigate = useNavigate();
+  const soon=()=>{
+    navigate("/soon");
+  }
+  const prints=()=>{
+    navigate("/orderprints");
+  }
 
   const categories = [
     {
@@ -103,7 +109,7 @@ function Categories() {
               <div
                 className="category-item"
                 key={cat.label}
-                onClick={() => navigate(cat.route)}>
+                onClick={soon}>
                 <img
                   src={cat.image}
                   alt={cat.label}
@@ -124,7 +130,7 @@ function Categories() {
               <div
                 className="printout-item"
                 key={p.label}
-                onClick={() => navigate(p.route)}>
+                onClick={prints}>
                 <img
                   src={p.image}
                   alt={p.label}

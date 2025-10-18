@@ -7,6 +7,9 @@ function BottomNav() {
   const soon=()=>{
     navigate("/soon");
   }
+  const cat=()=>{
+    navigate("/all-categories")
+  }
 
   const isActive = (path) => pathname === path;
 
@@ -41,7 +44,7 @@ function BottomNav() {
 
       <button
         className={`nav-item ${isActive("/all-categories") ? "active" : ""}`}
-        onClick={() => navigate("/soon")}
+        onClick={cat}
         aria-label="Category"
       >
         <img src="/images/category-icon.png" alt="Category" />

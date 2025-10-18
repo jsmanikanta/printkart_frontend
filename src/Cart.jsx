@@ -38,7 +38,7 @@ function CartMobile() {
     };
     fetchUserProfile();
   }, []);
-
+  const navigate = useNavigate();
   const goToPrints = () => navigate("/orderprints");
 
   if (loading)
@@ -221,7 +221,13 @@ function CartMobile() {
         </div>
         <div className="detail-field">
           <span className="detail-label">Transaction ID:</span>{" "}
-          {selectedOrder.transctionid}
+          <a
+            href={selectedOrder.transactionid}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            view image
+          </a>
         </div>
         <div className="detail-field">
           <span className="detail-label">Order Date:</span>{" "}

@@ -15,7 +15,7 @@ function Footer() {
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "space-between",
-          gap: "40px",
+          gap: "5px",
         }}
       >
         <div
@@ -69,30 +69,27 @@ function Footer() {
             </div>
           </div>
         </div>
-
-        {/* Contacts section */}
         <div
           className="footer-section"
           style={{ flex: "1 1 200px", minWidth: 150 }}
         >
           <h4>Contacts</h4>
           <div style={{ lineHeight: "0.8" }}>
-            <div style={{ marginTop: 10 }}>
-              <strong>Ayush Kumar </strong>
-              <a href="tel: +91 79892 21628">+91 79892 21628</a>
-            </div>
-            <div style={{ marginTop: 10 }}>
-              <strong>Praneeth </strong>
-              <a href="tel: +91 80741 77294">+91 80741 77294</a>
-            </div>{" "}
-            <br />
             <div>
               <strong>Hemanth Rishi </strong>
               <a href="tel: +91 91824 15750">+91 91824 15750</a>
             </div>
             <div style={{ marginTop: 10 }}>
+              <strong>Praneeth </strong>
+              <a href="tel: +91 80741 77294">+91 80741 77294</a>
+            </div>
+            <div style={{ marginTop: 10 }}>
               <strong>Lokesh{"  "}</strong>
               <a href="+91 80741 77294">+91 80741 77294</a>
+            </div>
+            <div style={{ marginTop: 10 }}>
+              <strong>Ayush Kumar </strong>
+              <a href="tel: +91 79892 21628">+91 79892 21628</a>
             </div>
           </div>
         </div>

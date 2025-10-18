@@ -180,15 +180,11 @@ body {
   .logo {
     font-size: 13px;
   }
-  .user-avatar,
-  .help-icon,
-  .cart-icon {
+  .user-avatar, .help-icon, .cart-icon {
     width: 15px;
     height: 15px;
   }
-  .login-text,
-  .help-text,
-  .cart-text {
+  .login-text, .help-text, .cart-text {
     font-size: 10px;
   }
 }
@@ -664,8 +660,7 @@ body {
   background-color: rgba(0, 0, 0, 0.73);
   color: #ffffff;
   padding: 20px 8px;
-  margin-top: 20px;
-  margin-bottom: 25px;
+  margin-bottom: 50px;
 }
 
 .footer-content {
@@ -716,7 +711,6 @@ body {
   color: #ffffff;
   line-height: 1.21;
   margin-bottom: 2px;
-  cursor: pointer;
 }
 
 .bottom-nav {

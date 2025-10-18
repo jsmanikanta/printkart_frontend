@@ -13,8 +13,7 @@ function Header() {
   const goToLogin = () => navigate("/login");
   const goToCart = () => navigate("/prints-cart");
   const goToHome = () => navigate("/");
-  const goToHelp = () => navigate("/help");
-  const goToLocations = () => navigate("/location");
+  const goToHelp = () => navigate("/soon");
 
   // Fetch user profile on mount
   useEffect(() => {

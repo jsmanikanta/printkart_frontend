@@ -106,7 +106,7 @@ export default function AdminPrints() {
             <th>Roll Number</th>
             <th>College Name</th>
             <th>Year</th>
-            <th>Section</th>
+            <th>Branch</th>
             <th>Address</th>
             <th>Description</th>
             <th>Transaction ID</th>
