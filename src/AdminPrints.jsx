@@ -111,7 +111,6 @@ export default function AdminPrints() {
             <th>Description</th>
             <th>Transaction ID</th>
             <th>Order Date</th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -156,7 +155,6 @@ export default function AdminPrints() {
                   ? new Date(order.orderDate).toLocaleString()
                   : "-"}
               </td>
-              <td>{order.status}</td>
             </tr>
           ))}
         </tbody>
