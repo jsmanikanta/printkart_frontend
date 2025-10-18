@@ -43,7 +43,7 @@ function HomePage() {
       setLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
-        setLoading(false); // <--- ADD THIS LINE
+        setLoading(false);
         return;
       }
       try {
@@ -82,7 +82,7 @@ function HomePage() {
           <section className="hero-section">
             <div className="hero-background"></div>
             <div className="hero-content">
-              <div className="hero-text" >
+              <div className="hero-text">
                 <h2>
                   Buy Sell Old Books.
                   <br />
@@ -102,7 +102,6 @@ function HomePage() {
               <div
                 className="book-card school-books"
                 style={{ background: "#6BB6FF" }}
-                
               >
                 <div className="book-info " onClick={soon}>
                   <h4>School Books</h4>
@@ -195,14 +194,14 @@ function HomePage() {
                   src="/images/spiral-binding-icon.png"
                   alt="Spiral binding"
                 />
-                <span>Spiral binding</span>
+                <span>B&W or color</span>
               </div>
               <div
                 className="printout-item"
                 onClick={() => navigate("/assignments")}
               >
                 <img src="/images/assignments-icon.png" alt="Assignments" />
-                <span>Assignments</span>
+                <span>Spiral binding</span>
               </div>
               <div
                 className="printout-item"
@@ -212,14 +211,14 @@ function HomePage() {
                   src="/images/project-report-icon.png"
                   alt="Project Report"
                 />
-                <span>Project Report</span>
+                <span> Assignment</span>
               </div>
               <div
                 className="printout-item"
                 onClick={() => navigate("/bw-color")}
               >
                 <img src="/images/bw-color-icon.png" alt="BW Color" />
-                <span>BW Color</span>
+                <span>project Report</span>
               </div>
             </div>
           </section>
