@@ -29,10 +29,10 @@ const BINDING_OPTIONS = [
   { value: "soft", label: "Soft Binding" },
   { value: "book", label: "Book Binding" },
 ];
+
 export default function OrderPrints() {
   const navigate = useNavigate();
 
-  // States
   const [activeTab, setActiveTab] = useState("student");
   const [file, setFile] = useState(null);
   const [pages, setPages] = useState(0);
@@ -53,9 +53,11 @@ export default function OrderPrints() {
   const [year, setYear] = useState("");
   const [section, setSection] = useState("");
   const [originalPrice, setOriginalPrice] = useState(0);
-  const [finalPrice, setFinalPrice] = useState(0);
+  const [discountPrice, setDiscountPrice] = useState(0);
+  const [printCost, setPrintCost] = useState(0);
+  const [discountValue, setDiscountValue] = useState(0);
+  const [bindingCost, setBindingCost] = useState(0);
 
-  // PDF page detection
   useEffect(() => {
     if (!file) {
       setPages(0);
@@ -79,41 +81,51 @@ export default function OrderPrints() {
   // Price calculation with 10% student discount on print cost only
   useEffect(() => {
     if (!pages || pages <= 0) {
+      setPrintCost(0);
+      setBindingCost(0);
       setOriginalPrice(0);
-      setFinalPrice(0);
+      setDiscountValue(0);
+      setDiscountPrice(0);
       return;
     }
+
     let pricePerPage = 0;
     if (color === "b/w" && sides === "2") pricePerPage = 1;
     else if (color === "colour" && sides === "2") pricePerPage = 2.5;
     else if (color === "b/w" && sides === "1") pricePerPage = 1.5;
     else if (color === "colour" && sides === "1") pricePerPage = 6;
 
-    const printCost = pricePerPage * pages * copies;
-    setOriginalPrice(printCost);
+    const printAmount = pricePerPage * pages * copies;
+    setPrintCost(printAmount);
 
-    // Student discount 10%
-    let discountedPrintCost = printCost;
-    if (activeTab === "student") discountedPrintCost = printCost * 0.1;
-
-    let bindingCost = 0;
+    let bindingAmount = 0;
     switch (binding) {
       case "spiral":
+        bindingAmount = 15 * copies;
+        break;
       case "stick":
-        bindingCost = 20 * copies;
+        bindingAmount = 20 * copies;
         break;
       case "soft":
-        bindingCost = 25 * copies;
+        bindingAmount = 25 * copies;
         break;
       case "book":
-        bindingCost = 150 * copies;
+        bindingAmount = 150 * copies;
         break;
       default:
-        bindingCost = 0;
+        bindingAmount = 0;
     }
+    setBindingCost(bindingAmount);
 
-    const finalAmount = Math.ceil(discountedPrintCost + bindingCost);
-    setFinalPrice(finalAmount);
+    const originalTotal = printAmount + bindingAmount;
+    setOriginalPrice(originalTotal);
+
+    let discountAmount = 0;
+    if (activeTab === "student") discountAmount = printAmount * 0.25;
+    setDiscountValue(discountAmount);
+
+    const finalTotal = Math.ceil(printAmount - discountAmount + bindingAmount);
+    setDiscountPrice(finalTotal);
   }, [color, sides, binding, pages, copies, activeTab]);
 
   // File Input handler
@@ -174,7 +186,7 @@ export default function OrderPrints() {
       formData.append("name", name.trim());
       formData.append("mobile", mobile.trim());
       formData.append("originalprice", Math.ceil(originalPrice));
-      formData.append("discountprice", finalPrice);
+      formData.append("discountprice", discountPrice);
 
       if (activeTab === "student") {
         formData.append("college", college.trim());
@@ -311,21 +323,7 @@ export default function OrderPrints() {
                 id="pdfFile"
                 type="file"
                 accept="application/pdf"
-                onChange={(e) => {
-                  const uploaded = e.target.files[0];
-                  if (!uploaded) {
-                    setFile(null);
-                    setPages(0);
-                    setPdfError("");
-                    return;
-                  }
-                  if (uploaded.type !== "application/pdf") {
-                    alert("Only PDF files are allowed.");
-                    e.target.value = null;
-                    return;
-                  }
-                  setFile(uploaded);
-                }}
+                onChange={handleFileChange}
                 style={{ display: "none" }}
                 required
               />
@@ -434,15 +432,21 @@ export default function OrderPrints() {
                 </button>
               </div>
             )}
-            <div className="total-cost-box">
-              <p>Original Price:
-                <span>₹{originalPrice}</span>
-              </p>
-              <span>Discount: 10%</span>
-              <p>
-                Final Price: <span>₹{finalPrice}</span>
-              </p>
-            </div>
+            {file && pages > 0 && (
+              <div className="total-cost-box">
+                <p>
+                  Original Price: ₹{originalPrice}
+                  <span style={{ fontSize: "smaller" }}>
+                    (Prints ₹{printCost} + Binding ₹{bindingCost})
+                  </span>
+                </p>
+                <p>
+                  10% Student Discount on Prints: -₹{discountValue.toFixed(2)}
+                </p>
+                <p>New Price: ₹{discountPrice}</p>
+              </div>
+            )}
+
             <button
               className="order-btn"
               type="submit"
