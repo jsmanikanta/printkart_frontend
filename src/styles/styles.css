@@ -47,11 +47,6 @@
   color: #f27909; /* highlight to match theme */
 }
 
-.phone-container {
-  /* ensure content is not hidden under fixed nav */
-  padding-bottom: 80px;
-}
-
 /* Global default font */
 body {
   font-family: "Inter", sans-serif;
@@ -671,6 +666,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+  font-style: un;
 }
 
 .footer-section h4 {
@@ -688,6 +684,7 @@ body {
   color: #ffffff;
   line-height: 1.21;
   margin-bottom: 5px;
+  
 }
 
 .category-links {
@@ -715,13 +712,14 @@ body {
   color: #ffffff;
   line-height: 1.21;
   margin-bottom: 2px;
+  text-decoration: underline;
 }
 
 .bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%; /* Full width on phone */
+  width: 100%; 
   background-color: #ffffff;
   border-top: 1px solid #f0f0f0;
   display: flex;
