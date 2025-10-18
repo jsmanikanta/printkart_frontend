@@ -116,6 +116,7 @@ export default function OrderPrints() {
     }
 
     const finalAmount = Math.ceil(discountedPrintCost + bindingCost);
+    originalPrice+=bindingCost;
     setFinalPrice(finalAmount);
   }, [color, sides, binding, pages, copies, activeTab]);
 
@@ -422,7 +423,7 @@ export default function OrderPrints() {
               onChange={(e) => {
                 if (e.target.files && e.target.files[0]) {
                   setTransactionImage(e.target.files[0]);
-                  setTransctionid(""); // clear text input if image selected
+                  setTransctionid(""); 
                 } else {
                   setTransactionImage(null);
                 }
@@ -442,8 +443,6 @@ export default function OrderPrints() {
                 <span>₹{originalPrice}</span>
               </p>
               <span>Discount: 10%</span>
-              <p>Discount price of prints</p>
-              <span>₹{discountedPrintCost}</span>
               <p>
                 Final Price: <span>₹{finalPrice}</span>
               </p>
