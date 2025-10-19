@@ -21,7 +21,7 @@ function Signup() {
     email: "",
     password: "",
     confirm: "",
-    role: "user",
+    
   });
 
   const handleChange = (e) =>
