@@ -159,10 +159,11 @@ export default function OrderPrints() {
       );
     if (activeTab === "others" && !address.trim())
       return alert("Fill delivery address for home delivery.");
-    if (!/^d{10}$/.test(mobile)) {
-    alert("Please enter your 10 digits mobile number");
-    return;
-    }
+    if (!/^d{10}$/.test(mobile.trim())) {
+  alert("Please enter your 10 digits mobile number");
+  return;
+}
+
 
     const token = localStorage.getItem("token");
     if (!token) {
