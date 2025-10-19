@@ -198,14 +198,14 @@ function HomePage() {
               </div>
               <div
                 className="printout-item"
-                onClick={() => navigate("/assignments")}
+                onClick={() => navigate("/orderprints")}
               >
                 <img src="/images/assignments-icon.png" alt="Assignments" />
                 <span>Spiral binding</span>
               </div>
               <div
                 className="printout-item"
-                onClick={() => navigate("/project-reports")}
+                onClick={() => navigate("/orderprints")}
               >
                 <img
                   src="/images/project-report-icon.png"
@@ -215,7 +215,7 @@ function HomePage() {
               </div>
               <div
                 className="printout-item"
-                onClick={() => navigate("/bw-color")}
+                onClick={() => navigate("/orderprints")}
               >
                 <img src="/images/bw-color-icon.png" alt="BW Color" />
                 <span>project Report</span>
