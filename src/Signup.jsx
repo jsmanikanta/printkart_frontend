@@ -33,10 +33,10 @@ function Signup() {
       alert("Passwords do not match!");
       return;
     }
-    if (!/^d{10}$/.test(mobile)) {
-    alert("Please enter your 10 digits mobile number");
-    return;
-    }
+    if (!/^d{10}$/.test(inputs.mobileNumber)) {
+  alert("Please enter your 10-digit mobile number");
+  return;
+}
     setLoading(true);
     try {
       const response = await axios.post(`${api_path}/user/register`, {
