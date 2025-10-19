@@ -125,6 +125,9 @@
   height: 54px;
   margin-right: 16px;
 }
+.category-item small{
+  font-size: 0.75rem;
+}
 
 .printout-categories {
   display: flex;

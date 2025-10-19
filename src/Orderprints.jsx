@@ -150,6 +150,11 @@ export default function OrderPrints() {
     if (!file) return alert("Please upload a PDF.");
     if (!pages || pages <= 0) return alert("PDF page count unavailable.");
     if (!name.trim() || !mobile.trim()) return alert("Fill personal details.");
+    const mobileNumberPattern = /^\d{10}$/;
+    if (!mobileNumberPattern.test(mobile)) {
+      alert("Please enter a valid 10-digit mobile number.");
+      return;
+    }
     if (
       activeTab === "student" &&
       (!college.trim() || !year.trim() || !section.trim() || !rollno.trim())
@@ -261,7 +266,12 @@ export default function OrderPrints() {
               className="input"
               placeholder="Mobile Number"
               value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d{0,10}$/.test(value)) {
+                  setMobile(value);
+                }
+              }}
               maxLength={10}
               required
             />

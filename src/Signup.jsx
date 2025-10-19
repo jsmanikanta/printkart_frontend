@@ -21,7 +21,6 @@ function Signup() {
     email: "",
     password: "",
     confirm: "",
-    role: "user",
   });
 
   const handleChange = (e) =>
@@ -29,6 +28,13 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const mobileNumberPattern = /^\d{10}$/;
+    if (!mobileNumberPattern.test(inputs.mobileNumber)) {
+      alert("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
     if (inputs.password !== inputs.confirm) {
       alert("Passwords do not match!");
       return;
@@ -98,15 +104,6 @@ function Signup() {
                 required
                 maxLength={10}
               />
-              <select
-                name="role"
-                value={inputs.role}
-                onChange={handleChange}
-                required
-              >
-                <option value="user">User</option>
-                <option value="seller">Seller</option>
-              </select>
 
               <input
                 type="password"
