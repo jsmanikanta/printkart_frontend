@@ -114,6 +114,11 @@ function CartMobile() {
                 <div className="cart-card-link">View Details &rarr;</div>
               </div>
             ))}
+            {selectedOrder.status && (
+                <div>
+                  <strong>Order Status:</strong> {selectedOrder.status} <br />
+                </div>
+              )}
           </div>
         )}
 
