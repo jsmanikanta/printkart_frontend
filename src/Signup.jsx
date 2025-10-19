@@ -28,15 +28,28 @@ function Signup() {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (inputs.password !== inputs.confirm) {
-      alert("Passwords do not match!");
-      return;
-    }
-    if (!/^d{10}$/.test(inputs.mobileNumber)) {
-  alert("Please enter your 10-digit mobile number");
-  return;
-}
+  e.preventDefault();
+
+  const trimmedMobile = inputs.mobileNumber.trim(); // remove hidden spaces
+
+  if (inputs.password !== inputs.confirm) {
+    alert("Passwords do not match!");
+    return;
+  }
+
+  if (!/^d{10}$/.test(trimmedMobile)) {
+    alert("Please enter a valid 10-digit mobile number");
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const response = await axios.post(`${api_path}/user/register`, {
+      fullname: inputs.fullname,
+      mobileNumber: trimmedMobile,
+      email: inputs.email,
+      password: inputs.password,
+    });
     setLoading(true);
     try {
       const response = await axios.post(`${api_path}/user/register`, {
