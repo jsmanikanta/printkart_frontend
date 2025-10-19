@@ -33,6 +33,10 @@ function Signup() {
       alert("Passwords do not match!");
       return;
     }
+    if (!/^d{10}$/.test(mobile)) {
+    alert("Please enter your 10 digits mobile number");
+    return;
+    }
     setLoading(true);
     try {
       const response = await axios.post(`${api_path}/user/register`, {
@@ -90,7 +94,7 @@ function Signup() {
                 autoComplete="email"
               />
               <input
-                type="text"
+                type="tel"
                 name="mobileNumber"
                 placeholder="Enter Mobile Number"
                 value={inputs.mobileNumber}
