@@ -3,16 +3,11 @@ import React from "react";
 function VideoHelpSection() {
   const videos = [
     {
-      src: "/videos/welcome.mp4",
-      title: "Welcome & Navigation",
-      about: "A quick intro showing how to move around the site."
-    },
-    {
-      src: "/videos/order-print.mp4",
+      src: "../public/images/orderprints.mp4",
       title: "Ordering Prints",
       about: "How to upload your file and complete a print order."
     },
-    // Add more video objects as needed
+    
   ];
 
   return (
@@ -25,6 +20,7 @@ function VideoHelpSection() {
           align-items: center;
           width: 100%;
           margin-bottom: 32px;
+          padding-top:10px;
         }
         .help-video-block {
           width: 100%;

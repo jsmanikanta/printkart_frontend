@@ -92,13 +92,13 @@ function Footer() {
               <a href="tel: +91 79892 21628">+91 79892 21628</a>
             </div>
           </div>
-          <div><br />
-          <strong>Mail Us: </strong>
-          <a href="mailto:printkart0001@gmail.com">printkart0001@gmail.com</a>
-        </div>
+          <div>
+            <br />
+          </div>
         </div>
       </div>
-
+      <strong>Mail Us: </strong>
+      <a href="mailto:printkart0001@gmail.com">printkart0001@gmail.com</a>
       <div className="footer-bottom">
         <p>© 2025 My Book Hub. All rights reserved.</p>
       </div>

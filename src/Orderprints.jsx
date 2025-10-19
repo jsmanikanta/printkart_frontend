@@ -450,7 +450,7 @@ export default function OrderPrints() {
                   </span>
                 </p>
                 <p>
-                  10% Student Discount on Prints: -₹{discountValue.toFixed(2)}
+                  25% Student Discount on Prints: -₹{discountValue.toFixed(2)}
                 </p>
                 <p>New Price: ₹{discountPrice}</p>
               </div>
