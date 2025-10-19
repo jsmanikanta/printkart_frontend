@@ -102,15 +102,7 @@ function Signup() {
                 required
                 maxLength={10}
               />
-              <select
-                name="role"
-                value={inputs.role}
-                onChange={handleChange}
-                required
-              >
-                <option value="user">User</option>
-                <option value="seller">Seller</option>
-              </select>
+   
 
               <input
                 type="password"
