@@ -3,7 +3,7 @@ import React from "react";
 function VideoHelpSection() {
   const videos = [
     {
-      src: "../public/images/orderprints.mp4",
+      src: "../public/images/VID-20251019-WA0004.mp4",
       title: "Ordering Prints",
       about: "How to upload your file and complete a print order."
     },
