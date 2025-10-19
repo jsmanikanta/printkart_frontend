@@ -5,15 +5,15 @@ function VideoHelpSection() {
     {
       src: "../public/images/orderprints.mp4",
       title: "Ordering Prints",
-      about: "How to upload your file and complete a print order."
+      about: "How to upload your file and complete a print order.",
     },
-    
   ];
 
   return (
     <div>
       <style>{`
         .help-video-section-list {
+          padding-top:10px;
           display: flex;
           flex-direction: column;
           gap: 32px;
@@ -37,6 +37,7 @@ function VideoHelpSection() {
           box-shadow: 0 2px 16px rgba(0,0,0,0.08);
           background: #000;
           object-fit: cover;
+          height: 500px;
         }
         .help-video-about {
           margin-top: 10px;
