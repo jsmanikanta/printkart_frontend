@@ -39,6 +39,37 @@ export default function AdminPrints() {
       setLoading(false);
     }
   };
+  const handlePrintSave = async (orderId) => {
+  const edits = printEditStates[orderId];
+  if (!edits || !edits.status) {
+    alert("Status is required.");
+    return;
+  }
+  // Allowed statuses for prints matching backend validation
+  if (!["dispatched", "out for delivery", "delivered"].includes(edits.status)) {
+    alert("Status must be 'dispatched', 'out for delivery', or 'delivered'.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+    await axios.patch(`${api_path}/prints/${orderId}/status`, {
+      status: edits.status,
+    });
+
+    const response = await axios.get(`${api_path}/prints`);
+    setPrints(Array.isArray(response.data.orders) ? response.data.orders : []);
+    setPrintEditStates((prev) => {
+      const newEdits = { ...prev };
+      delete newEdits[orderId];
+      return newEdits;
+    });
+  } catch (error) {
+    alert(error.response?.data?.error || "Failed to update print status.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (!viewingOrders) {
     return (
