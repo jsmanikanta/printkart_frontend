@@ -3,10 +3,20 @@ import React from "react";
 function VideoHelpSection() {
   const videos = [
     {
+      src: "/images/Login.mp4", 
+      title: "Account Setup & Login", 
+      about: "How to Create a New Account, Login & Reset Password – Step by Step Guide.", 
+    }, 
+    {
       src: "/images/orderprints.mp4",
       title: "Ordering Prints",
-      about: "How to upload your file and complete a print order.",
+      about: "How to Order Printouts & Upload Files Without Any Difficulty ",
     },
+    {
+      src:"/images/Payment.mp4", 
+      title:"How to pay", 
+      about: "How to Pay Using QR Scanner or UPI ID. "
+    }
   ];
 
   return (
