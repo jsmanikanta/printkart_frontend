@@ -1,9 +1,9 @@
 import React from "react";
-
+import video1 from "../public/images/VID-20251019-WA0004.mp4"
 function VideoHelpSection() {
   const videos = [
     {
-      src: "../public/images/VID-20251019-WA0004.mp4",
+      src: {video1}, 
       title: "Ordering Prints",
       about: "How to upload your file and complete a print order."
     },
