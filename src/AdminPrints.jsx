@@ -12,7 +12,9 @@ export default function AdminPrints() {
   const [errorMsg, setErrorMsg] = useState("");
   const [orders, setOrders] = useState([]);
   const [viewingOrders, setViewingOrders] = useState(false);
+  const [printEditStates, setPrintEditStates] = useState({});
   const navigate = useNavigate();
+
   const Books = () => {
     navigate("/adminbooks");
   };
@@ -39,37 +41,45 @@ export default function AdminPrints() {
       setLoading(false);
     }
   };
+
+  const handlePrintInputChange = (orderId, field, value) => {
+    setPrintEditStates((prev) => ({
+      ...prev,
+      [orderId]: { ...prev[orderId], [field]: value },
+    }));
+  };
+
   const handlePrintSave = async (orderId) => {
-  const edits = printEditStates[orderId];
-  if (!edits || !edits.status) {
-    alert("Status is required.");
-    return;
-  }
-  // Allowed statuses for prints matching backend validation
-  if (!["dispatched", "out for delivery", "delivered"].includes(edits.status)) {
-    alert("Status must be 'dispatched', 'out for delivery', or 'delivered'.");
-    return;
-  }
+    const edits = printEditStates[orderId];
+    if (!edits || !edits.status) {
+      alert("Status is required.");
+      return;
+    }
+    if (!["dispatched", "out for delivery", "delivered"].includes(edits.status)) {
+      alert("Status must be 'dispatched', 'out for delivery', or 'delivered'.");
+      return;
+    }
 
-  try {
-    setLoading(true);
-    await axios.patch(`${api_path}/prints/${orderId}/status`, {
-      status: edits.status,
-    });
+    try {
+      setLoading(true);
+      await axios.patch(`${api_path}/prints/${orderId}/status`, {
+        status: edits.status,
+      });
 
-    const response = await axios.get(`${api_path}/prints`);
-    setPrints(Array.isArray(response.data.orders) ? response.data.orders : []);
-    setPrintEditStates((prev) => {
-      const newEdits = { ...prev };
-      delete newEdits[orderId];
-      return newEdits;
-    });
-  } catch (error) {
-    alert(error.response?.data?.error || "Failed to update print status.");
-  } finally {
-    setLoading(false);
-  }
-};
+      const response = await axios.get(`${api_path}/admin/printorders`);
+      setOrders(Array.isArray(response.data.orders) ? response.data.orders : []);
+
+      setPrintEditStates((prev) => {
+        const newEdits = { ...prev };
+        delete newEdits[orderId];
+        return newEdits;
+      });
+    } catch (error) {
+      alert(error.response?.data?.error || "Failed to update print status.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!viewingOrders) {
     return (
@@ -142,12 +152,14 @@ export default function AdminPrints() {
             <th>Description</th>
             <th>Transaction ID</th>
             <th>Order Date</th>
+            <th>Status</th>
+            <th>Update Status</th>
           </tr>
         </thead>
         <tbody>
           {orders.length === 0 && (
             <tr>
-              <td colSpan="18">No orders available</td>
+              <td colSpan="20">No orders available</td>
             </tr>
           )}
           {orders.map((order) => (
@@ -185,6 +197,30 @@ export default function AdminPrints() {
                 {order.orderDate
                   ? new Date(order.orderDate).toLocaleString()
                   : "-"}
+              </td>
+              <td>{order.status}</td>
+              <td>
+                <select
+                  value={
+                    printEditStates[order._id]?.status ?? order.status ?? "Pending"
+                  }
+                  onChange={(e) =>
+                    handlePrintInputChange(order._id, "status", e.target.value)
+                  }
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="dispatched">Dispatched</option>
+                  <option value="out for delivery">Out for Delivery</option>
+                  <option value="delivered">Delivered</option>
+                </select>
+                <button
+                  className="admin-btn"
+                  onClick={() => handlePrintSave(order._id)}
+                  disabled={loading}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Save
+                </button>
               </td>
             </tr>
           ))}
