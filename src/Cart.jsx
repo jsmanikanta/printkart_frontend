@@ -225,12 +225,12 @@ function CartMobile() {
         <div className="detail-field">
           <span className="detail-label">Transaction ID:</span>{" "}
           <a
-              href={selectedOrder.transctionid}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View details
-            </a>
+            href={selectedOrder.transctionid}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View details
+          </a>
         </div>
         <div className="detail-field">
           <span className="detail-label">Order Date:</span>{" "}
