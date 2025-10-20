@@ -109,6 +109,9 @@ function CartMobile() {
                     <div className="cart-card-qty">
                       Qty: {order.copies || "-"}
                     </div>
+                    <div className="cart-card-qty">
+                      Delivery Status: {order.status}
+                    </div>
                   </div>
                 </div>
                 <div className="cart-card-link">View Details &rarr;</div>
