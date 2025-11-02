@@ -326,7 +326,8 @@ export default function OrderPrints() {
             )}
             <div className="input-row">
               <label htmlFor="pdfFile" className="order-label">
-                Upload PDF
+                Upload PDF 
+                <sub>Max Size: 10MB</sub>
               </label>
               <input
                 id="pdfFile"
@@ -419,7 +420,8 @@ export default function OrderPrints() {
             <img className="qr" src={qrImg} alt="QR Code" />
             <span>UPI id: papukumarsahu686-2@oksbi</span>
             <br />
-            <label>Transaction ID (Upload payment Screenshot)</label>
+            <label>Transaction Details (Upload payment Screenshot)</label>
+            <sub>Max Size: 10MB</sub>
             <input
               type="file"
               accept="image/*"
