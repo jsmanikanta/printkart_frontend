@@ -92,12 +92,17 @@ function CartMobile() {
               >
                 <div className="cart-card-row">
                   <div className="cart-card-icon-area" />
-                  <img src={prints} style={{ height: 50, width: 50 }} />
+                  <a
+              href={selectedOrder.file}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={prints} style={{ height: 50, width: 50 }} />
+            </a>
+                  
                   <div>
                     <div className="cart-card-title">Printouts</div>
-                    <div className="cart-card-meta">
-                      Binding: {order.binding || "None"}
-                    </div>
+                    
                   </div>
                   <div className="cart-card-side">
                     <span className="cart-card-oldprice">
