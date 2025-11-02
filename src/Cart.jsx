@@ -92,17 +92,12 @@ function CartMobile() {
               >
                 <div className="cart-card-row">
                   <div className="cart-card-icon-area" />
-                  <a
-              href={selectedOrder.file}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={prints} style={{ height: 50, width: 50 }} />
-            </a>
-                  
+                  <img src={prints} style={{ height: 50, width: 50 }} />
                   <div>
                     <div className="cart-card-title">Printouts</div>
-                    
+                    <div className="cart-card-meta">
+                      Binding: {order.binding || "None"}
+                    </div>
                   </div>
                   <div className="cart-card-side">
                     <span className="cart-card-oldprice">
@@ -115,7 +110,7 @@ function CartMobile() {
                       Qty: {order.copies || "-"}
                     </div>
                     <div className="cart-card-qty">
-                      Delivery Status: {order.status}
+                      Order Status: {order.status}
                     </div>
                   </div>
                 </div>
