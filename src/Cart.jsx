@@ -110,7 +110,7 @@ function CartMobile() {
                       Qty: {order.copies || "-"}
                     </div>
                     <div className="cart-card-qty">
-                      Delivery Status: {order.status}
+                      Order Status: {order.status}
                     </div>
                   </div>
                 </div>
@@ -166,7 +166,7 @@ function CartMobile() {
           )}
         </div>
         <div className="detail-field">
-          <span className="detail-label">Price:</span> ₹
+          <span className="detail-label">Final Price:</span> ₹
           {selectedOrder.discountprice || selectedOrder.price}
         </div>
         <div className="detail-field">
@@ -174,16 +174,17 @@ function CartMobile() {
           {selectedOrder.originalprice || "-"}
         </div>
         <div className="detail-field">
-          <span className="detail-label">Color:</span> {selectedOrder.color}
+          <span className="detail-label">Color Type:</span>{" "}
+          {selectedOrder.color}
         </div>
         <div className="detail-field">
-          <span className="detail-label">Sides:</span> {selectedOrder.sides}
+          <span className="detail-label">Side(s):</span> {selectedOrder.sides}
         </div>
         <div className="detail-field">
           <span className="detail-label">Binding:</span> {selectedOrder.binding}
         </div>
         <div className="detail-field">
-          <span className="detail-label">Copies:</span> {selectedOrder.copies}
+          <span className="detail-label">Copie(s):</span> {selectedOrder.copies}
         </div>
         <div className="detail-field">
           <span className="detail-label">Address:</span>{" "}
@@ -193,12 +194,12 @@ function CartMobile() {
             <div style={{ display: "inline-block" }}>
               {selectedOrder.college && (
                 <div>
-                  <strong>College:</strong> {selectedOrder.college} <br />
+                  <strong>College Name:</strong> {selectedOrder.college} <br />
                 </div>
               )}
               {selectedOrder.year && (
                 <div>
-                  <strong>Year:</strong> {selectedOrder.year} <br />
+                  <strong>Year of Study:</strong> {selectedOrder.year} <br />
                 </div>
               )}
               {selectedOrder.rollno && (
@@ -214,7 +215,7 @@ function CartMobile() {
               {!selectedOrder.college &&
                 !selectedOrder.year &&
                 !selectedOrder.rollno &&
-                !selectedOrder.section && <div>-</div>}
+                !selectedOrder.section && <div></div>}
             </div>
           )}
         </div>
@@ -223,7 +224,7 @@ function CartMobile() {
           {selectedOrder.description || "-"}
         </div>
         <div className="detail-field">
-          <span className="detail-label">Transaction ID:</span>{" "}
+          <span className="detail-label">Transaction Details:</span>{" "}
           <a
             href={selectedOrder.transctionid}
             target="_blank"

@@ -78,7 +78,6 @@ export default function OrderPrints() {
     loadPdfPages();
   }, [file]);
 
-  // Price calculation with 10% student discount on print cost only
   useEffect(() => {
     if (!pages || pages <= 0) {
       setPrintCost(0);
@@ -328,6 +327,7 @@ export default function OrderPrints() {
               <label htmlFor="pdfFile" className="order-label">
                 Upload PDF
               </label>
+              
               <input
                 id="pdfFile"
                 type="file"
@@ -349,7 +349,9 @@ export default function OrderPrints() {
               >
                 {file ? file.name : "Choose File"}
               </label>
+              <p>Max Size: 10MB</p>
             </div>
+            
             {pdfError && <div className="error-text">{pdfError}</div>}
             {pages > 0 && (
               <div className="pdf-pages-info">Pages detected: {pages}</div>
@@ -419,7 +421,8 @@ export default function OrderPrints() {
             <img className="qr" src={qrImg} alt="QR Code" />
             <span>UPI id: papukumarsahu686-2@oksbi</span>
             <br />
-            <label>Transaction ID (Upload payment Screenshot)</label>
+            <label>Transaction Details (Upload payment Screenshot)</label>
+            <sub>Max Size: 10MB</sub>
             <input
               type="file"
               accept="image/*"
