@@ -50,12 +50,14 @@ function CartMobile() {
 
   if (!user) {
     return (
-      <div className="orders-login-prompt">
+      <div className="orders-login-prompt" style={{justifyContent:"center"}}>
+        <br /><br /><br /><br /><br /><br /><br />
         Please{" "}
         <a href="/login" className="orders-login-btn">
-          sign in
+          Login 
         </a>{" "}
         to view your profile and orders.
+        <br /><br /><br /><br /><br /><br />
       </div>
     );
   }

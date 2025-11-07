@@ -143,7 +143,6 @@ export default function OrderPrints() {
     setFile(uploaded);
   };
 
-  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) return alert("Please upload a PDF.");
@@ -430,7 +429,7 @@ export default function OrderPrints() {
               onChange={(e) => {
                 if (e.target.files && e.target.files[0]) {
                   setTransactionImage(e.target.files[0]);
-                  setTransctionid(""); // clear text input if image selected
+                  setTransctionid(""); 
                 } else {
                   setTransactionImage(null);
                 }
