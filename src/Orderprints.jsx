@@ -326,8 +326,9 @@ export default function OrderPrints() {
             <div className="input-row">
               <label htmlFor="pdfFile" className="order-label">
                 Upload PDF
+                <sub>Max Size: 10MB</sub>
               </label>
-              
+
               <input
                 id="pdfFile"
                 type="file"
@@ -351,7 +352,7 @@ export default function OrderPrints() {
               </label>
               <p>Max Size: 10MB</p>
             </div>
-            
+
             {pdfError && <div className="error-text">{pdfError}</div>}
             {pages > 0 && (
               <div className="pdf-pages-info">Pages detected: {pages}</div>

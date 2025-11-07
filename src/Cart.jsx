@@ -176,6 +176,8 @@ function CartMobile() {
         <div className="detail-field">
           <span className="detail-label">Color Type:</span>{" "}
           {selectedOrder.color}
+          <span className="detail-label">Color Type:</span>{" "}
+          {selectedOrder.color}
         </div>
         <div className="detail-field">
           <span className="detail-label">Side(s):</span> {selectedOrder.sides}
