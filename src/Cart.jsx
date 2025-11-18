@@ -50,14 +50,25 @@ function CartMobile() {
 
   if (!user) {
     return (
-      <div className="orders-login-prompt" style={{justifyContent:"center"}}>
-        <br /><br /><br /><br /><br /><br /><br />
+      <div className="orders-login-prompt" style={{ justifyContent: "center" }}>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         Please{" "}
         <a href="/login" className="orders-login-btn">
-          Login 
+          Login
         </a>{" "}
         to view your profile and orders.
-        <br /><br /><br /><br /><br /><br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
     );
   }
@@ -99,6 +110,9 @@ function CartMobile() {
                     <div className="cart-card-title">Printouts</div>
                     <div className="cart-card-meta">
                       Binding: {order.binding || "None"}
+                    </div>
+                    <div className="cart-card-meta">
+                      Payment: {order.payment || "-"}
                     </div>
                   </div>
                   <div className="cart-card-side">
@@ -178,8 +192,6 @@ function CartMobile() {
         <div className="detail-field">
           <span className="detail-label">Color Type:</span>{" "}
           {selectedOrder.color}
-          <span className="detail-label">Color Type:</span>{" "}
-          {selectedOrder.color}
         </div>
         <div className="detail-field">
           <span className="detail-label">Side(s):</span> {selectedOrder.sides}
@@ -229,13 +241,21 @@ function CartMobile() {
         </div>
         <div className="detail-field">
           <span className="detail-label">Transaction Details:</span>{" "}
-          <a
-            href={selectedOrder.transctionid}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View details
-          </a>
+          {selectedOrder.transctionid ? (
+            <a
+              href={selectedOrder.transctionid}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View details
+            </a>
+          ) : (
+            <span>-</span>
+          )}
+        </div>
+        <div className="detail-field">
+          <span className="detail-label">Payment Method:</span>{" "}
+          {selectedOrder.payment || "-"}
         </div>
         <div className="detail-field">
           <span className="detail-label">Order Date:</span>{" "}
