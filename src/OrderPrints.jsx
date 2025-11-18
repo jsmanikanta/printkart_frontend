@@ -281,6 +281,7 @@ export default function OrderPrints() {
   value={mobile}
   maxLength={10}
   onChange={(e) => {
+    // Replace all non-digits, limit length to 10
     const digitsOnly = e.target.value.replace(/D/g, "").slice(0, 10);
     setMobile(digitsOnly);
   }}
@@ -289,17 +290,17 @@ export default function OrderPrints() {
             {activeTab === "student" && (
               <>
                 <select
-                  value={college}
-                  onChange={(e) => setCollege(e.target.value)}
-                  required
-                >
-                  <option value="">Select College</option>
-                  {colleges.map((clg) => (
-                    <option key={clg} value={clg}>
-                      {clg}
-                    </option>
-                  ))>
-                </select>
+      value={college}
+      onChange={(e) => setCollege(e.target.value)}
+      required
+    >
+      <option value="">Select College</option>
+      {colleges.map((clg) => (
+        <option key={clg} value={clg}>
+          {clg}
+        </option>
+      ))}
+    </select>
                 <input
                   type="text"
                   className="input"
