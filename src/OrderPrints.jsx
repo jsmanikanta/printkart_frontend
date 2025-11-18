@@ -279,16 +279,13 @@ export default function OrderPrints() {
   className="input"
   placeholder="Mobile Number"
   value={mobile}
-  onChange={(e) => {
-    const value = e.target.value;
-    if (/^d{0,10}$/.test(value)) {
-      setMobile(value);
-    }
-  }}
   maxLength={10}
+  onChange={(e) => {
+    const digitsOnly = e.target.value.replace(/D/g, "").slice(0, 10);
+    setMobile(digitsOnly);
+  }}
   required
-/>
-            
+/>  
             {activeTab === "student" && (
               <>
                 <select
@@ -301,7 +298,7 @@ export default function OrderPrints() {
                     <option key={clg} value={clg}>
                       {clg}
                     </option>
-                  ))}
+                  ))>
                 </select>
                 <input
                   type="text"
