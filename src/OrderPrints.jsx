@@ -156,9 +156,8 @@ export default function OrderPrints() {
     const cleanedMobile = mobile.trim().replace(/s+/g, ""); // remove spaces
 console.log("Mobile value on submit:", JSON.stringify(cleanedMobile)); // debug actual string
 
-const mobileNumberPattern = /^d{10}$/;
-
-if (!mobileNumberPattern.test(cleanedMobile)) {
+const mobileNumberPattern = /^\d{10}$/;
+if (!mobileNumberPattern.test(mobile)) {
   alert("Please enter a valid 10-digit mobile number.");
   return;
 }
@@ -286,8 +285,8 @@ if (!mobileNumberPattern.test(cleanedMobile)) {
   value={mobile}
   maxLength={10}
   onChange={(e) => {
-    const digitsOnly = e.target.value.replace(/D/g, "").slice(0, 10);
-    setMobile(digitsOnly);
+  const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
+  setMobile(digitsOnly);
   }}
   required
 />  
