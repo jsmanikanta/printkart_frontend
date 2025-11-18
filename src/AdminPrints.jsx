@@ -230,7 +230,7 @@ export default function AdminPrints() {
                     View Transaction
                   </a>
                 ) : (
-                  "-"
+                  "Pay on Delivery"
                 )}
               </td>
               <td>
