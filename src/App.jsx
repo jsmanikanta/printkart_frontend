@@ -6,7 +6,7 @@ import Homepage from "./Homepage";
 import Signup from "./Signup";
 import Login from "./Login";
 import Cart from "./Cart";
-import OrderPrints from "./Orderprints";
+import OrderPrints from "./OrderPrints";
 import ForgotPassword from "./Forgotpass";
 import SellBooks from "./Sellbooks";
 import SoldBooks from "./Soldbooks";
