@@ -154,9 +154,7 @@ export default function OrderPrints() {
     if (!pages || pages <= 0) return alert("PDF page count unavailable.");
     if (!name.trim() || !mobile.trim()) return alert("Fill personal details.");
     const cleanedMobile = mobile.trim().replace(/s+/g, ""); // remove spaces
-console.log("Mobile value on submit:", JSON.stringify(cleanedMobile)); // debug actual string
-
-const mobileNumberPattern = /^\d{10}$/;
+console.log("Mobile value on submit:", JSON.stringify(cleanedMobile)); // debug actual strin
 const mobileNumberPattern = /^\d{10}$/;
 if (!mobileNumberPattern.test(mobile)) {
   alert("Please enter a valid 10-digit mobile number.");
