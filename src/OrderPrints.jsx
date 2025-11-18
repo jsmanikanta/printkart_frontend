@@ -157,11 +157,11 @@ export default function OrderPrints() {
 console.log("Mobile value on submit:", JSON.stringify(cleanedMobile)); // debug actual string
 
 const mobileNumberPattern = /^\d{10}$/;
+const mobileNumberPattern = /^\d{10}$/;
 if (!mobileNumberPattern.test(mobile)) {
   alert("Please enter a valid 10-digit mobile number.");
   return;
 }
-// Use cleanedMobile for submission if needed
     if (
       activeTab === "student" &&
       (!college.trim() || !year.trim() || !section.trim() || !rollno.trim())
@@ -287,7 +287,7 @@ if (!mobileNumberPattern.test(mobile)) {
   onChange={(e) => {
   const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
   setMobile(digitsOnly);
-  }}
+}}
   required
 />  
             {activeTab === "student" && (
