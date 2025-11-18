@@ -275,19 +275,20 @@ export default function OrderPrints() {
               required
             />
             <input
-              type="tel"
-              className="input"
-              placeholder="Mobile Number"
-              value={mobile}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (/^d{0,10}$/.test(value)) {
-                  setMobile(value);
-                }
-              }}
-              maxLength={10}
-              required
-            />
+  type="tel"
+  className="input"
+  placeholder="Mobile Number"
+  value={mobile}
+  onChange={(e) => {
+    const value = e.target.value;
+    if (/^d{0,10}$/.test(value)) {
+      setMobile(value);
+    }
+  }}
+  maxLength={10}
+  required
+/>
+            
             {activeTab === "student" && (
               <>
                 <select
