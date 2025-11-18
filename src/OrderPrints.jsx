@@ -153,12 +153,16 @@ export default function OrderPrints() {
     if (!file) return alert("Please upload a PDF.");
     if (!pages || pages <= 0) return alert("PDF page count unavailable.");
     if (!name.trim() || !mobile.trim()) return alert("Fill personal details.");
-    const mobileNumberPattern = /^d{10}$/;  // exactly 10 digits
+    const cleanedMobile = mobile.trim().replace(/s+/g, ""); // remove spaces
+console.log("Mobile value on submit:", JSON.stringify(cleanedMobile)); // debug actual string
 
-if (!mobileNumberPattern.test(mobile)) {
+const mobileNumberPattern = /^d{10}$/;
+
+if (!mobileNumberPattern.test(cleanedMobile)) {
   alert("Please enter a valid 10-digit mobile number.");
   return;
 }
+// Use cleanedMobile for submission if needed
     if (
       activeTab === "student" &&
       (!college.trim() || !year.trim() || !section.trim() || !rollno.trim())
@@ -280,14 +284,10 @@ if (!mobileNumberPattern.test(mobile)) {
   className="input"
   placeholder="Mobile Number"
   value={mobile}
-  maxLength={10}  // enforce HTML-level max length
+  maxLength={10}
   onChange={(e) => {
-    // Remove all non-digit characters
-    const digitsOnly = e.target.value.replace(/D/g, "");
-    // Limit length to 10 digits
-    if (digitsOnly.length <= 10) {
-      setMobile(digitsOnly);
-    }
+    const digitsOnly = e.target.value.replace(/D/g, "").slice(0, 10);
+    setMobile(digitsOnly);
   }}
   required
 />  
