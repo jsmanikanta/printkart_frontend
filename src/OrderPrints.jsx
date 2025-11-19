@@ -111,7 +111,7 @@ export default function OrderPrints() {
     let bindingAmount = 0;
     switch (binding) {
       case "spiral":
-        bindingAmount = 15 * copies;
+        bindingAmount = 20 * copies;
         break;
       case "stick":
         bindingAmount = 20 * copies;
@@ -333,7 +333,7 @@ export default function OrderPrints() {
               }}
               required
             />
-
+            <p> For bulk order please contact Hemanth <a href:"tel: +91 9182415750">9182415750</a></p>
             {activeTab === "student" && (
               <>
                 <select
