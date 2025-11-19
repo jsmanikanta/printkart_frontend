@@ -252,17 +252,12 @@ export default function OrderPrints() {
       } else {
         formData.append("address", address.trim());
       }
-
-      // debug: uncomment if you need to inspect formData keys in browser console
-      // for (const pair of formData.entries()) console.log(pair[0], pair[1]);
-
       const response = await fetch(
         `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
         {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
-            // DO NOT set Content-Type for multipart/form-data
           },
           body: formData,
         }
@@ -334,9 +329,9 @@ export default function OrderPrints() {
               required
             />
             <p>
-  For bulk orders please contact Hemanth:
-  <a href="tel:+919182415750">9182415750</a>
-</p>
+  For bulk orders please contact Hemanth: 
+  <a href="tel:+919182415750">+91 9182415750</a>
+</p> <br>
             {activeTab === "student" && (
               <>
                 <select
