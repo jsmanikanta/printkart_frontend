@@ -130,7 +130,6 @@ function CartMobile() {
   }
 
   // ---- Screen 2: Order Details ----
-  // ---- Screen 2: Order Details ----
 return (
   <div className="order-detail-mobile">
     <header className="cart-header">
@@ -235,16 +234,16 @@ return (
         {selectedOrder.description || "-"}
       </div>
       <div className="detail-field">
-        <span className="detail-label">Mode of Payment:</span>{" "}
-        {selectedOrder.payment || "-"}
-      </div>
+  <span className="detail-label">Mode of Payment:</span>{" "}
+  {selectedOrder.payment ? selectedOrder.payment : "Not provided"}
+</div>
 
         <div className="detail-field">
   <span className="detail-label">Transaction Details:</span>{" "}
   
-  {selectedOrder.transactionid ? (
+  {selectedOrder.transctionid ? (
     <a
-      href={selectedOrder.transactionid}
+      href={selectedOrder.transctionid}
       target="_blank"
       rel="noopener noreferrer"
     >
