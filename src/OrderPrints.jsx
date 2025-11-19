@@ -33,7 +33,7 @@ const BINDING_OPTIONS = [
   { value: "book", label: "Book Binding" },
 ];
 
-// NOTE: value "UPI" must match backend comparison (payment === "UPI")
+// IMPORTANT: payment value "UPI" must match backend check (payment === "UPI")
 const PAYMENT_OPTIONS = [
   { value: "payondelivery", label: "Pay on Delivery" },
   { value: "UPI", label: "UPI" },
@@ -138,7 +138,6 @@ export default function OrderPrints() {
     setDiscountPrice(finalTotal);
   }, [color, sides, binding, pages, copies, activeTab]);
 
-  // File Input handler
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
     if (!uploaded) {
@@ -186,7 +185,6 @@ export default function OrderPrints() {
     if (!pages || pages <= 0) return alert("PDF page count unavailable.");
     if (!name.trim() || !mobile.trim()) return alert("Fill personal details.");
 
-    // Mobile validation — ensure just digits and 10 digits
     const mobileDigits = mobile.replace(/\D/g, "").slice(0, 10);
     const mobileNumberPattern = /^\d{10}$/;
     if (!mobileNumberPattern.test(mobileDigits)) {
@@ -207,7 +205,6 @@ export default function OrderPrints() {
 
     if (!payment) return alert("Select payment method.");
 
-    // For UPI require screenshot file (backend expects file field named 'transctionid')
     if (payment === "UPI" && !transactionImage) {
       return alert("Please upload UPI transaction screenshot.");
     }
@@ -224,21 +221,19 @@ export default function OrderPrints() {
     try {
       const formData = new FormData();
 
-      // PDF file (backend expects 'file')
+      // required file fields
       formData.append("file", file);
-
-      // Payment related: backend checks payment === "UPI"
       formData.append("payment", payment);
 
-      // If UPI, send the screenshot under the same field name backend expects: 'transctionid'
+      // IMPORTANT: backend expects screenshot file under key "transctionid"
       if (payment === "UPI") {
         formData.append("transctionid", transactionImage);
       } else {
-        // send empty string for transctionid so backend has the field
+        // still send an empty field so backend receives something
         formData.append("transctionid", "");
       }
 
-      // Append remaining order fields
+      // other fields
       formData.append("color", color);
       formData.append("sides", sides);
       formData.append("binding", binding);
@@ -258,13 +253,16 @@ export default function OrderPrints() {
         formData.append("address", address.trim());
       }
 
+      // debug: uncomment if you need to inspect formData keys in browser console
+      // for (const pair of formData.entries()) console.log(pair[0], pair[1]);
+
       const response = await fetch(
         `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
         {
           method: "POST",
           headers: {
-            // DO NOT set Content-Type; browser will set boundary for multipart/form-data
             Authorization: `Bearer ${token}`,
+            // DO NOT set Content-Type for multipart/form-data
           },
           body: formData,
         }
@@ -279,7 +277,7 @@ export default function OrderPrints() {
       navigate("/prints-cart");
     } catch (err) {
       alert(err.message || "Error placing order.");
-      console.error(err);
+      console.error("Order submit error:", err);
     } finally {
       setLoading(false);
     }
@@ -494,7 +492,6 @@ export default function OrderPrints() {
                 value={payment}
                 onChange={(e) => {
                   setPayment(e.target.value);
-                  // reset transaction image if switching away from UPI
                   if (e.target.value !== "UPI") setTransactionImage(null);
                 }}
                 required
