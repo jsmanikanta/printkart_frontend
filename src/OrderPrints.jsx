@@ -187,35 +187,45 @@ if (!mobileNumberPattern.test(mobile)) {
 
     try {
       const formData = new FormData();
-      formData.append("file", file);
-      if (payment === "upi") {
-        if (transactionImage) {
-          formData.append("transctionid", transactionImage);
-        } else if (transctionid.trim()) {
-          // if user typed in some value (optional fallback)
-          formData.append("transctionid", transctionid.trim());
-        }
-      }
-      formData.append("color", color);
-      formData.append("sides", sides);
-      formData.append("binding", binding);
-      formData.append("copies", copies);
-      formData.append("description", description.trim());
-      formData.append("name", name.trim());
-      formData.append("mobile", mobile.trim());
-      formData.append("originalprice", Math.ceil(originalPrice));
-      formData.append("discountprice", discountPrice);
-      formData.append("payment", payment);
 
-      if (activeTab === "student") {
-        formData.append("college", college.trim());
-        formData.append("year", year.trim());
-        formData.append("section", section.trim());
-        formData.append("rollno", rollno.trim());
-      }
-      if (activeTab === "others") {
-        formData.append("address", address.trim());
-      }
+// Main PDF file
+formData.append("file", file);
+
+// 🔥 PAYMENT LOGIC FIX
+if (payment === "upi") {
+  // Always send screenshot as 'transctionid'
+  if (transactionImage) {
+    formData.append("transctionid", transactionImage);
+  } else {
+    return alert("Please upload UPI transaction screenshot.");
+  }
+} else {
+  // For Pay on Delivery → send empty value
+  formData.append("transctionid", "");
+}
+
+// Remaining fields
+formData.append("color", color);
+formData.append("sides", sides);
+formData.append("binding", binding);
+formData.append("copies", copies);
+formData.append("description", description.trim());
+formData.append("name", name.trim());
+formData.append("mobile", mobile.trim());
+formData.append("originalprice", Math.ceil(originalPrice));
+formData.append("discountprice", discountPrice);
+formData.append("payment", payment);
+
+if (activeTab === "student") {
+  formData.append("college", college.trim());
+  formData.append("year", year.trim());
+  formData.append("section", section.trim());
+  formData.append("rollno", rollno.trim());
+}
+
+if (activeTab === "others") {
+  formData.append("address", address.trim());
+}
 
       const response = await fetch(
         `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
