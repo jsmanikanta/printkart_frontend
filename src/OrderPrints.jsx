@@ -333,7 +333,10 @@ export default function OrderPrints() {
               }}
               required
             />
-            <p> For bulk order please contact Hemanth <a href:"tel: +91 9182415750">9182415750</a></p>
+            <p>
+  For bulk orders please contact Hemanth:
+  <a href="tel:+919182415750">9182415750</a>
+</p>
             {activeTab === "student" && (
               <>
                 <select
