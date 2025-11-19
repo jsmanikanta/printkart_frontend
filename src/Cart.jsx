@@ -253,9 +253,6 @@ return (
     <span>Pay on delivery</span>
   )}
 </div>
-
-      
-
       <div className="detail-field">
         <span className="detail-label">Order Date:</span>{" "}
         {selectedOrder.orderDate
