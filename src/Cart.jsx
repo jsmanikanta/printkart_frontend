@@ -235,8 +235,9 @@ return (
       </div>
       <div className="detail-field">
   <span className="detail-label">Mode of Payment:</span>{" "}
-  {selectedOrder.payment ? selectedOrder.payment : "Not provided"}
+  {selectedOrder.payment ? selectedOrder.payment : "-"}
 </div>
+
 
         <div className="detail-field">
   <span className="detail-label">Transaction Details:</span>{" "}
