@@ -234,20 +234,22 @@ return (
         <span className="detail-label">Description:</span>{" "}
         {selectedOrder.description || "-"}
       </div>
+      <div className="detail-field">
+        <span className="detail-label">Mode of Payment:</span>{" "}
+        {selectedOrder.payment || "-"}
+      </div>
 
-      {/* SHOW TRANSACTION LINK ONLY IF PAYMENT = UPI */}
-      {selectedOrder.payment === "UPI" && selectedOrder.transactionid?.img && (
         <div className="detail-field">
-          <span className="detail-label">Transaction Screenshot:</span>{" "}
+          <span className="detail-label">Transaction Details:</span>{" "}
           <a
-            href={selectedOrder.transactionid.img}
+            href={selectedOrder.transactionid.img || "Pay on delivery"}
             target="_blank"
             rel="noopener noreferrer"
           >
-            View Screenshot
+            View Details
           </a>
         </div>
-      )}
+      
 
       <div className="detail-field">
         <span className="detail-label">Order Date:</span>{" "}
