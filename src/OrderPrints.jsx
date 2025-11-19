@@ -101,7 +101,7 @@ export default function OrderPrints() {
 
     let pricePerPage = 0;
     if (color === "b/w" && sides === "2") pricePerPage = 1;
-    else if (color === "b/w" && sides === "1") pricePerPage = 1.5;
+    else if (color === "b/w" && sides === "1") pricePerPage = 1.7;
     else if (color === "colour" && sides === "1") pricePerPage = 6;
     else pricePerPage = 1.5;
 
