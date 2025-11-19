@@ -130,130 +130,134 @@ function CartMobile() {
   }
 
   // ---- Screen 2: Order Details ----
-  return (
-    <div className="order-detail-mobile">
-      <header className="cart-header">
-        <span className="cart-back" onClick={() => setSelectedOrder(null)}>
-          ←
-        </span>
-        <span className="cart-title">Order Details</span>
-      </header>
+  // ---- Screen 2: Order Details ----
+return (
+  <div className="order-detail-mobile">
+    <header className="cart-header">
+      <span className="cart-back" onClick={() => setSelectedOrder(null)}>
+        ←
+      </span>
+      <span className="cart-title">Order Details</span>
+    </header>
 
-      <div className="order-detail-info">
-        <div className="detail-field">
-          <span className="detail-label">Order ID:</span>{" "}
-          {selectedOrder.id || selectedOrder._id}
-        </div>
+    <div className="order-detail-info">
+      <div className="detail-field">
+        <span className="detail-label">Order ID:</span>{" "}
+        {selectedOrder.id || selectedOrder._id}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Name:</span> {selectedOrder.name}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Name:</span> {selectedOrder.name}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Mobile:</span> {selectedOrder.mobile}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Mobile:</span> {selectedOrder.mobile}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">File:</span>{" "}
-          {selectedOrder?.file ? (
-            <a
-              href={selectedOrder.file}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View PDF
-            </a>
-          ) : (
-            <span>No file available</span>
-          )}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Payment Mode:</span>{" "}
+        {selectedOrder.payment}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Final Price:</span> ₹
-          {selectedOrder.discountprice || selectedOrder.price}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">File:</span>{" "}
+        {selectedOrder?.file ? (
+          <a
+            href={selectedOrder.file}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PDF
+          </a>
+        ) : (
+          <span>No file available</span>
+        )}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Original Price:</span> ₹
-          {selectedOrder.originalprice}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Final Price:</span> ₹
+        {selectedOrder.discountprice || selectedOrder.price}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Color:</span> {selectedOrder.color}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Original Price:</span> ₹
+        {selectedOrder.originalprice}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Side(s):</span> {selectedOrder.sides}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Color:</span> {selectedOrder.color}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Binding:</span> {selectedOrder.binding}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Side(s):</span> {selectedOrder.sides}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Copies:</span> {selectedOrder.copies}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Binding:</span> {selectedOrder.binding}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Address:</span>{" "}
-          {selectedOrder.address ? (
-            selectedOrder.address
-          ) : (
-            <div style={{ display: "inline-block" }}>
-              {selectedOrder.college && (
-                <div>
-                  <strong>College:</strong> {selectedOrder.college} <br />
-                </div>
-              )}
-              {selectedOrder.year && (
-                <div>
-                  <strong>Year:</strong> {selectedOrder.year} <br />
-                </div>
-              )}
-              {selectedOrder.rollno && (
-                <div>
-                  <strong>Roll No:</strong> {selectedOrder.rollno} <br />
-                </div>
-              )}
-              {selectedOrder.section && (
-                <div>
-                  <strong>Branch:</strong> {selectedOrder.section} <br />
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Copies:</span> {selectedOrder.copies}
+      </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Description:</span>{" "}
-          {selectedOrder.description || "-"}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Address:</span>{" "}
+        {selectedOrder.address ? (
+          selectedOrder.address
+        ) : (
+          <div style={{ display: "inline-block" }}>
+            {selectedOrder.college && (
+              <div>
+                <strong>College:</strong> {selectedOrder.college} <br />
+              </div>
+            )}
+            {selectedOrder.year && (
+              <div>
+                <strong>Year:</strong> {selectedOrder.year} <br />
+              </div>
+            )}
+            {selectedOrder.rollno && (
+              <div>
+                <strong>Roll No:</strong> {selectedOrder.rollno} <br />
+              </div>
+            )}
+            {selectedOrder.section && (
+              <div>
+                <strong>Branch:</strong> {selectedOrder.section} <br />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
-        {/* FIXED: SHOW TRANSACTION IMAGE URL */}
-        <div className="detail-field">
-          <span className="detail-label">Transaction Details:</span>{" "}
-          {selectedOrder.transactionid?.img ? (
-            <a
-              href={selectedOrder.transactionid.img}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View Screenshot
-            </a>
-          ) : (
-            <span>Pay On Delivery</span>
-          )}
-        </div>
+      <div className="detail-field">
+        <span className="detail-label">Description:</span>{" "}
+        {selectedOrder.description || "-"}
+      </div>
 
+      {/* SHOW TRANSACTION LINK ONLY IF PAYMENT = UPI */}
+      {selectedOrder.payment === "UPI" && selectedOrder.transactionid?.img && (
         <div className="detail-field">
-          <span className="detail-label">Order Date:</span>{" "}
-          {selectedOrder.orderDate
-            ? new Date(selectedOrder.orderDate).toLocaleString()
-            : "-"}
+          <span className="detail-label">Transaction Screenshot:</span>{" "}
+          <a
+            href={selectedOrder.transactionid.img}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Screenshot
+          </a>
         </div>
+      )}
+
+      <div className="detail-field">
+        <span className="detail-label">Order Date:</span>{" "}
+        {selectedOrder.orderDate
+          ? new Date(selectedOrder.orderDate).toLocaleString()
+          : "-"}
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default CartMobile;
