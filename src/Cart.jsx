@@ -240,15 +240,21 @@ return (
       </div>
 
         <div className="detail-field">
-          <span className="detail-label">Transaction Details:</span>{" "}
-          <a
-            href={selectedOrder.transactionid.img || "Pay on delivery"}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Details
-          </a>
-        </div>
+  <span className="detail-label">Transaction Details:</span>{" "}
+  
+  {selectedOrder.transactionid ? (
+    <a
+      href={selectedOrder.transactionid}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      View Details
+    </a>
+  ) : (
+    <span>Pay on delivery</span>
+  )}
+</div>
+
       
 
       <div className="detail-field">
