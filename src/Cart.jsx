@@ -25,6 +25,7 @@ function CartMobile() {
         const response = await axios.get(`${api_path}/user/printorders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+
         if (response.data.user) {
           setUser(response.data.user);
           setOrders(response.data.orders || []);
@@ -36,8 +37,10 @@ function CartMobile() {
         setLoading(false);
       }
     };
+
     fetchUserProfile();
   }, []);
+
   const navigate = useNavigate();
   const goToPrints = () => navigate("/orderprints");
 
@@ -52,23 +55,11 @@ function CartMobile() {
     return (
       <div className="orders-login-prompt" style={{ justifyContent: "center" }}>
         <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
         Please{" "}
         <a href="/login" className="orders-login-btn">
           Login
         </a>{" "}
         to view your profile and orders.
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
       </div>
     );
   }
@@ -111,8 +102,8 @@ function CartMobile() {
                     <div className="cart-card-meta">
                       Binding: {order.binding || "None"}
                     </div>
-                    
                   </div>
+
                   <div className="cart-card-side">
                     <span className="cart-card-oldprice">
                       {order.originalprice && <>₹{order.originalprice}</>}
@@ -128,19 +119,12 @@ function CartMobile() {
                     </div>
                   </div>
                 </div>
-                <div className="cart-card-link">View Details &rarr;</div>
+
+                <div className="cart-card-link">View Details →</div>
               </div>
             ))}
           </div>
         )}
-
-        <nav className="cart-mobile-navbar">
-          <div className="nav-icon active">Home</div>
-          <div className="nav-icon">My book</div>
-          <div className="nav-icon">Sell Now</div>
-          <div className="nav-icon">Category</div>
-          <div className="nav-icon">Print</div>
-        </nav>
       </div>
     );
   }
@@ -150,21 +134,25 @@ function CartMobile() {
     <div className="order-detail-mobile">
       <header className="cart-header">
         <span className="cart-back" onClick={() => setSelectedOrder(null)}>
-          &#8592;
+          ←
         </span>
         <span className="cart-title">Order Details</span>
       </header>
+
       <div className="order-detail-info">
         <div className="detail-field">
           <span className="detail-label">Order ID:</span>{" "}
           {selectedOrder.id || selectedOrder._id}
         </div>
+
         <div className="detail-field">
           <span className="detail-label">Name:</span> {selectedOrder.name}
         </div>
+
         <div className="detail-field">
           <span className="detail-label">Mobile:</span> {selectedOrder.mobile}
         </div>
+
         <div className="detail-field">
           <span className="detail-label">File:</span>{" "}
           {selectedOrder?.file ? (
@@ -179,27 +167,33 @@ function CartMobile() {
             <span>No file available</span>
           )}
         </div>
+
         <div className="detail-field">
           <span className="detail-label">Final Price:</span> ₹
           {selectedOrder.discountprice || selectedOrder.price}
         </div>
+
         <div className="detail-field">
           <span className="detail-label">Original Price:</span> ₹
-          {selectedOrder.originalprice || "-"}
+          {selectedOrder.originalprice}
         </div>
+
         <div className="detail-field">
-          <span className="detail-label">Color Type:</span>{" "}
-          {selectedOrder.color}
+          <span className="detail-label">Color:</span> {selectedOrder.color}
         </div>
+
         <div className="detail-field">
           <span className="detail-label">Side(s):</span> {selectedOrder.sides}
         </div>
+
         <div className="detail-field">
           <span className="detail-label">Binding:</span> {selectedOrder.binding}
         </div>
+
         <div className="detail-field">
-          <span className="detail-label">Copie(s):</span> {selectedOrder.copies}
+          <span className="detail-label">Copies:</span> {selectedOrder.copies}
         </div>
+
         <div className="detail-field">
           <span className="detail-label">Address:</span>{" "}
           {selectedOrder.address ? (
@@ -208,12 +202,12 @@ function CartMobile() {
             <div style={{ display: "inline-block" }}>
               {selectedOrder.college && (
                 <div>
-                  <strong>College Name:</strong> {selectedOrder.college} <br />
+                  <strong>College:</strong> {selectedOrder.college} <br />
                 </div>
               )}
               {selectedOrder.year && (
                 <div>
-                  <strong>Year of Study:</strong> {selectedOrder.year} <br />
+                  <strong>Year:</strong> {selectedOrder.year} <br />
                 </div>
               )}
               {selectedOrder.rollno && (
@@ -223,35 +217,34 @@ function CartMobile() {
               )}
               {selectedOrder.section && (
                 <div>
-                  <strong>Section:</strong> {selectedOrder.section} <br />
+                  <strong>Branch:</strong> {selectedOrder.section} <br />
                 </div>
               )}
-              {!selectedOrder.college &&
-                !selectedOrder.year &&
-                !selectedOrder.rollno &&
-                !selectedOrder.section && <div></div>}
             </div>
           )}
         </div>
+
         <div className="detail-field">
           <span className="detail-label">Description:</span>{" "}
           {selectedOrder.description || "-"}
         </div>
+
+        {/* FIXED: SHOW TRANSACTION IMAGE URL */}
         <div className="detail-field">
           <span className="detail-label">Transaction Details:</span>{" "}
-          {selectedOrder.transctionid ? (
+          {selectedOrder.transactionid?.img ? (
             <a
-              href={selectedOrder.transctionid}
+              href={selectedOrder.transactionid.img}
               target="_blank"
               rel="noopener noreferrer"
             >
-              View details
+              View Screenshot
             </a>
           ) : (
-            <span>Pay On Delivery </span>
+            <span>Pay On Delivery</span>
           )}
         </div>
-        
+
         <div className="detail-field">
           <span className="detail-label">Order Date:</span>{" "}
           {selectedOrder.orderDate
