@@ -111,9 +111,7 @@ function CartMobile() {
                     <div className="cart-card-meta">
                       Binding: {order.binding || "None"}
                     </div>
-                    <div className="cart-card-meta">
-                      Payment: {order.payment || "-"}
-                    </div>
+                    
                   </div>
                   <div className="cart-card-side">
                     <span className="cart-card-oldprice">
@@ -250,13 +248,10 @@ function CartMobile() {
               View details
             </a>
           ) : (
-            <span>-</span>
+            <span>Pay On Delivery </span>
           )}
         </div>
-        <div className="detail-field">
-          <span className="detail-label">Payment Method:</span>{" "}
-          {selectedOrder.payment || "-"}
-        </div>
+        
         <div className="detail-field">
           <span className="detail-label">Order Date:</span>{" "}
           {selectedOrder.orderDate
