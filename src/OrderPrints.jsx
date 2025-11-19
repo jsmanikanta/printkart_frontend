@@ -14,14 +14,17 @@ const colleges = [
   "Avanti Institute of Engineering & Technology, Vizianagaram",
   "Nadimpalli Satyanarayana Raju Institute of Technology (NSRIT), Visakhapatnam",
 ];
+
 const COLOR_OPTIONS = [
   { value: "b/w", label: "Black & White" },
   { value: "colour", label: "Colour" },
 ];
+
 const SIDES_OPTIONS = [
   { value: "1", label: "Single Side" },
   { value: "2", label: "Double Side" },
 ];
+
 const BINDING_OPTIONS = [
   { value: "none", label: "None" },
   { value: "spiral", label: "Spiral Binding" },
@@ -29,9 +32,11 @@ const BINDING_OPTIONS = [
   { value: "soft", label: "Soft Binding" },
   { value: "book", label: "Book Binding" },
 ];
+
+// NOTE: value "UPI" must match backend comparison (payment === "UPI")
 const PAYMENT_OPTIONS = [
   { value: "payondelivery", label: "Pay on Delivery" },
-  { value: "upi", label: "UPI" },
+  { value: "UPI", label: "UPI" },
 ];
 
 export default function OrderPrints() {
@@ -47,8 +52,7 @@ export default function OrderPrints() {
   const [copies, setCopies] = useState(1);
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
-  const [transctionid, setTransctionid] = useState("");
-  const [transactionImage, setTransactionImage] = useState(null);
+  const [transactionImage, setTransactionImage] = useState(null); // file
   const [payment, setPayment] = useState("payondelivery"); // default payment method
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
@@ -62,6 +66,8 @@ export default function OrderPrints() {
   const [printCost, setPrintCost] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
   const [bindingCost, setBindingCost] = useState(0);
+
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
   useEffect(() => {
     if (!file) {
@@ -97,6 +103,7 @@ export default function OrderPrints() {
     if (color === "b/w" && sides === "2") pricePerPage = 1;
     else if (color === "b/w" && sides === "1") pricePerPage = 1.5;
     else if (color === "colour" && sides === "1") pricePerPage = 6;
+    else pricePerPage = 1.5;
 
     const printAmount = pricePerPage * pages * copies;
     setPrintCost(printAmount);
@@ -145,34 +152,63 @@ export default function OrderPrints() {
       e.target.value = null;
       return;
     }
+    if (uploaded.size > MAX_FILE_SIZE) {
+      alert("PDF file size must be less than 10MB.");
+      e.target.value = null;
+      return;
+    }
     setFile(uploaded);
+  };
+
+  const handleTransactionImageChange = (e) => {
+    const uploaded = e.target.files[0];
+    if (!uploaded) {
+      setTransactionImage(null);
+      return;
+    }
+    if (!uploaded.type.startsWith("image/")) {
+      alert("Transaction screenshot must be an image.");
+      e.target.value = null;
+      return;
+    }
+    if (uploaded.size > MAX_FILE_SIZE) {
+      alert("Transaction screenshot must be less than 10MB.");
+      e.target.value = null;
+      return;
+    }
+    setTransactionImage(uploaded);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!file) return alert("Please upload a PDF.");
     if (!pages || pages <= 0) return alert("PDF page count unavailable.");
     if (!name.trim() || !mobile.trim()) return alert("Fill personal details.");
-    const cleanedMobile = mobile.trim().replace(/s+/g, ""); // remove spaces
-console.log("Mobile value on submit:", JSON.stringify(cleanedMobile)); // debug actual strin
-const mobileNumberPattern = /^\d{10}$/;
-if (!mobileNumberPattern.test(mobile)) {
-  alert("Please enter a valid 10-digit mobile number.");
-  return;
-}
+
+    // Mobile validation — ensure just digits and 10 digits
+    const mobileDigits = mobile.replace(/\D/g, "").slice(0, 10);
+    const mobileNumberPattern = /^\d{10}$/;
+    if (!mobileNumberPattern.test(mobileDigits)) {
+      return alert("Please enter a valid 10-digit mobile number.");
+    }
+
     if (
       activeTab === "student" &&
       (!college.trim() || !year.trim() || !section.trim() || !rollno.trim())
-    )
+    ) {
       return alert(
         "Fill college, year, section, registration number for students."
       );
+    }
+
     if (activeTab === "others" && !address.trim())
       return alert("Fill delivery address for home delivery.");
 
     if (!payment) return alert("Select payment method.");
 
-    if (payment === "upi" && !transactionImage && !transctionid) {
+    // For UPI require screenshot file (backend expects file field named 'transctionid')
+    if (payment === "UPI" && !transactionImage) {
       return alert("Please upload UPI transaction screenshot.");
     }
 
@@ -188,50 +224,48 @@ if (!mobileNumberPattern.test(mobile)) {
     try {
       const formData = new FormData();
 
-// Main PDF file
-formData.append("file", file);
+      // PDF file (backend expects 'file')
+      formData.append("file", file);
 
-// 🔥 PAYMENT LOGIC FIX
-if (payment === "upi") {
-  // Always send screenshot as 'transctionid'
-  if (transactionImage) {
-    formData.append("transctionid", transactionImage);
-  } else {
-    return alert("Please upload UPI transaction screenshot.");
-  }
-} else {
-  // For Pay on Delivery → send empty value
-  formData.append("transctionid", "");
-}
+      // Payment related: backend checks payment === "UPI"
+      formData.append("payment", payment);
 
-// Remaining fields
-formData.append("color", color);
-formData.append("sides", sides);
-formData.append("binding", binding);
-formData.append("copies", copies);
-formData.append("description", description.trim());
-formData.append("name", name.trim());
-formData.append("mobile", mobile.trim());
-formData.append("originalprice", Math.ceil(originalPrice));
-formData.append("discountprice", discountPrice);
-formData.append("payment", payment);
+      // If UPI, send the screenshot under the same field name backend expects: 'transctionid'
+      if (payment === "UPI") {
+        formData.append("transctionid", transactionImage);
+      } else {
+        // send empty string for transctionid so backend has the field
+        formData.append("transctionid", "");
+      }
 
-if (activeTab === "student") {
-  formData.append("college", college.trim());
-  formData.append("year", year.trim());
-  formData.append("section", section.trim());
-  formData.append("rollno", rollno.trim());
-}
+      // Append remaining order fields
+      formData.append("color", color);
+      formData.append("sides", sides);
+      formData.append("binding", binding);
+      formData.append("copies", String(copies));
+      formData.append("description", description.trim());
+      formData.append("name", name.trim());
+      formData.append("mobile", mobileDigits);
+      formData.append("originalprice", Math.ceil(originalPrice));
+      formData.append("discountprice", discountPrice);
 
-if (activeTab === "others") {
-  formData.append("address", address.trim());
-}
+      if (activeTab === "student") {
+        formData.append("college", college.trim());
+        formData.append("year", year.trim());
+        formData.append("section", section.trim());
+        formData.append("rollno", rollno.trim());
+      } else {
+        formData.append("address", address.trim());
+      }
 
       const response = await fetch(
         `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
         {
           method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            // DO NOT set Content-Type; browser will set boundary for multipart/form-data
+            Authorization: `Bearer ${token}`,
+          },
           body: formData,
         }
       );
@@ -243,9 +277,9 @@ if (activeTab === "others") {
 
       alert("Order placed successfully!");
       navigate("/prints-cart");
-    } catch (e) {
-      alert(e.message || "Error placing order.");
-      console.error(e);
+    } catch (err) {
+      alert(err.message || "Error placing order.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -273,11 +307,13 @@ if (activeTab === "others") {
               HOME <br /> DELIVERY
             </button>
           </div>
+
           <form className="order-form-wrap" onSubmit={handleSubmit}>
             <h2>
               {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Printout
               Order
             </h2>
+
             <input
               type="text"
               className="input"
@@ -286,32 +322,35 @@ if (activeTab === "others") {
               onChange={(e) => setName(e.target.value)}
               required
             />
+
             <input
-  type="tel"
-  className="input"
-  placeholder="Mobile Number"
-  value={mobile}
-  maxLength={10}
-  onChange={(e) => {
-  const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
-  setMobile(digitsOnly);
-}}
-  required
-/>  
+              type="tel"
+              className="input"
+              placeholder="Mobile Number"
+              value={mobile}
+              maxLength={10}
+              onChange={(e) => {
+                const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
+                setMobile(digitsOnly);
+              }}
+              required
+            />
+
             {activeTab === "student" && (
               <>
                 <select
-      value={college}
-      onChange={(e) => setCollege(e.target.value)}
-      required
-    >
-      <option value="">Select College</option>
-      {colleges.map((clg) => (
-        <option key={clg} value={clg}>
-          {clg}
-        </option>
-      ))}
-    </select>
+                  value={college}
+                  onChange={(e) => setCollege(e.target.value)}
+                  required
+                >
+                  <option value="">Select College</option>
+                  {colleges.map((clg) => (
+                    <option key={clg} value={clg}>
+                      {clg}
+                    </option>
+                  ))}
+                </select>
+
                 <input
                   type="text"
                   className="input"
@@ -320,6 +359,7 @@ if (activeTab === "others") {
                   onChange={(e) => setYear(e.target.value)}
                   required
                 />
+
                 <input
                   type="text"
                   className="input"
@@ -328,6 +368,7 @@ if (activeTab === "others") {
                   onChange={(e) => setSection(e.target.value)}
                   required
                 />
+
                 <input
                   type="text"
                   className="input"
@@ -338,6 +379,7 @@ if (activeTab === "others") {
                 />
               </>
             )}
+
             {activeTab === "others" && (
               <textarea
                 className="input"
@@ -362,6 +404,7 @@ if (activeTab === "others") {
                 style={{ display: "none" }}
                 required
               />
+
               <label
                 htmlFor="pdfFile"
                 className="custom-file-label"
@@ -375,7 +418,8 @@ if (activeTab === "others") {
               >
                 {file ? file.name : "Choose File"}
               </label>
-              <p>Max Size: 10MB</p>
+
+              <p style={{ marginLeft: 12 }}>Max Size: 10MB</p>
             </div>
 
             {pdfError && <div className="error-text">{pdfError}</div>}
@@ -395,6 +439,7 @@ if (activeTab === "others") {
                   </option>
                 ))}
               </select>
+
               <select
                 value={sides}
                 onChange={(e) => setSides(e.target.value)}
@@ -407,6 +452,7 @@ if (activeTab === "others") {
                 ))}
               </select>
             </div>
+
             <div className="input-row">
               <select
                 value={binding}
@@ -419,15 +465,17 @@ if (activeTab === "others") {
                   </option>
                 ))}
               </select>
+
               <input
                 type="number"
                 className="input"
                 min={1}
                 value={copies}
-                onChange={(e) => setCopies(Number(e.target.value))}
+                onChange={(e) => setCopies(Number(e.target.value || 1))}
                 required
               />
             </div>
+
             <textarea
               className="input"
               placeholder="Description (optional)"
@@ -439,11 +487,16 @@ if (activeTab === "others") {
               <label htmlFor="paymentMethod" className="order-label">
                 Select Payment Method
               </label>
+
               <select
                 id="paymentMethod"
                 className="input"
                 value={payment}
-                onChange={(e) => setPayment(e.target.value)}
+                onChange={(e) => {
+                  setPayment(e.target.value);
+                  // reset transaction image if switching away from UPI
+                  if (e.target.value !== "UPI") setTransactionImage(null);
+                }}
                 required
               >
                 {PAYMENT_OPTIONS.map((opt) => (
@@ -454,32 +507,37 @@ if (activeTab === "others") {
               </select>
             </div>
 
-            {payment === "upi" && (
+            {payment === "UPI" && (
               <>
                 <div className="upi-info">
                   <img src={qrImg} alt="UPI QR Code" className="qr" />
-                  <p>UPI ID: <b>papukumarsahu686-2@oksbi</b></p>
+                  <p>
+                    UPI ID: <b>papukumarsahu686-2@oksbi</b>
+                  </p>
                 </div>
-                <label htmlFor="transactionUpload">Transaction Details (Upload payment Screenshot)</label>
+
+                <label htmlFor="transactionUpload">
+                  Transaction Details (Upload payment Screenshot)
+                </label>
                 <sub>Max Size: 10MB</sub>
+
                 <input
                   id="transactionUpload"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setTransactionImage(e.target.files[0]);
-                      setTransctionid("");
-                    } else {
-                      setTransactionImage(null);
-                    }
-                  }}
-                  required={!transactionImage}
+                  onChange={handleTransactionImageChange}
+                  style={{ display: "block", marginTop: 8 }}
+                  required
                 />
+
                 {transactionImage && (
-                  <div>
-                    Selected file: {transactionImage.name}
-                    <button type="button" onClick={() => setTransactionImage(null)}>
+                  <div style={{ marginTop: 8 }}>
+                    Selected file: {transactionImage.name}{" "}
+                    <button
+                      type="button"
+                      onClick={() => setTransactionImage(null)}
+                      style={{ marginLeft: 8 }}
+                    >
                       Remove
                     </button>
                   </div>
@@ -491,13 +549,11 @@ if (activeTab === "others") {
               <div className="total-cost-box">
                 <p>
                   Original Price: ₹{originalPrice}
-                  <span style={{ fontSize: "smaller" }}>
+                  <span style={{ fontSize: "smaller", marginLeft: 8 }}>
                     (Prints ₹{printCost} + Binding ₹{bindingCost})
                   </span>
                 </p>
-                <p>
-                  25% Student Discount on Prints: -₹{discountValue.toFixed(2)}
-                </p>
+                <p>25% Student Discount on Prints: -₹{discountValue.toFixed(2)}</p>
                 <p>New Price: ₹{discountPrice}</p>
               </div>
             )}
@@ -514,4 +570,4 @@ if (activeTab === "others") {
       )}
     </>
   );
-            }
+}
