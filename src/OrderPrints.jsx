@@ -424,6 +424,7 @@ export default function OrderPrints() {
             )}
 
             <div className="input-row">
+              <span>Colour options</span>
               <select
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
@@ -436,6 +437,7 @@ export default function OrderPrints() {
                 ))}
               </select>
 
+              <span>No.of Sides</span>
               <select
                 value={sides}
                 onChange={(e) => setSides(e.target.value)}
@@ -450,6 +452,7 @@ export default function OrderPrints() {
             </div>
 
             <div className="input-row">
+              <span>Binding Options</span>
               <select
                 value={binding}
                 onChange={(e) => setBinding(e.target.value)}
