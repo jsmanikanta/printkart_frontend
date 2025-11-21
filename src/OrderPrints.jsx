@@ -437,7 +437,7 @@ export default function OrderPrints() {
                 ))}
               </select>
 
-              <span>No.of Sides</span>
+              <span>Sides</span>
               <select
                 value={sides}
                 onChange={(e) => setSides(e.target.value)}
@@ -465,6 +465,7 @@ export default function OrderPrints() {
                 ))}
               </select>
 
+              <span>Copies</span>
               <input
                 type="number"
                 className="input"
