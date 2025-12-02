@@ -422,7 +422,8 @@ export default function OrderPrints() {
             {pages > 0 && (
               <div className="pdf-pages-info">Pages detected: {pages}</div>
             )}
-
+            <p>Compress your pdf Link <a href:"https://www.ilovepdf.com/compress_pdf">Link</a></p>
+            
             <div className="input-row">
               <span>Colour options</span>
               <select
