@@ -422,7 +422,23 @@ export default function OrderPrints() {
             {pages > 0 && (
               <div className="pdf-pages-info">Pages detected: {pages}</div>
             )}
-            <p>Compress your pdf Link <a href:"https://www.ilovepdf.com/compress_pdf">Link</a></p>
+            <button
+              type="button"
+              onClick={() =>href = "https://www.ilovepdf.com/compress_pdf"}
+              style={{
+                marginTop: "8px",
+                padding: "6px 12px",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                fontSize: "12px",
+                cursor: "pointer",
+                display: "inline-block"
+              }}
+            >
+              Compress File Size
+          </button>
             
             <div className="input-row">
               <span>Colour options</span>
