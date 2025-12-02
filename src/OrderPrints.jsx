@@ -442,7 +442,7 @@ export default function OrderPrints() {
               }}
             >
               Compress file size here
-            </a>
+            </a> <br/> 
             
             <div className="input-row">
               <span>Colour options</span>
