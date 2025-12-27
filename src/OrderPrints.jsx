@@ -168,12 +168,6 @@ export default function OrderPrints() {
 
   const handleVerifyCoupon = async () => {
   const token = localStorage.getItem("token");
-
-  if (!token) {
-    alert("Please log in first.");
-    return;
-  }
-
   if (!couponCode.trim()) {
     alert("Please enter a coupon code.");
     return;
