@@ -3,7 +3,7 @@ import React from "react";
 function VideoHelpSection() {
   const videos = [
     {
-      src:"/images/prices.jpg",
+      src:"/images/prices.jpeg",
       title:"Price List",
       aboutL"Detailed print & binding prices",
     }
