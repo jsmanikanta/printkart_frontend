@@ -419,4 +419,115 @@ export default function SellBooks() {
                 {errors.categeory && <span className="error">{errors.categeory}</span>}
               </div>
 
-              <div className="form
+                            <div className="form-group">
+                <label>Subcategory <span className="required">*</span></label>
+                <select
+                  name="subcategeory"
+                  value={formData.subcategeory}
+                  onChange={handleInputChange}
+                  disabled={!formData.categeory}
+                  className={errors.subcategeory ? "input-error" : ""}
+                >
+                  <option value="">Select Subcategory</option>
+                  {formData.categeory &&
+                    subcategoriesMap[formData.categeory]?.map((sub) => (
+                      <option key={sub} value={sub}>
+                        {sub}
+                      </option>
+                    ))}
+                </select>
+                {errors.subcategeory && (
+                  <span className="error">{errors.subcategeory}</span>
+                )}
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>Book Condition <span className="required">*</span></label>
+                <select
+                  name="condition"
+                  value={formData.condition}
+                  onChange={handleInputChange}
+                  className={errors.condition ? "input-error" : ""}
+                >
+                  <option value="">Select Condition</option>
+                  {conditions.map((cond) => (
+                    <option key={cond} value={cond}>
+                      {cond}
+                    </option>
+                  ))}
+                </select>
+                {errors.condition && (
+                  <span className="error">{errors.condition}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Description */}
+          <div className="form-section">
+            <h3>📝 Description</h3>
+            <div className="form-group">
+              <label>Description <span className="required">*</span></label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                placeholder="Mention edition, author, usage, markings, missing pages, etc."
+                rows="5"
+                maxLength={1000}
+                className={errors.description ? "input-error" : ""}
+              />
+              {errors.description && (
+                <span className="error">{errors.description}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="form-section">
+            <h3>📍 Location</h3>
+            <div className="form-group">
+              <label>Pickup Location <span className="required">*</span></label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                placeholder="City, State"
+                className={errors.location ? "input-error" : ""}
+              />
+              {errors.location && (
+                <span className="error">{errors.location}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Submit */}
+          <div className="form-actions">
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={loading || submitStatus === "submitting"}
+            >
+              {submitStatus === "submitting"
+                ? "Submitting..."
+                : formData.selltype === "donate"
+                ? "❤️ Donate Book"
+                : "📚 List Book for Sale"}
+            </button>
+
+            {submitStatus === "success" && (
+              <p className="success-text">Book listed successfully!</p>
+            )}
+            {submitStatus === "error" && (
+              <p className="error-text">Please fix the errors above.</p>
+            )}
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
+
