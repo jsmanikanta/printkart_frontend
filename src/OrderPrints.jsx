@@ -66,8 +66,6 @@ export default function OrderPrints() {
   const [printCost, setPrintCost] = useState(0);
   const [discountValue, setDiscountValue] = useState(0); // student discount amount
   const [bindingCost, setBindingCost] = useState(0);
-
-  // coupon state
   const [couponCode, setCouponCode] = useState("");
   const [couponInfo, setCouponInfo] = useState(null);
   const [couponLoading, setCouponLoading] = useState(false);
@@ -140,7 +138,6 @@ export default function OrderPrints() {
     const originalTotal = printAmount + bindingAmount;
     setOriginalPrice(originalTotal);
 
-    // If no coupon, student discount applies for students
     if (couponDiscountPercent === 0) {
       let studentDiscount = 0;
       if (activeTab === "student") {
@@ -162,72 +159,79 @@ export default function OrderPrints() {
     }
   }, [color, sides, binding, pages, copies, activeTab, couponDiscountPercent]);
 
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    navigate("/login");
+  }
+}, [navigate]);
+
   const handleVerifyCoupon = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Please log in first.");
-      navigate("/login");
-      return;
-    }
+  const token = localStorage.getItem("token");
 
-    if (!couponCode.trim()) {
-      alert("Please enter a coupon code.");
-      return;
-    }
+  if (!token) {
+    alert("Please log in first.");
+    return;
+  }
 
-    try {
-      setCouponLoading(true);
-      setCouponInfo(null);
+  if (!couponCode.trim()) {
+    alert("Please enter a coupon code.");
+    return;
+  }
 
-      const res = await fetch(
-        `${import.meta.env.VITE_API_PATH}/coupons/verify`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ code: couponCode }),
-        }
-      );
+  try {
+    setCouponLoading(true);
+    setCouponInfo(null);
 
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        setCouponDiscountPercent(0);
-        setCouponDiscountAmount(0);
-        setCouponInfo({
-          status: data.status || "invalid",
-          discountPercentage: 0,
-          message: data.error || "Invalid coupon",
-        });
-        return;
+    const res = await fetch(
+      `${import.meta.env.VITE_API_PATH}/coupons/verify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ code: couponCode }),
       }
+    );
 
-      const percent = data.data?.discountPercentage || 0;
+    const data = await res.json();
 
-      setCouponDiscountPercent(percent); // triggers useEffect to recalc total
-      setCouponInfo({
-        status: data.status,
-        discountPercentage: percent,
-        message:
-          data.status === "available"
-            ? `Coupon applied. Extra ${percent}% discount on total.`
-            : "Coupon already used.",
-      });
-    } catch (err) {
-      console.error("Coupon verify error:", err);
+    if (!res.ok || !data.success) {
       setCouponDiscountPercent(0);
       setCouponDiscountAmount(0);
       setCouponInfo({
-        status: "error",
+        status: data.status || "invalid",
         discountPercentage: 0,
-        message: "Error verifying coupon.",
+        message: data.error || "Invalid coupon",
       });
-    } finally {
-      setCouponLoading(false);
+      return;
     }
-  };
+
+    const percent = data.data?.discountPercentage || 0;
+
+    setCouponDiscountPercent(percent); // triggers price useEffect to recalc
+    setCouponInfo({
+      status: data.status,
+      discountPercentage: percent,
+      message:
+        data.status === "available"
+          ? `Coupon applied. Extra ${percent}% discount on total.`
+          : "Coupon already used.",
+    });
+  } catch (err) {
+    console.error("Coupon verify error:", err);
+    setCouponDiscountPercent(0);
+    setCouponDiscountAmount(0);
+    setCouponInfo({
+      status: "error",
+      discountPercentage: 0,
+      message: "Error verifying coupon.",
+    });
+  } finally {
+    setCouponLoading(false);
+  }
+};
 
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
@@ -298,13 +302,6 @@ export default function OrderPrints() {
 
     if (payment === "UPI" && !transactionImage) {
       return alert("Please upload UPI transaction screenshot.");
-    }
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Please log in first.");
-      navigate("/login");
-      return;
     }
 
     setLoading(true);
