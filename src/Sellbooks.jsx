@@ -242,7 +242,7 @@ export default function SellBooks() {
       submitData.append("soldstatus", formData.soldstatus);
       submitData.append("image", photo);
 
-      const apiUrl = `${import.meta.env.VITE_API_PATH}books/sellbook`;
+      const apiUrl = `${import.meta.env.VITE_API_PATH}/books/sellbook`;
       console.log("Submitting to:", apiUrl);
 
       const response = await fetch(apiUrl, {
@@ -259,13 +259,14 @@ export default function SellBooks() {
       if (!response.ok) {
         const errorData = await response.text();
         console.error("Server error response:", errorData);
-        throw new Error(`Server error ${response.status}: ${errorData}`);
+        const errorObj = JSON.parse(errorData || '{"error":"Unknown server error"}');
+        throw new Error(errorObj.error || errorObj.message || `Server error ${response.status}`);
       }
 
       const data = await response.json();
 
       setSubmitStatus("success");
-      alert("✅ Book listed successfully! Check your email for confirmation.");
+      alert(" Book listed successfully! Check your email for confirmation.");
       
       // Reset form
       setFormData({
@@ -291,18 +292,18 @@ export default function SellBooks() {
       console.error("Submit error:", error);
       
       if (error.name === 'AbortError') {
-        alert("⏰ Request timeout. Please try again with a smaller image.");
+        alert(" Request timeout. Please try again with a smaller image.");
       } else if (error.message.includes('Network') || error.message.includes('fetch')) {
-        alert("🌐 Network error. Please check your connection and try again.");
-      } else if (error.message.includes('401')) {
-        alert("⚠️ Session expired. Please login again.");
+        alert("Network error. Please check your connection and try again.");
+      } else if (error.message.includes('401') || error.message.includes('403')) {
+        alert(" Session expired. Please login again.");
         navigate("/login");
       } else {
-        alert(`❌ Error: ${error.message}`);
+        alert(` Error: ${error.message}`);
       }
       setSubmitStatus("error");
     } finally {
-      clearTimeout(timeoutId);
+      if (timeoutId) clearTimeout(timeoutId);
       setLoading(false);
       setTimeout(() => setSubmitStatus("idle"), 3000);
     }
@@ -429,7 +430,7 @@ export default function SellBooks() {
               <div className="form-group">
                 <label>Category <span className="required">*</span></label>
                 <select
-                  name="category"      // Fixed field name
+                  name="category"
                   value={formData.category}
                   onChange={handleCategoryChange}
                   className={errors.category ? "input-error" : ""}
@@ -445,7 +446,7 @@ export default function SellBooks() {
               <div className="form-group">
                 <label>Subcategory <span className="required">*</span></label>
                 <select
-                  name="subcategory"   // Fixed field name
+                  name="subcategory"
                   value={formData.subcategory}
                   onChange={handleInputChange}
                   disabled={!formData.category}
