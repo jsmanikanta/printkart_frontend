@@ -174,7 +174,7 @@ export default function SellBooks() {
         setPreview(null);
         setErrors({});
         setSubmitStatus("success");
-        setTimeout(() => navigate("/soldbooks"), 1500);
+        setTimeout(() => navigate("/home"), 1500);
       } else {
         const errorText = await response.text();
         throw new Error(`${response.status}: ${errorText}`);
@@ -264,7 +264,6 @@ export default function SellBooks() {
             )}
           </div>
 
-          {/* Category & Condition */}
           <div className="form-section">
             <h3>Category & Condition</h3>
             <div className="form-row">
@@ -325,7 +324,6 @@ export default function SellBooks() {
               {submitStatus === "submitting" ? "Submitting..." : formData.selltype === "donate" ? "Donate Book" : "List Book for Sale"}
             </button>
             {submitStatus === "success" && <p className="success-text">Book listed successfully!</p>}
-            {submitStatus === "error" && <p className="error-text">Please fix the errors above.</p>}
           </div>
         </form>
       )}
