@@ -84,13 +84,16 @@ const subcategoriesMap = {
 
 const conditions = ["Brand New", "Like New", "Very Good", "Good", "Fair", "Poor"];
 
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function SellBooks() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    category: "",
-    subcategory: "",
+    categeory: "",
+    subcategeory: "",
     condition: "",
     description: "",
     location: "New Delhi, India",
@@ -112,28 +115,20 @@ export default function SellBooks() {
   const validateForm = useCallback(() => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Book name is required";
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = "Book name must be at least 2 characters";
-    }
+    if (!formData.name.trim()) newErrors.name = "Book name is required";
+    else if (formData.name.trim().length < 2) newErrors.name = "Book name must be at least 2 characters";
 
-    if (!formData.category) newErrors.category = "Category is required";
-    if (!formData.subcategory) newErrors.subcategory = "Subcategory is required";
+    if (!formData.categeory) newErrors.categeory = "Category is required";
+    if (!formData.subcategeory) newErrors.subcategeory = "Subcategory is required";
     if (!formData.condition) newErrors.condition = "Condition is required";
 
-    if (!formData.description.trim()) {
-      newErrors.description = "Description is required";
-    } else if (formData.description.trim().length < 10) {
-      newErrors.description = "Description must be at least 10 characters";
-    }
+    if (!formData.description.trim()) newErrors.description = "Description is required";
+    else if (formData.description.trim().length < 10) newErrors.description = "Description must be at least 10 characters";
 
     if (!formData.location.trim()) newErrors.location = "Location is required";
 
-    if (formData.selltype === "sell") {
-      if (!formData.price || Number(formData.price) <= 0) {
-        newErrors.price = "Valid price is required";
-      }
+    if (formData.selltype === "sell" && (!formData.price || Number(formData.price) <= 0)) {
+      newErrors.price = "Valid price is required";
     }
 
     if (!photo) newErrors.photo = "Book photo is required";
@@ -150,25 +145,13 @@ export default function SellBooks() {
 
   const handleCategoryChange = useCallback((e) => {
     const value = e.target.value;
-    setFormData(prev => ({
-      ...prev,
-      category: value,
-      subcategory: ""
-    }));
-    setErrors(prev => ({
-      ...prev,
-      category: "",
-      subcategory: ""
-    }));
+    setFormData(prev => ({ ...prev, categeory: value, subcategeory: "" }));
+    setErrors(prev => ({ ...prev, categeory: "", subcategeory: "" }));
   }, []);
 
   const handleSellTypeChange = useCallback((e) => {
     const value = e.target.value;
-    setFormData(prev => ({
-      ...prev,
-      selltype: value,
-      price: value === "donate" ? "0" : prev.price
-    }));
+    setFormData(prev => ({ ...prev, selltype: value, price: value === "donate" ? "0" : prev.price }));
     setErrors(prev => ({ ...prev, price: "" }));
   }, []);
 
@@ -201,7 +184,6 @@ export default function SellBooks() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!validateForm()) {
       setSubmitStatus("error");
       setTimeout(() => setSubmitStatus("idle"), 3000);
@@ -223,94 +205,54 @@ export default function SellBooks() {
       }
 
       const submitData = new FormData();
-      
-      // Manual append to ensure correct field names and types
       submitData.append("name", formData.name.trim());
       submitData.append("price", formData.selltype === "donate" ? "0" : formData.price);
-      submitData.append("category", formData.category);
-      submitData.append("subcategory", formData.subcategory);
+      submitData.append("categeory", formData.categeory);
+      submitData.append("subcategeory", formData.subcategeory);
       submitData.append("condition", formData.condition);
       submitData.append("description", formData.description.trim());
       submitData.append("location", formData.location.trim());
       submitData.append("selltype", formData.selltype);
       submitData.append("soldstatus", formData.soldstatus);
-      
-      // Add user ID if available
-      const userId = localStorage.getItem("userId");
-      if (userId) {
-        submitData.append("user", userId);
+      if (photo) submitData.append("image", photo);
+
+      const response = await fetch(`${import.meta.env.VITE_API_PATH}/books/sellbook`, {
+        method: "POST",
+        signal: controller.signal,
+        headers: { "Authorization": `Bearer ${token}` },
+        body: submitData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert("Book listed successfully!");
+        setFormData({
+          name: "",
+          price: "",
+          categeory: "",
+          subcategeory: "",
+          condition: "",
+          description: "",
+          location: "New Delhi, India",
+          selltype: "sell",
+          soldstatus: "Instock"
+        });
+        setPhoto(null);
+        setPreview(null);
+        setErrors({});
+        setSubmitStatus("success");
+        setTimeout(() => navigate("/soldbooks"), 1500);
+      } else {
+        const errorText = await response.text();
+        throw new Error(`${response.status}: ${errorText}`);
       }
-      
-      if (photo) {
-        submitData.append("image", photo);
-      }
-
-      const apiUrls = [
-        `${import.meta.env.VITE_API_PATH}/books/sellbook`,
-      ];
-
-      let lastError;
-      for (const apiUrl of apiUrls) {
-        console.log(` Trying endpoint: ${apiUrl}`);
-        try {
-          const response = await fetch(apiUrl, {
-            method: "POST",
-            signal: controller.signal,
-            headers: {
-              "Authorization": `Bearer ${token}`
-            },
-            body: submitData,
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            console.log("Success:", data);
-            setSubmitStatus("success");
-            alert("Book listed successfully!");
-
-            setFormData({
-              name: "",
-              price: "",
-              category: "",
-              subcategory: "",
-              condition: "",
-              description: "",
-              location: "",
-              selltype: "sell",
-              soldstatus: "Instock"
-            });
-            setPhoto(null);
-            setPreview(null);
-            setErrors({});
-            
-            setTimeout(() => navigate("/soldbooks"), 1500);
-            return;
-          } else {
-            const errorText = await response.text();
-            console.error(` ${apiUrl} failed (${response.status}):`, errorText);
-            lastError = new Error(`${response.status}: ${errorText}`);
-          }
-        } catch (err) {
-          console.error(`${apiUrl} error:`, err.message);
-          lastError = err;
-        }
-      }
-
-      throw lastError || new Error("All endpoints failed - check backend routes");
-
     } catch (error) {
       console.error("Submit error:", error);
-      
-      if (error.name === 'AbortError') {
-        alert(" Request timeout. Try a smaller image.");
-      } else if (error.message.includes('Network') || error.message.includes('fetch')) {
-        alert("Network error. Check your connection.");
-      } else if (error.message.includes('401') || error.message.includes('403')) {
-        alert(" Please login again.");
+      if (error.name === "AbortError") alert("Request timeout. Try a smaller image.");
+      else if (error.message.includes("401") || error.message.includes("403")) {
+        alert("Please login again.");
         navigate("/login");
-      } else {
-        alert(`Submission failed: ${error.message}`);
-      }
+      } else alert(`Submission failed: ${error.message}`);
       setSubmitStatus("error");
     } finally {
       if (timeoutId) clearTimeout(timeoutId);
@@ -318,6 +260,16 @@ export default function SellBooks() {
       setTimeout(() => setSubmitStatus("idle"), 3000);
     }
   };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Input fields for name, price, category, etc. */}
+      {/* File upload input */}
+      {/* Show preview image if available */}
+      {/* Submit button */}
+    </form>
+  );
+}
 
   return (
     <div className="sellbooks-container">
