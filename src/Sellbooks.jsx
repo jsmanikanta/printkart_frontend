@@ -84,9 +84,6 @@ const subcategoriesMap = {
 
 const conditions = ["Brand New", "Like New", "Very Good", "Good", "Fair", "Poor"];
 
-import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-
 export default function SellBooks() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
