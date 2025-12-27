@@ -83,7 +83,7 @@ function CollegePYQ() {
         ←
       </span>
       <span className="pyq-header-title">
-        ANITS Previous Year Question Papers
+        Previous Year Question Papers
       </span>
     </header>
 
@@ -147,6 +147,7 @@ function CollegePYQ() {
 }
 
 export default CollegePYQ;
+
 
 
 
