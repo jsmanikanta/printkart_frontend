@@ -33,7 +33,6 @@ const BINDING_OPTIONS = [
   { value: "book", label: "Book Binding" },
 ];
 
-// IMPORTANT: payment value "UPI" must match backend check (payment === "UPI")
 const PAYMENT_OPTIONS = [
   { value: "payondelivery", label: "Pay on Delivery" },
   { value: "UPI", label: "UPI" },
@@ -52,8 +51,8 @@ export default function OrderPrints() {
   const [copies, setCopies] = useState(1);
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
-  const [transactionImage, setTransactionImage] = useState(null); // file
-  const [payment, setPayment] = useState("payondelivery"); // default payment method
+  const [transactionImage, setTransactionImage] = useState(null);
+  const [payment, setPayment] = useState("payondelivery");
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
@@ -64,7 +63,7 @@ export default function OrderPrints() {
   const [originalPrice, setOriginalPrice] = useState(0);
   const [discountPrice, setDiscountPrice] = useState(0);
   const [printCost, setPrintCost] = useState(0);
-  const [discountValue, setDiscountValue] = useState(0); // student discount amount
+  const [discountValue, setDiscountValue] = useState(0);
   const [bindingCost, setBindingCost] = useState(0);
   const [couponCode, setCouponCode] = useState("");
   const [couponInfo, setCouponInfo] = useState(null);
@@ -73,6 +72,14 @@ export default function OrderPrints() {
   const [couponDiscountAmount, setCouponDiscountAmount] = useState(0);
 
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
+  // Redirect if not logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   // Load PDF pages
   useEffect(() => {
@@ -148,10 +155,7 @@ export default function OrderPrints() {
       const finalTotal = Math.ceil(originalTotal - studentDiscount);
       setDiscountPrice(finalTotal);
     } else {
-      // Coupon present → NO student discount; only coupon on originalTotal
-      const couponAmt = Math.ceil(
-        (originalTotal * couponDiscountPercent) / 100
-      );
+      const couponAmt = Math.ceil((originalTotal * couponDiscountPercent) / 100);
       setDiscountValue(0);
       setCouponDiscountAmount(couponAmt);
       const finalTotal = Math.max(0, originalTotal - couponAmt);
@@ -159,73 +163,71 @@ export default function OrderPrints() {
     }
   }, [color, sides, binding, pages, copies, activeTab, couponDiscountPercent]);
 
-  useEffect(() => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    navigate("/login");
-  }
-}, [navigate]);
-
   const handleVerifyCoupon = async () => {
-  const token = localStorage.getItem("token");
-  if (!couponCode.trim()) {
-    alert("Please enter a coupon code.");
-    return;
-  }
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      alert("Please log in first.");
+      return;
+    }
 
-  try {
-    setCouponLoading(true);
-    setCouponInfo(null);
+    if (!couponCode.trim()) {
+      alert("Please enter a coupon code.");
+      return;
+    }
 
-    const res = await fetch(
-      `${import.meta.env.VITE_API_PATH}/coupons/verify`, // <-- make sure route is /coupons/verify
-      {
+    try {
+      setCouponLoading(true);
+      setCouponInfo(null);
+
+      console.log("Sending coupon request with token:", token ? "present" : "missing");
+
+      const res = await fetch(`${import.meta.env.VITE_API_PATH}/coupons/verify`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ code: couponCode }),
+      });
+
+      const data = await res.json();
+      console.log("Coupon response:", data);
+
+      if (!res.ok || !data.success) {
+        setCouponDiscountPercent(0);
+        setCouponDiscountAmount(0);
+        setCouponInfo({
+          status: data.status || "invalid",
+          discountPercentage: 0,
+          message: data.error || "Invalid coupon",
+        });
+        return;
       }
-    );
 
-    const data = await res.json();
-
-    if (!res.ok || !data.success) {
+      const percent = data.data?.discountPercentage || 0;
+      setCouponDiscountPercent(percent);
+      setCouponInfo({
+        status: data.status,
+        discountPercentage: percent,
+        message:
+          data.status === "available"
+            ? `Coupon applied. Extra ${percent}% discount on total.`
+            : "Coupon already used.",
+      });
+    } catch (err) {
+      console.error("Coupon verify error:", err);
       setCouponDiscountPercent(0);
       setCouponDiscountAmount(0);
       setCouponInfo({
-        status: data.status || "invalid",
+        status: "error",
         discountPercentage: 0,
-        message: data.error || "Invalid coupon",
+        message: "Error verifying coupon.",
       });
-      return;
+    } finally {
+      setCouponLoading(false);
     }
-
-    const percent = data.data?.discountPercentage || 0;
-
-    setCouponDiscountPercent(percent); // triggers price useEffect to recalc
-    setCouponInfo({
-      status: data.status,
-      discountPercentage: percent,
-      message:
-        data.status === "available"
-          ? `Coupon applied. Extra ${percent}% discount on total.`
-          : "Coupon already used.",
-    });
-  } catch (err) {
-    console.error("Coupon verify error:", err);
-    setCouponDiscountPercent(0);
-    setCouponDiscountAmount(0);
-    setCouponInfo({
-      status: "error",
-      discountPercentage: 0,
-      message: "Error verifying coupon.",
-    });
-  } finally {
-    setCouponLoading(false);
-  }
-};
+  };
 
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
@@ -298,6 +300,13 @@ export default function OrderPrints() {
       return alert("Please upload UPI transaction screenshot.");
     }
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please log in first.");
+      navigate("/login");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -331,16 +340,13 @@ export default function OrderPrints() {
         formData.append("address", address.trim());
       }
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_API_PATH}/orders/orderprints`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
@@ -356,7 +362,7 @@ export default function OrderPrints() {
       setLoading(false);
     }
   };
-
+  
   return (
     <>
       {loading ? (
