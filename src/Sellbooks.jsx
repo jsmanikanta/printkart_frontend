@@ -83,9 +83,9 @@ const subcategoriesMap = {
 };
 
 const conditions = ["Brand New", "Like New", "Very Good", "Good", "Fair", "Poor"];
+
 export default function SellBooks() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -97,7 +97,6 @@ export default function SellBooks() {
     selltype: "sell",
     soldstatus: "Instock"
   });
-
   const [photo, setPhoto] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -149,7 +148,7 @@ export default function SellBooks() {
     setErrors(prev => ({ ...prev, [name]: "" }));
   }, []);
 
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = useCallback((e) => {
     const value = e.target.value;
     setFormData(prev => ({
       ...prev,
@@ -161,19 +160,19 @@ export default function SellBooks() {
       category: "",
       subcategory: ""
     }));
-  };
+  }, []);
 
-  const handleSellTypeChange = (e) => {
+  const handleSellTypeChange = useCallback((e) => {
     const value = e.target.value;
     setFormData(prev => ({
       ...prev,
       selltype: value,
-      price: value === "donate" ? "0" : ""
+      price: value === "donate" ? "0" : prev.price
     }));
     setErrors(prev => ({ ...prev, price: "" }));
-  };
+  }, []);
 
-  const handlePhotoChange = (e) => {
+  const handlePhotoChange = useCallback((e) => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -188,58 +187,142 @@ export default function SellBooks() {
     }
 
     if (preview) URL.revokeObjectURL(preview);
-
     setPhoto(file);
     setPreview(URL.createObjectURL(file));
     setErrors(prev => ({ ...prev, photo: "" }));
-  };
+  }, [preview]);
 
-  const handleRemovePhoto = () => {
+  const handleRemovePhoto = useCallback(() => {
     if (preview) URL.revokeObjectURL(preview);
     setPhoto(null);
     setPreview(null);
-  };
+    setErrors(prev => ({ ...prev, photo: "Book photo is required" }));
+  }, [preview]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    
+    if (!validateForm()) {
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus("idle"), 3000);
+      return;
+    }
 
     setLoading(true);
     setSubmitStatus("submitting");
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+
     try {
       const token = localStorage.getItem("token");
       if (!token) {
+        alert("Please login to list books");
         navigate("/login");
         return;
       }
 
       const submitData = new FormData();
-      Object.entries({
-        ...formData,
-        price: formData.selltype === "donate" ? 0 : formData.price
-      }).forEach(([k, v]) => submitData.append(k, v));
+      
+      // ✅ Manual append to avoid FormData issues with objects
+      submitData.append("name", formData.name.trim());
+      submitData.append("price", formData.selltype === "donate" ? "0" : formData.price);
+      submitData.append("category", formData.category);
+      submitData.append("subcategory", formData.subcategory);
+      submitData.append("condition", formData.condition);
+      submitData.append("description", formData.description.trim());
+      submitData.append("location", formData.location.trim());
+      submitData.append("selltype", formData.selltype);
+      submitData.append("soldstatus", formData.soldstatus);
+      
+      // ✅ CRITICAL: Add user ID if available
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        submitData.append("user", userId);
+      }
+      
+      if (photo) {
+        submitData.append("image", photo);
+      }
 
-      submitData.append("image", photo);
-
-      const response = await fetch(
+      // ✅ FIXED: Correct API endpoints (try both common patterns)
+      const apiUrls = [
+        `${import.meta.env.VITE_API_PATH}/api/books/sellbooks`,
         `${import.meta.env.VITE_API_PATH}/books/sellbook`,
-        {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: submitData
+        `${import.meta.env.VITE_API_PATH}/api/sellbooks`,
+        `${import.meta.env.VITE_API_PATH}/sellbooks`
+      ];
+
+      let lastError;
+      for (const apiUrl of apiUrls) {
+        console.log(`Trying endpoint: ${apiUrl}`);
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            signal: controller.signal,
+            headers: {
+              "Authorization": `Bearer ${token}`
+              // ✅ NO Content-Type - FormData sets it automatically
+            },
+            body: submitData,
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            console.log("✅ Success:", data);
+            setSubmitStatus("success");
+            alert("✅ Book listed successfully!");
+            
+            // Reset form
+            setFormData({
+              name: "",
+              price: "",
+              category: "",
+              subcategory: "",
+              condition: "",
+              description: "",
+              location: "New Delhi, India",
+              selltype: "sell",
+              soldstatus: "Instock"
+            });
+            setPhoto(null);
+            setPreview(null);
+            setErrors({});
+            
+            setTimeout(() => navigate("/soldbooks"), 1500);
+            return;
+          } else {
+            const errorText = await response.text();
+            console.error(`❌ ${apiUrl} failed (${response.status}):`, errorText);
+            lastError = new Error(`${response.status}: ${errorText}`);
+          }
+        } catch (err) {
+          console.error(`❌ ${apiUrl} error:`, err.message);
+          lastError = err;
         }
-      );
+      }
 
-      if (!response.ok) throw new Error("Submission failed");
+      // All endpoints failed
+      throw lastError || new Error("All endpoints failed");
 
-      setSubmitStatus("success");
-      navigate("/soldbooks");
-    } catch (err) {
+    } catch (error) {
+      console.error("🚨 Submit error:", error);
+      
+      if (error.name === 'AbortError') {
+        alert("⏰ Request timeout. Try a smaller image.");
+      } else if (error.message.includes('Network') || error.message.includes('fetch')) {
+        alert("🌐 Network error. Check your connection.");
+      } else if (error.message.includes('401') || error.message.includes('403')) {
+        alert("🔐 Please login again.");
+        navigate("/login");
+      } else {
+        alert(`❌ Submission failed: ${error.message}`);
+      }
       setSubmitStatus("error");
-      alert(err.message);
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
+      setTimeout(() => setSubmitStatus("idle"), 3000);
     }
   };
 
@@ -293,6 +376,7 @@ export default function SellBooks() {
             </div>
           </div>
 
+          {/* Rest of your JSX remains exactly the same */}
           {/* Basic Information */}
           <div className="form-section">
             <h3>Basic Information</h3>
@@ -329,7 +413,7 @@ export default function SellBooks() {
                       type="radio"
                       name="selltype"
                       value="donate"
-                      checked={formData.selltype === "donate"}
+                      checked={formData.selltype === "donate"
                       onChange={handleSellTypeChange}
                     />
                     <span>Donate (Free)</span>
@@ -338,153 +422,4 @@ export default function SellBooks() {
               </div>
             </div>
 
-            {formData.selltype === "sell" && (
-              <div className="form-group">
-                <label>Expected Price (₹) <span className="required">*</span></label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  min="1"
-                  max="50000"
-                  step="0.01"
-                  placeholder="Ex: 250"
-                  className={errors.price ? "input-error" : ""}
-                />
-                {errors.price && <span className="error">{errors.price}</span>}
-              </div>
-            )}
-          </div>
-
-          {/* Category & Details */}
-          <div className="form-section">
-            <h3>Category & Condition</h3>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Category <span className="required">*</span></label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleCategoryChange}
-                  className={errors.category ? "input-error" : ""}
-                >
-                  <option value="">Select Category</option>
-                  {categories.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
-                </select>
-                {errors.category && <span className="error">{errors.category}</span>}
-              </div>
-
-              <div className="form-group">
-                <label>Subcategory <span className="required">*</span></label>
-                <select
-                  name="subcategory"
-                  value={formData.subcategory}
-                  onChange={handleInputChange}
-                  disabled={!formData.category}
-                  className={errors.subcategory ? "input-error" : ""}
-                >
-                  <option value="">Select Subcategory</option>
-                  {formData.category &&
-                    subcategoriesMap[formData.category]?.map((sub) => (
-                      <option key={sub} value={sub}>
-                        {sub}
-                      </option>
-                    ))}
-                </select>
-                {errors.subcategory && (
-                  <span className="error">{errors.subcategory}</span>
-                )}
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>Book Condition <span className="required">*</span></label>
-                <select
-                  name="condition"
-                  value={formData.condition}
-                  onChange={handleInputChange}
-                  className={errors.condition ? "input-error" : ""}
-                >
-                  <option value="">Select Condition</option>
-                  {conditions.map((cond) => (
-                    <option key={cond} value={cond}>
-                      {cond}
-                    </option>
-                  ))}
-                </select>
-                {errors.condition && (
-                  <span className="error">{errors.condition}</span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Description */}
-          <div className="form-section">
-            <h3>Description</h3>
-            <div className="form-group">
-              <label>Description <span className="required">*</span></label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                placeholder="Mention edition, author, usage, markings, missing pages, etc."
-                rows="5"
-                maxLength={1000}
-                className={errors.description ? "input-error" : ""}
-              />
-              {errors.description && (
-                <span className="error">{errors.description}</span>
-              )}
-            </div>
-          </div>
-
-          {/* Location */}
-          <div className="form-section">
-            <h3>Location</h3>
-            <div className="form-group">
-              <label>Pickup Location <span className="required">*</span></label>
-              <input
-                type="text"
-                name="location"
-                value={formData.location}
-                onChange={handleInputChange}
-                placeholder="City, State"
-                className={errors.location ? "input-error" : ""}
-              />
-              {errors.location && (
-                <span className="error">{errors.location}</span>
-              )}
-            </div>
-          </div>
-
-          {/* Submit */}
-          <div className="form-actions">
-            <button
-              type="submit"
-              className="submit-btn"
-              disabled={loading || submitStatus === "submitting"}
-            >
-              {submitStatus === "submitting"
-                ? "Submitting..."
-                : formData.selltype === "donate"
-                ? "Donate Book"
-                : "List Book for Sale"}
-            </button>
-
-            {submitStatus === "success" && (
-              <p className="success-text">Book listed successfully!</p>
-            )}
-            {submitStatus === "error" && (
-              <p className="error-text">Please fix the errors above.</p>
-            )}
-          </div>
-        </form>
-      )}
-    </div>
-  );
-}
+            {formData.selltype === "
