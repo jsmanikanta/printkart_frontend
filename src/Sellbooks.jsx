@@ -273,12 +273,12 @@ export default function SellBooks() {
         }, 1500);
       } else {
         setSubmitStatus("error");
-        alert(`❌ Error: ${data.message || data.error || "Failed to list book"}`);
+        alert(` Error: ${data.message || data.error || "Failed to list book"}`);
       }
     } catch (error) {
       console.error("Submit error:", error);
       setSubmitStatus("error");
-      alert("❌ Network error. Please check your connection and try again.");
+      alert("Network error. Please check your connection and try again.");
     } finally {
       setLoading(false);
       setTimeout(() => setSubmitStatus("idle"), 3000);
@@ -303,7 +303,7 @@ export default function SellBooks() {
         <form className="sellbooks-form" onSubmit={handleSubmit}>
           {/* Photo Upload */}
           <div className="form-section">
-            <h3>📷 Book Photo <span className="required">*</span></h3>
+            <h3> Book Photo <span className="required">*</span></h3>
             <div className="form-group">
               <label className="upload-label">
                 <div className="upload-icon">📸</div>
@@ -337,7 +337,7 @@ export default function SellBooks() {
 
           {/* Basic Information */}
           <div className="form-section">
-            <h3>📖 Basic Information</h3>
+            <h3> Basic Information</h3>
             <div className="form-row">
               <div className="form-group">
                 <label>Book Name <span className="required">*</span></label>
@@ -364,7 +364,7 @@ export default function SellBooks() {
                       checked={formData.selltype === "sell"}
                       onChange={handleSellTypeChange}
                     />
-                    <span>💰 Sell</span>
+                    <span>Sell</span>
                   </label>
                   <label className="radio-label">
                     <input
@@ -374,7 +374,7 @@ export default function SellBooks() {
                       checked={formData.selltype === "donate"}
                       onChange={handleSellTypeChange}
                     />
-                    <span>❤️ Donate (Free)</span>
+                    <span>Donate (Free)</span>
                   </label>
                 </div>
               </div>
@@ -401,7 +401,7 @@ export default function SellBooks() {
 
           {/* Category & Details */}
           <div className="form-section">
-            <h3>📂 Category & Condition</h3>
+            <h3>Category & Condition</h3>
             <div className="form-row">
               <div className="form-group">
                 <label>Category <span className="required">*</span></label>
@@ -467,7 +467,7 @@ export default function SellBooks() {
 
           {/* Description */}
           <div className="form-section">
-            <h3>📝 Description</h3>
+            <h3>Description</h3>
             <div className="form-group">
               <label>Description <span className="required">*</span></label>
               <textarea
@@ -487,7 +487,7 @@ export default function SellBooks() {
 
           {/* Location */}
           <div className="form-section">
-            <h3>📍 Location</h3>
+            <h3>Location</h3>
             <div className="form-group">
               <label>Pickup Location <span className="required">*</span></label>
               <input
@@ -514,8 +514,8 @@ export default function SellBooks() {
               {submitStatus === "submitting"
                 ? "Submitting..."
                 : formData.selltype === "donate"
-                ? "❤️ Donate Book"
-                : "📚 List Book for Sale"}
+                ? "Donate Book"
+                : "List Book for Sale"}
             </button>
 
             {submitStatus === "success" && (
