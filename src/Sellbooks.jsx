@@ -174,7 +174,7 @@ export default function SellBooks() {
         setPreview(null);
         setErrors({});
         setSubmitStatus("success");
-        setTimeout(() => navigatevigate("/"),;
+        setTimeout(() => navigatevigate("/");
       } else {
         const errorText = await response.text();
         throw new Error(`${response.status}: ${errorText}`);
