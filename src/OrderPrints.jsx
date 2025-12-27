@@ -66,9 +66,14 @@ export default function OrderPrints() {
   const [printCost, setPrintCost] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
   const [bindingCost, setBindingCost] = useState(0);
+  const [couponCode, setCouponCode] = useState("");
+  const [couponInfo, setCouponInfo] = useState(null);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponDiscountPercent, setCouponDiscountPercent] = useState(0);
+  const [couponDiscountAmount, setCouponDiscountAmount] = useState(0);
 
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
-
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+  
   useEffect(() => {
     if (!file) {
       setPages(0);
@@ -88,26 +93,27 @@ export default function OrderPrints() {
     };
     loadPdfPages();
   }, [file]);
-
+  
   useEffect(() => {
     if (!pages || pages <= 0) {
       setPrintCost(0);
       setBindingCost(0);
       setOriginalPrice(0);
-      setDiscountValue(0);
+      setDiscountValue(0);        
+      setCouponDiscountAmount(0); 
       setDiscountPrice(0);
       return;
     }
-
+  
     let pricePerPage = 0;
     if (color === "b/w" && sides === "2") pricePerPage = 1;
     else if (color === "b/w" && sides === "1") pricePerPage = 1.7;
     else if (color === "colour" && sides === "1") pricePerPage = 6;
     else pricePerPage = 1.5;
-
+  
     const printAmount = pricePerPage * pages * copies;
     setPrintCost(printAmount);
-
+  
     let bindingAmount = 0;
     switch (binding) {
       case "spiral":
@@ -126,18 +132,99 @@ export default function OrderPrints() {
         bindingAmount = 0;
     }
     setBindingCost(bindingAmount);
-
+  
     const originalTotal = printAmount + bindingAmount;
     setOriginalPrice(originalTotal);
-
-    let discountAmount = 0;
-    if (activeTab === "student") discountAmount = printAmount * 0.15;
-    setDiscountValue(discountAmount);
-
-    const finalTotal = Math.ceil(printAmount - discountAmount + bindingAmount);
-    setDiscountPrice(finalTotal);
-  }, [color, sides, binding, pages, copies, activeTab]);
-
+  
+    // If no coupon, student discount applies for students
+    if (couponDiscountPercent === 0) {
+      let studentDiscount = 0;
+      if (activeTab === "student") {
+        studentDiscount = printAmount * 0.15;
+      }
+      setDiscountValue(studentDiscount);
+      setCouponDiscountAmount(0);
+      const finalTotal = Math.ceil(originalTotal - studentDiscount);
+      setDiscountPrice(finalTotal);
+    } else {
+      // Coupon present → NO student discount; only coupon on originalTotal
+      const couponAmt = Math.ceil(
+        (originalTotal * couponDiscountPercent) / 100
+      );
+      setDiscountValue(0);
+      setCouponDiscountAmount(couponAmt);
+      const finalTotal = Math.max(0, originalTotal - couponAmt);
+      setDiscountPrice(Math.ceil(finalTotal));
+    }
+  }, [color, sides, binding, pages, copies, activeTab, couponDiscountPercent]);
+  
+  const handleVerifyCoupon = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please log in first.");
+      navigate("/login");
+      return;
+    }
+  
+    if (!couponCode.trim()) {
+      alert("Please enter a coupon code.");
+      return;
+    }
+  
+    try {
+      setCouponLoading(true);
+      setCouponInfo(null);
+  
+      const res = await fetch(
+        `${import.meta.env.VITE_API_PATH}/coupons/verify`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ code: couponCode }),
+        }
+      );
+  
+      const data = await res.json();
+  
+      if (!res.ok || !data.success) {
+        setCouponDiscountPercent(0);
+        setCouponDiscountAmount(0);
+        setCouponInfo({
+          status: data.status || "invalid",
+          discountPercentage: 0,
+          message: data.error || "Invalid coupon",
+        });
+        return;
+      }
+  
+      const percent = data.data?.discountPercentage || 0;
+  
+      setCouponDiscountPercent(percent); // triggers useEffect above to recalc
+      setCouponInfo({
+        status: data.status,
+        discountPercentage: percent,
+        message:
+          data.status === "available"
+            ? `Coupon applied. Extra ${percent}% discount on total.`
+            : "Coupon already used.",
+      });
+    } catch (err) {
+      console.error("Coupon verify error:", err);
+      setCouponDiscountPercent(0);
+      setCouponDiscountAmount(0);
+      setCouponInfo({
+        status: "error",
+        discountPercentage: 0,
+        message: "Error verifying coupon.",
+      });
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+  
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
     if (!uploaded) {
@@ -158,7 +245,7 @@ export default function OrderPrints() {
     }
     setFile(uploaded);
   };
-
+  
   const handleTransactionImageChange = (e) => {
     const uploaded = e.target.files[0];
     if (!uploaded) {
@@ -177,20 +264,20 @@ export default function OrderPrints() {
     }
     setTransactionImage(uploaded);
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!file) return alert("Please upload a PDF.");
     if (!pages || pages <= 0) return alert("PDF page count unavailable.");
     if (!name.trim() || !mobile.trim()) return alert("Fill personal details.");
-
+  
     const mobileDigits = mobile.replace(/\D/g, "").slice(0, 10);
     const mobileNumberPattern = /^\d{10}$/;
     if (!mobileNumberPattern.test(mobileDigits)) {
       return alert("Please enter a valid 10-digit mobile number.");
     }
-
+  
     if (
       activeTab === "student" &&
       (!college.trim() || !year.trim() || !section.trim() || !rollno.trim())
@@ -199,41 +286,37 @@ export default function OrderPrints() {
         "Fill college, year, section, registration number for students."
       );
     }
-
+  
     if (activeTab === "others" && !address.trim())
       return alert("Fill delivery address for home delivery.");
-
+  
     if (!payment) return alert("Select payment method.");
-
+  
     if (payment === "UPI" && !transactionImage) {
       return alert("Please upload UPI transaction screenshot.");
     }
-
+  
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Please log in first.");
       navigate("/login");
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
       const formData = new FormData();
-
-      // required file fields
+  
       formData.append("file", file);
       formData.append("payment", payment);
-
-      // IMPORTANT: backend expects screenshot file under key "transctionid"
+  
       if (payment === "UPI") {
         formData.append("transctionid", transactionImage);
       } else {
-        // still send an empty field so backend receives something
         formData.append("transctionid", "");
       }
-
-      // other fields
+  
       formData.append("color", color);
       formData.append("sides", sides);
       formData.append("binding", binding);
@@ -243,7 +326,7 @@ export default function OrderPrints() {
       formData.append("mobile", mobileDigits);
       formData.append("originalprice", Math.ceil(originalPrice));
       formData.append("discountprice", discountPrice);
-
+  
       if (activeTab === "student") {
         formData.append("college", college.trim());
         formData.append("year", year.trim());
@@ -252,6 +335,7 @@ export default function OrderPrints() {
       } else {
         formData.append("address", address.trim());
       }
+  
       const response = await fetch(
         `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
         {
@@ -262,12 +346,12 @@ export default function OrderPrints() {
           body: formData,
         }
       );
-
+  
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
         throw new Error(data.message || "Order failed");
       }
-
+  
       alert("Order placed successfully!");
       navigate("/prints-cart");
     } catch (err) {
@@ -276,8 +360,8 @@ export default function OrderPrints() {
     } finally {
       setLoading(false);
     }
-  };
-
+ };
+  
   return (
     <>
       {loading ? (
@@ -505,6 +589,44 @@ export default function OrderPrints() {
             />
 
             <div className="input-row">
+              <input
+                type="text"
+                className="input"
+                placeholder="Enter coupon code (e.g., SAVE23)"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+              />
+              <button
+                type="button"
+                className="order-btn"
+                style={{ maxWidth: 130, minHeight: 40, fontSize: "0.9rem" }}
+                onClick={handleVerifyCoupon}
+                disabled={couponLoading}
+              >
+                {couponLoading ? "Checking..." : "Apply Coupon"}
+              </button>
+            </div>
+            
+            {couponInfo && (
+              <div
+                style={{
+                  marginTop: 4,
+                  fontSize: "0.9rem",
+                  color:
+                    couponInfo.status === "available"
+                      ? "#04793f"
+                      : couponInfo.status === "used"
+                      ? "#c27b00"
+                      : "#c02a1e",
+                }}
+              >
+                {couponInfo.message}{" "}
+                {couponInfo.discountPercentage > 0 &&
+                  `Discount: ${couponInfo.discountPercentage}%`}
+              </div>
+            )}
+
+            <div className="input-row">
               <label htmlFor="paymentMethod" className="order-label">
                 Select Payment Method
               </label>
@@ -573,10 +695,26 @@ export default function OrderPrints() {
                     (Prints ₹{printCost} + Binding ₹{bindingCost})
                   </span>
                 </p>
-                <p>15% Student Discount on Prints: -₹{discountValue.toFixed(2)}</p>
+            
+                {/* Show student discount only when no coupon is applied */}
+                {couponDiscountPercent === 0 && discountValue > 0 && (
+                  <p>
+                    15% Student Discount on Prints: -₹{discountValue.toFixed(2)}
+                  </p>
+                )}
+            
+                {/* Show coupon discount only when coupon is applied */}
+                {couponDiscountPercent > 0 && couponDiscountAmount > 0 && (
+                  <p>
+                    Coupon Discount ({couponDiscountPercent}% on total): -₹
+                    {couponDiscountAmount}
+                  </p>
+                )}
+            
                 <p>New Price: ₹{discountPrice}</p>
               </div>
             )}
+
 
             <button
               className="order-btn"
