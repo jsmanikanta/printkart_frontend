@@ -174,7 +174,7 @@ export default function SellBooks() {
         setPreview(null);
         setErrors({});
         setSubmitStatus("success");
-        setTimeout(() => navigate("/home"), 1500);
+        setTimeout(() => navigate("/"), 1500);
       } else {
         const errorText = await response.text();
         throw new Error(`${response.status}: ${errorText}`);
@@ -208,7 +208,6 @@ export default function SellBooks() {
         </div>
       ) : (
         <form className="sellbooks-form" onSubmit={handleSubmit}>
-          {/* Photo Upload */}
           <div className="form-section">
             <h3>Book Photo <span className="required">*</span></h3>
             <div className="form-group">
@@ -216,7 +215,7 @@ export default function SellBooks() {
                 <div className="upload-icon">📸</div>
                 <div className="upload-text">
                   Click to upload or drag & drop
-                  <div className="upload-hint">PNG, JPG, GIF (Max 5MB)</div>
+                  <div className="upload-hint">PNG, JPG(Max 5MB)</div>
                 </div>
                 <input type="file" accept="image/*" onChange={handlePhotoChange} className="file-input" />
               </label>
@@ -230,7 +229,6 @@ export default function SellBooks() {
             </div>
           </div>
 
-          {/* Basic Info */}
           <div className="form-section">
             <h3>Basic Information</h3>
             <div className="form-row">
