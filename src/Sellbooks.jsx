@@ -224,7 +224,7 @@ export default function SellBooks() {
 
       const submitData = new FormData();
       
-      // ✅ Manual append to avoid FormData issues with objects
+      // Manual append to ensure correct field names and types
       submitData.append("name", formData.name.trim());
       submitData.append("price", formData.selltype === "donate" ? "0" : formData.price);
       submitData.append("category", formData.category);
@@ -235,7 +235,7 @@ export default function SellBooks() {
       submitData.append("selltype", formData.selltype);
       submitData.append("soldstatus", formData.soldstatus);
       
-      // ✅ CRITICAL: Add user ID if available
+      // Add user ID if available
       const userId = localStorage.getItem("userId");
       if (userId) {
         submitData.append("user", userId);
@@ -245,7 +245,7 @@ export default function SellBooks() {
         submitData.append("image", photo);
       }
 
-      // ✅ FIXED: Correct API endpoints (try both common patterns)
+      // Try multiple common endpoint patterns
       const apiUrls = [
         `${import.meta.env.VITE_API_PATH}/api/books/sellbooks`,
         `${import.meta.env.VITE_API_PATH}/books/sellbook`,
@@ -255,14 +255,13 @@ export default function SellBooks() {
 
       let lastError;
       for (const apiUrl of apiUrls) {
-        console.log(`Trying endpoint: ${apiUrl}`);
+        console.log(`🔄 Trying endpoint: ${apiUrl}`);
         try {
           const response = await fetch(apiUrl, {
             method: "POST",
             signal: controller.signal,
             headers: {
               "Authorization": `Bearer ${token}`
-              // ✅ NO Content-Type - FormData sets it automatically
             },
             body: submitData,
           });
@@ -302,8 +301,7 @@ export default function SellBooks() {
         }
       }
 
-      // All endpoints failed
-      throw lastError || new Error("All endpoints failed");
+      throw lastError || new Error("All endpoints failed - check backend routes");
 
     } catch (error) {
       console.error("🚨 Submit error:", error);
@@ -320,7 +318,7 @@ export default function SellBooks() {
       }
       setSubmitStatus("error");
     } finally {
-      clearTimeout(timeoutId);
+      if (timeoutId) clearTimeout(timeoutId);
       setLoading(false);
       setTimeout(() => setSubmitStatus("idle"), 3000);
     }
@@ -376,7 +374,6 @@ export default function SellBooks() {
             </div>
           </div>
 
-          {/* Rest of your JSX remains exactly the same */}
           {/* Basic Information */}
           <div className="form-section">
             <h3>Basic Information</h3>
@@ -413,7 +410,7 @@ export default function SellBooks() {
                       type="radio"
                       name="selltype"
                       value="donate"
-                      checked={formData.selltype === "donate"
+                      checked={formData.selltype === "donate"}
                       onChange={handleSellTypeChange}
                     />
                     <span>Donate (Free)</span>
@@ -422,4 +419,153 @@ export default function SellBooks() {
               </div>
             </div>
 
-            {formData.selltype === "
+            {formData.selltype === "sell" && (
+              <div className="form-group">
+                <label>Expected Price (₹) <span className="required">*</span></label>
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  min="1"
+                  max="50000"
+                  step="0.01"
+                  placeholder="Ex: 250"
+                  className={errors.price ? "input-error" : ""}
+                />
+                {errors.price && <span className="error">{errors.price}</span>}
+              </div>
+            )}
+          </div>
+
+          {/* Category & Details */}
+          <div className="form-section">
+            <h3>Category & Condition</h3>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Category <span className="required">*</span></label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleCategoryChange}
+                  className={errors.category ? "input-error" : ""}
+                >
+                  <option value="">Select Category</option>
+                  {categories.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+                {errors.category && <span className="error">{errors.category}</span>}
+              </div>
+
+              <div className="form-group">
+                <label>Subcategory <span className="required">*</span></label>
+                <select
+                  name="subcategory"
+                  value={formData.subcategory}
+                  onChange={handleInputChange}
+                  disabled={!formData.category}
+                  className={errors.subcategory ? "input-error" : ""}
+                >
+                  <option value="">Select Subcategory</option>
+                  {formData.category &&
+                    subcategoriesMap[formData.category]?.map((sub) => (
+                      <option key={sub} value={sub}>
+                        {sub}
+                      </option>
+                    ))}
+                </select>
+                {errors.subcategory && (
+                  <span className="error">{errors.subcategory}</span>
+                )}
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>Book Condition <span className="required">*</span></label>
+                <select
+                  name="condition"
+                  value={formData.condition}
+                  onChange={handleInputChange}
+                  className={errors.condition ? "input-error" : ""}
+                >
+                  <option value="">Select Condition</option>
+                  {conditions.map((cond) => (
+                    <option key={cond} value={cond}>
+                      {cond}
+                    </option>
+                  ))}
+                </select>
+                {errors.condition && (
+                  <span className="error">{errors.condition}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Description */}
+          <div className="form-section">
+            <h3>Description</h3>
+            <div className="form-group">
+              <label>Description <span className="required">*</span></label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                placeholder="Mention edition, author, usage, markings, missing pages, etc."
+                rows="5"
+                maxLength={1000}
+                className={errors.description ? "input-error" : ""}
+              />
+              {errors.description && (
+                <span className="error">{errors.description}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="form-section">
+            <h3>Location</h3>
+            <div className="form-group">
+              <label>Pickup Location <span className="required">*</span></label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                placeholder="City, State"
+                className={errors.location ? "input-error" : ""}
+              />
+              {errors.location && (
+                <span className="error">{errors.location}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Submit */}
+          <div className="form-actions">
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={loading || submitStatus === "submitting"}
+            >
+              {submitStatus === "submitting"
+                ? "Submitting..."
+                : formData.selltype === "donate"
+                ? "Donate Book"
+                : "List Book for Sale"}
+            </button>
+
+            {submitStatus === "success" && (
+              <p className="success-text">Book listed successfully!</p>
+            )}
+            {submitStatus === "error" && (
+              <p className="error-text">Please fix the errors above.</p>
+            )}
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
