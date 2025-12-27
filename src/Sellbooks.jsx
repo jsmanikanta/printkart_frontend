@@ -245,17 +245,13 @@ export default function SellBooks() {
         submitData.append("image", photo);
       }
 
-      // Try multiple common endpoint patterns
       const apiUrls = [
-        `${import.meta.env.VITE_API_PATH}/api/books/sellbooks`,
         `${import.meta.env.VITE_API_PATH}/books/sellbook`,
-        `${import.meta.env.VITE_API_PATH}/api/sellbooks`,
-        `${import.meta.env.VITE_API_PATH}/sellbooks`
       ];
 
       let lastError;
       for (const apiUrl of apiUrls) {
-        console.log(`🔄 Trying endpoint: ${apiUrl}`);
+        console.log(` Trying endpoint: ${apiUrl}`);
         try {
           const response = await fetch(apiUrl, {
             method: "POST",
@@ -268,11 +264,10 @@ export default function SellBooks() {
 
           if (response.ok) {
             const data = await response.json();
-            console.log("✅ Success:", data);
+            console.log("Success:", data);
             setSubmitStatus("success");
-            alert("✅ Book listed successfully!");
-            
-            // Reset form
+            alert("Book listed successfully!");
+
             setFormData({
               name: "",
               price: "",
@@ -280,7 +275,7 @@ export default function SellBooks() {
               subcategory: "",
               condition: "",
               description: "",
-              location: "New Delhi, India",
+              location: "",
               selltype: "sell",
               soldstatus: "Instock"
             });
@@ -292,11 +287,11 @@ export default function SellBooks() {
             return;
           } else {
             const errorText = await response.text();
-            console.error(`❌ ${apiUrl} failed (${response.status}):`, errorText);
+            console.error(` ${apiUrl} failed (${response.status}):`, errorText);
             lastError = new Error(`${response.status}: ${errorText}`);
           }
         } catch (err) {
-          console.error(`❌ ${apiUrl} error:`, err.message);
+          console.error(`${apiUrl} error:`, err.message);
           lastError = err;
         }
       }
@@ -304,17 +299,17 @@ export default function SellBooks() {
       throw lastError || new Error("All endpoints failed - check backend routes");
 
     } catch (error) {
-      console.error("🚨 Submit error:", error);
+      console.error("Submit error:", error);
       
       if (error.name === 'AbortError') {
-        alert("⏰ Request timeout. Try a smaller image.");
+        alert(" Request timeout. Try a smaller image.");
       } else if (error.message.includes('Network') || error.message.includes('fetch')) {
-        alert("🌐 Network error. Check your connection.");
+        alert("Network error. Check your connection.");
       } else if (error.message.includes('401') || error.message.includes('403')) {
-        alert("🔐 Please login again.");
+        alert(" Please login again.");
         navigate("/login");
       } else {
-        alert(`❌ Submission failed: ${error.message}`);
+        alert(`Submission failed: ${error.message}`);
       }
       setSubmitStatus("error");
     } finally {
@@ -327,7 +322,7 @@ export default function SellBooks() {
   return (
     <div className="sellbooks-container">
       <div className="sellbooks-header">
-        <h1 className="sellbooks-title">📚 List Your Book</h1>
+        <h1 className="sellbooks-title"> List Your Book</h1>
         <p className="sellbooks-subtitle">
           Sell or Donate your books to students across India
         </p>
