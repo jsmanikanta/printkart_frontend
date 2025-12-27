@@ -613,7 +613,7 @@ export default function OrderPrints() {
               <input
                 type="text"
                 className="input"
-                placeholder="Enter coupon code (e.g., SAVE23)"
+                placeholder="Enter coupon code "
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
               />
