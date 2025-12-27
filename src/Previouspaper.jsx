@@ -137,7 +137,7 @@ function CollegePYQ() {
                   className="pyq-tap-button"
                   onClick={() => handleTapToView(paper.file_url)}
                 >
-                  👁 Tap To View
+                   Tap To View
                 </button>
               </div>
             </div>
@@ -151,6 +151,7 @@ function CollegePYQ() {
 }
 
 export default CollegePYQ;
+
 
 
 
