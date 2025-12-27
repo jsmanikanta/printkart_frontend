@@ -512,4 +512,3 @@ export default function SellBooks() {
       )}
     </div>
   );
-}
