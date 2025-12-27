@@ -5,7 +5,7 @@ function VideoHelpSection() {
     {
       src:"/images/prices.jpeg",
       title:"Price List",
-      aboutL"Detailed print & binding prices",
+      about"Detailed print & binding prices",
     }
     {
       src: "/images/Login.mp4", 
