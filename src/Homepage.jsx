@@ -37,6 +37,10 @@ function HomePage() {
   const buybooks = () => {
     navigate("/buybooks");
   };
+
+  const previous=()=>{
+    navigate("/anits/previous-papers")
+  }
   // Fetch user profile for the header
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -162,7 +166,7 @@ function HomePage() {
                 className="book-card papers-books"
                 style={{ background: "#6BB6FF" }}
               >
-                <div className="book-info" onClick={soon}>
+                <div className="book-info" onClick={previous}>
                   <h4>Previous Year Papers</h4>
                   <p>
                     Practice with Real Questions – Boards, Competitive &
