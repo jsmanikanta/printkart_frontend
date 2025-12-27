@@ -89,8 +89,8 @@ export default function SellBooks() {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    categeory: "",
-    subcategeory: "",
+    category: "",
+    subcategory: "",
     condition: "",
     description: "",
     location: "New Delhi, India",
@@ -115,8 +115,8 @@ export default function SellBooks() {
     if (!formData.name.trim()) newErrors.name = "Book name is required";
     else if (formData.name.trim().length < 2) newErrors.name = "Book name must be at least 2 characters";
 
-    if (!formData.categeory) newErrors.categeory = "Category is required";
-    if (!formData.subcategeory) newErrors.subcategeory = "Subcategory is required";
+    if (!formData.category) newErrors.category = "Category is required";
+    if (!formData.subcategory) newErrors.subcategory = "Subcategory is required";
     if (!formData.condition) newErrors.condition = "Condition is required";
 
     if (!formData.description.trim()) newErrors.description = "Description is required";
@@ -142,8 +142,8 @@ export default function SellBooks() {
 
   const handleCategoryChange = useCallback((e) => {
     const value = e.target.value;
-    setFormData(prev => ({ ...prev, categeory: value, subcategeory: "" }));
-    setErrors(prev => ({ ...prev, categeory: "", subcategeory: "" }));
+    setFormData(prev => ({ ...prev, category: value, subcategory: "" }));
+    setErrors(prev => ({ ...prev, category: "", subcategory: "" }));
   }, []);
 
   const handleSellTypeChange = useCallback((e) => {
@@ -204,8 +204,8 @@ export default function SellBooks() {
       const submitData = new FormData();
       submitData.append("name", formData.name.trim());
       submitData.append("price", formData.selltype === "donate" ? "0" : formData.price);
-      submitData.append("categeory", formData.categeory);
-      submitData.append("subcategeory", formData.subcategeory);
+      submitData.append("category", formData.category);
+      submitData.append("subcategory", formData.subcategory);
       submitData.append("condition", formData.condition);
       submitData.append("description", formData.description.trim());
       submitData.append("location", formData.location.trim());
@@ -226,8 +226,8 @@ export default function SellBooks() {
         setFormData({
           name: "",
           price: "",
-          categeory: "",
-          subcategeory: "",
+          category: "",
+          subcategory: "",
           condition: "",
           description: "",
           location: "New Delhi, India",
@@ -259,19 +259,9 @@ export default function SellBooks() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Input fields for name, price, category, etc. */}
-      {/* File upload input */}
-      {/* Show preview image if available */}
-      {/* Submit button */}
-    </form>
-  );
-}
-
-  return (
     <div className="sellbooks-container">
       <div className="sellbooks-header">
-        <h1 className="sellbooks-title"> List Your Book</h1>
+        <h1 className="sellbooks-title">List Your Book</h1>
         <p className="sellbooks-subtitle">
           Sell or Donate your books to students across India
         </p>
@@ -305,8 +295,8 @@ export default function SellBooks() {
               {preview && (
                 <div className="photo-preview">
                   <img src={preview} alt="Book Preview" />
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={handleRemovePhoto}
                     className="remove-preview"
                     title="Remove photo"
@@ -318,7 +308,7 @@ export default function SellBooks() {
             </div>
           </div>
 
-          {/* Basic Information */}
+          {/* Basic Info */}
           <div className="form-section">
             <h3>Basic Information</h3>
             <div className="form-row">
@@ -382,7 +372,7 @@ export default function SellBooks() {
             )}
           </div>
 
-          {/* Category & Details */}
+          {/* Category & Condition */}
           <div className="form-section">
             <h3>Category & Condition</h3>
             <div className="form-row">
@@ -512,3 +502,4 @@ export default function SellBooks() {
       )}
     </div>
   );
+}
