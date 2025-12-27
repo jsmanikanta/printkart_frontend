@@ -107,35 +107,35 @@ function CollegePYQ() {
 
               {/* All text stacked vertically */}
               <div className="pyq-info-area-vertical">
-                {/* 2. College name */}
-                <div className="pyq-field">
-                  <span className="pyq-label">College Name:</span>
-                  <div className="pyq-college-text">{paper.college}</div>
-                </div>
-
-                {/* 3. Branch */}
-                <div className="pyq-field">
-                  <span className="pyq-label">Branch:</span>
-                  <div className="pyq-branch-text">
-                    {paper.branch || "Common for all branches"}
+                  {/* College */}
+                  <div className="pyq-field-row">
+                    <span className="pyq-label-inline">College Name:&nbsp;</span>
+                    <span className="pyq-value-inline">{paper.college}</span>
                   </div>
-                </div>
-
-                {/* 4. Year & Semester */}
-                <div className="pyq-field">
-                  <span className="pyq-label">Year & Semester:</span>
-                  <div className="pyq-year-sem-text">
-                    Year {paper.year} • Sem {paper.sem}
+                
+                  {/* Branch */}
+                  <div className="pyq-field-row">
+                    <span className="pyq-label-inline">Branch:&nbsp;</span>
+                    <span className="pyq-value-inline">
+                      {paper.branch || "Common for all branches"}
+                    </span>
                   </div>
+                
+                  {/* Year & Semester */}
+                  <div className="pyq-field-row">
+                    <span className="pyq-label-inline">Year & Semester:&nbsp;</span>
+                    <span className="pyq-value-inline">
+                      Year {paper.year} • Sem {paper.sem}
+                    </span>
+                  </div>
+                
+                  <button
+                    className="pyq-tap-button"
+                    onClick={() => handleTapToView(paper.file_url)}
+                  >
+                    👁 Tap To View
+                  </button>
                 </div>
-
-                {/* 5. Tap to View (opens Cloudinary URL) */}
-                <button
-                  className="pyq-tap-button"
-                  onClick={() => handleTapToView(paper.file_url)}
-                >
-                  👁 Tap To View
-                </button>
               </div>
             </div>
           ))}
@@ -147,6 +147,7 @@ function CollegePYQ() {
 }
 
 export default CollegePYQ;
+
 
 
 
