@@ -184,7 +184,7 @@ export default function OrderPrints() {
     setCouponInfo(null);
 
     const res = await fetch(
-      `${import.meta.env.VITE_API_PATH}/coupons/verify`,
+      `${import.meta.env.VITE_API_PATH}/coupon/verify`,
       {
         method: "POST",
         headers: {
