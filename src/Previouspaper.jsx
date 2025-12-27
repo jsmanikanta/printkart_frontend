@@ -104,17 +104,19 @@ function CollegePYQ() {
               </div>
 
               <div className="pyq-info-area-vertical">
-                {/* 2. College name */}
+                <span>College Name:</span>
                 <div className="pyq-college-text">{paper.college}</div>
 
                 {/* 3. Branch */}
                 <div className="pyq-branch-text">
-                  {paper.branch || "Common for all branches"}
+                  <span>Branch</span>
+                  {paper.branch }
                 </div>
 
                 {/* 4. Year & Semester */}
                 <div className="pyq-year-sem-text">
-                  Year {paper.year} • Sem {paper.sem}
+                  <span>Year & Semester</span>
+                  Year {paper.year} & Sem {paper.sem}
                 </div>
 
                 {/* 5. Tap to View (opens Cloudinary URL) */}
@@ -135,3 +137,4 @@ function CollegePYQ() {
 }
 
 export default CollegePYQ;
+
