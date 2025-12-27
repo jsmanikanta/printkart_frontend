@@ -107,35 +107,38 @@ function CollegePYQ() {
 
               {/* All text stacked vertically */}
               <div className="pyq-info-area-vertical">
-                  {/* College */}
-                  <div className="pyq-field-row">
-                    <span className="pyq-label-inline">College Name:&nbsp;</span>
-                    <span className="pyq-value-inline">{paper.college}</span>
-                  </div>
-                
-                  {/* Branch */}
-                  <div className="pyq-field-row">
-                    <span className="pyq-label-inline">Branch:&nbsp;</span>
-                    <span className="pyq-value-inline">
-                      {paper.branch || "Common for all branches"}
-                    </span>
-                  </div>
-                
-                  {/* Year & Semester */}
-                  <div className="pyq-field-row">
-                    <span className="pyq-label-inline">Year & Semester:&nbsp;</span>
-                    <span className="pyq-value-inline">
-                      Year {paper.year} • Sem {paper.sem}
-                    </span>
-                  </div>
-                
-                  <button
-                    className="pyq-tap-button"
-                    onClick={() => handleTapToView(paper.file_url)}
-                  >
-                    👁 Tap To View
-                  </button>
+                {/* College */}
+                <div className="pyq-field-row">
+                  <span className="pyq-label-inline">
+                    College Name:&nbsp;
+                  </span>
+                  <span className="pyq-value-inline">{paper.college}</span>
                 </div>
+
+                {/* Branch */}
+                <div className="pyq-field-row">
+                  <span className="pyq-label-inline">Branch:&nbsp;</span>
+                  <span className="pyq-value-inline">
+                    {paper.branch || "Common for all branches"}
+                  </span>
+                </div>
+
+                {/* Year & Semester */}
+                <div className="pyq-field-row">
+                  <span className="pyq-label-inline">
+                    Year & Semester:&nbsp;
+                  </span>
+                  <span className="pyq-value-inline">
+                    Year {paper.year} • Sem {paper.sem}
+                  </span>
+                </div>
+
+                <button
+                  className="pyq-tap-button"
+                  onClick={() => handleTapToView(paper.file_url)}
+                >
+                  👁 Tap To View
+                </button>
               </div>
             </div>
           ))}
@@ -144,9 +147,11 @@ function CollegePYQ() {
     </div>
   </div>
 );
+
 }
 
 export default CollegePYQ;
+
 
 
 
