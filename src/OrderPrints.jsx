@@ -181,7 +181,7 @@ export default function OrderPrints() {
     setCouponInfo(null);
 
     console.log("Sending coupon request. Token length:", token.length);
-    console.log("Full URL:", `${import.meta.env.VITE_API_PATH}/coupons/verify`);
+    console.log("Full URL:", `${import.meta.env.VITE_API_PATH}/coupon/verify`);
     console.log("Coupon code:", couponCode);
 
     const res = await fetch(`${import.meta.env.VITE_API_PATH}/coupons/verify`, {
