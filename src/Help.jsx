@@ -6,7 +6,7 @@ function VideoHelpSection() {
       src:"/images/prices.jpeg",
       title:"Price List",
       about:"Detailed print & binding prices",
-    }
+    },
     {
       src: "/images/Login.mp4", 
       title: "Account Setup & Login", 
