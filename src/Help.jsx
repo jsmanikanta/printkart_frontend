@@ -3,6 +3,11 @@ import React from "react";
 function VideoHelpSection() {
   const videos = [
     {
+      src:"/images/prices.jpg",
+      title:"Price List",
+      aboutL"Detailed print & binding prices",
+    }
+    {
       src: "/images/Login.mp4", 
       title: "Account Setup & Login", 
       about: "How to Create a New Account, Login & Reset Password – Step by Step Guide.", 
