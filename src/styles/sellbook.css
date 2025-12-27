@@ -1,138 +1,220 @@
 .sellbooks-container {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 14px #e3e3e3;
-  width: 95%;
-  max-width: 470px;
-  margin: 22px auto;
-  padding: 20px 12px 18px 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.sellbooks-heading {
+
+.sellbooks-header {
   text-align: center;
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 12px;
+  color: white;
+  margin-bottom: 2rem;
 }
+
+.sellbooks-title {
+  font-size: 2.5rem;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.sellbooks-subtitle {
+  font-size: 1.2rem;
+  margin: 0.5rem 0 0;
+  opacity: 0.9;
+}
+
 .sellbooks-form {
-  min-width: 90%;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
 .form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: flex-start;
-  margin-bottom: 7px;
-}
-.form-row > div,
-.form-row label {
-  flex: 1 1 170px;
-  min-width: 110px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
 }
 
-.photo-upload {
-  display: inline-block;
-  border: 2px dashed #bbb;
-  border-radius: 10px;
-  padding: 14px 22px;
-  text-align: center;
-  font-size: 1.22rem;
-  color: #888;
-  cursor: pointer;
-  background: #f6f6f6;
-}
-.photo-upload:hover {
-  border-color: #16ca8a;
-  color: #16ca8a;
+.full-width {
+  grid-column: 1 / -1;
 }
 
 label {
-  font-size: 1rem;
-  font-weight: 500;
   display: block;
-  margin-bottom: 2px;
-}
-input[type="text"],
-input[type="number"],
-select,
-textarea {
-  width: 100%;
-  font-size: 1rem;
-  border: 1px solid #d7d7d7;
-  border-radius: 6px;
-  background: #fafafa;
-  padding: 7px 9px;
-  margin-top: 1px;
-  margin-bottom: 4px;
-  box-sizing: border-box;
-  resize: none;
-}
-textarea {
-  min-height: 36px;
-}
-.desc-box {
-  flex: 1 1 110px;
-  min-width: 90px;
-  margin-top: 0;
-}
-.submit-btn {
-  background: #92e19b;
-  color: #222;
-  border: none;
-  padding: 12px 34px;
-  border-radius: 7px;
-  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
   font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 8px #dddddd;
-  margin: 0 auto;
-  transition: background 0.13s, transform 0.13s;
-}
-.submit-btn:hover {
-  background: #5bd46d;
-  color: #fff;
-  transform: scale(1.04);
+  color: #333;
+  font-size: 0.95rem;
 }
 
-/* Responsive for mobile */
-@media (max-width: 600px) {
+.required {
+  color: #e74c3c;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-error {
+  border-color: #e74c3c !important;
+  background: #fff5f5;
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid #e1e5e9;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.radio-label:hover {
+  background: #e3f2fd;
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  border: 3px dashed #667eea;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  color: #667eea;
+}
+
+.upload-label:hover {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f0f2ff 100%);
+  border-color: #5a67d8;
+}
+
+.file-input {
+  display: none;
+}
+
+.photo-preview {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.photo-preview img {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  border: 3px solid #667eea;
+}
+
+.remove-preview {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 4rem;
+  color: white;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
   .sellbooks-container {
-    width: 98vw;
-    padding: 7vw 4vw 5vw 4vw;
-    margin: 12px auto;
-    border-radius: 10px;
+    padding: 1rem;
   }
-  .sellbooks-form {
-    min-width: 100%;
-    gap: 7px;
-  }
+  
   .form-row {
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 5px;
+    grid-template-columns: 1fr;
   }
-  .form-row > div,
-  .form-row label {
-    flex-basis: 100%;
-    min-width: 0;
-  }
-  .photo-upload {
-    width: 100%;
-    padding: 9px 0;
-    font-size: 1.07rem;
-  }
-  .desc-box {
-    min-width: 0;
-  }
-  .submit-btn {
-    width: 100%;
-    padding: 12px 0;
-    font-size: 1.02rem;
+  
+  .sellbooks-title {
+    font-size: 2rem;
   }
 }
