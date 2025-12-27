@@ -64,16 +64,19 @@ export default function OrderPrints() {
   const [originalPrice, setOriginalPrice] = useState(0);
   const [discountPrice, setDiscountPrice] = useState(0);
   const [printCost, setPrintCost] = useState(0);
-  const [discountValue, setDiscountValue] = useState(0);
+  const [discountValue, setDiscountValue] = useState(0); // student discount amount
   const [bindingCost, setBindingCost] = useState(0);
+
+  // coupon state
   const [couponCode, setCouponCode] = useState("");
   const [couponInfo, setCouponInfo] = useState(null);
   const [couponLoading, setCouponLoading] = useState(false);
   const [couponDiscountPercent, setCouponDiscountPercent] = useState(0);
   const [couponDiscountAmount, setCouponDiscountAmount] = useState(0);
 
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
-  
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
+  // Load PDF pages
   useEffect(() => {
     if (!file) {
       setPages(0);
@@ -93,27 +96,28 @@ export default function OrderPrints() {
     };
     loadPdfPages();
   }, [file]);
-  
+
+  // Price calculation: student discount OR coupon discount
   useEffect(() => {
     if (!pages || pages <= 0) {
       setPrintCost(0);
       setBindingCost(0);
       setOriginalPrice(0);
-      setDiscountValue(0);        
-      setCouponDiscountAmount(0); 
+      setDiscountValue(0);
+      setCouponDiscountAmount(0);
       setDiscountPrice(0);
       return;
     }
-  
+
     let pricePerPage = 0;
     if (color === "b/w" && sides === "2") pricePerPage = 1;
     else if (color === "b/w" && sides === "1") pricePerPage = 1.7;
     else if (color === "colour" && sides === "1") pricePerPage = 6;
     else pricePerPage = 1.5;
-  
+
     const printAmount = pricePerPage * pages * copies;
     setPrintCost(printAmount);
-  
+
     let bindingAmount = 0;
     switch (binding) {
       case "spiral":
@@ -132,10 +136,10 @@ export default function OrderPrints() {
         bindingAmount = 0;
     }
     setBindingCost(bindingAmount);
-  
+
     const originalTotal = printAmount + bindingAmount;
     setOriginalPrice(originalTotal);
-  
+
     // If no coupon, student discount applies for students
     if (couponDiscountPercent === 0) {
       let studentDiscount = 0;
@@ -157,7 +161,7 @@ export default function OrderPrints() {
       setDiscountPrice(Math.ceil(finalTotal));
     }
   }, [color, sides, binding, pages, copies, activeTab, couponDiscountPercent]);
-  
+
   const handleVerifyCoupon = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -165,16 +169,16 @@ export default function OrderPrints() {
       navigate("/login");
       return;
     }
-  
+
     if (!couponCode.trim()) {
       alert("Please enter a coupon code.");
       return;
     }
-  
+
     try {
       setCouponLoading(true);
       setCouponInfo(null);
-  
+
       const res = await fetch(
         `${import.meta.env.VITE_API_PATH}/coupons/verify`,
         {
@@ -186,9 +190,9 @@ export default function OrderPrints() {
           body: JSON.stringify({ code: couponCode }),
         }
       );
-  
+
       const data = await res.json();
-  
+
       if (!res.ok || !data.success) {
         setCouponDiscountPercent(0);
         setCouponDiscountAmount(0);
@@ -199,10 +203,10 @@ export default function OrderPrints() {
         });
         return;
       }
-  
+
       const percent = data.data?.discountPercentage || 0;
-  
-      setCouponDiscountPercent(percent); // triggers useEffect above to recalc
+
+      setCouponDiscountPercent(percent); // triggers useEffect to recalc total
       setCouponInfo({
         status: data.status,
         discountPercentage: percent,
@@ -224,7 +228,7 @@ export default function OrderPrints() {
       setCouponLoading(false);
     }
   };
-  
+
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
     if (!uploaded) {
@@ -245,7 +249,7 @@ export default function OrderPrints() {
     }
     setFile(uploaded);
   };
-  
+
   const handleTransactionImageChange = (e) => {
     const uploaded = e.target.files[0];
     if (!uploaded) {
@@ -264,20 +268,20 @@ export default function OrderPrints() {
     }
     setTransactionImage(uploaded);
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!file) return alert("Please upload a PDF.");
     if (!pages || pages <= 0) return alert("PDF page count unavailable.");
     if (!name.trim() || !mobile.trim()) return alert("Fill personal details.");
-  
+
     const mobileDigits = mobile.replace(/\D/g, "").slice(0, 10);
     const mobileNumberPattern = /^\d{10}$/;
     if (!mobileNumberPattern.test(mobileDigits)) {
       return alert("Please enter a valid 10-digit mobile number.");
     }
-  
+
     if (
       activeTab === "student" &&
       (!college.trim() || !year.trim() || !section.trim() || !rollno.trim())
@@ -286,37 +290,37 @@ export default function OrderPrints() {
         "Fill college, year, section, registration number for students."
       );
     }
-  
+
     if (activeTab === "others" && !address.trim())
       return alert("Fill delivery address for home delivery.");
-  
+
     if (!payment) return alert("Select payment method.");
-  
+
     if (payment === "UPI" && !transactionImage) {
       return alert("Please upload UPI transaction screenshot.");
     }
-  
+
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Please log in first.");
       navigate("/login");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
       const formData = new FormData();
-  
+
       formData.append("file", file);
       formData.append("payment", payment);
-  
+
       if (payment === "UPI") {
         formData.append("transctionid", transactionImage);
       } else {
         formData.append("transctionid", "");
       }
-  
+
       formData.append("color", color);
       formData.append("sides", sides);
       formData.append("binding", binding);
@@ -326,7 +330,7 @@ export default function OrderPrints() {
       formData.append("mobile", mobileDigits);
       formData.append("originalprice", Math.ceil(originalPrice));
       formData.append("discountprice", discountPrice);
-  
+
       if (activeTab === "student") {
         formData.append("college", college.trim());
         formData.append("year", year.trim());
@@ -335,7 +339,7 @@ export default function OrderPrints() {
       } else {
         formData.append("address", address.trim());
       }
-  
+
       const response = await fetch(
         `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
         {
@@ -346,12 +350,12 @@ export default function OrderPrints() {
           body: formData,
         }
       );
-  
+
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
         throw new Error(data.message || "Order failed");
       }
-  
+
       alert("Order placed successfully!");
       navigate("/prints-cart");
     } catch (err) {
@@ -360,8 +364,8 @@ export default function OrderPrints() {
     } finally {
       setLoading(false);
     }
- };
-  
+  };
+
   return (
     <>
       {loading ? (
@@ -413,9 +417,10 @@ export default function OrderPrints() {
               required
             />
             <p>
-  For bulk orders please contact Hemanth: 
-  <a href="tel:+919182415750">+91 9182415750</a>
-</p> 
+              For bulk orders please contact Hemanth:{" "}
+              <a href="tel:+919182415750">+91 9182415750</a>
+            </p>
+
             {activeTab === "student" && (
               <>
                 <select
@@ -506,7 +511,7 @@ export default function OrderPrints() {
             {pages > 0 && (
               <div className="pdf-pages-info">Pages detected: {pages}</div>
             )}
-            
+
             <span>Worried about your large file size?</span>
             <a
               href="https://www.ilovepdf.com/compress_pdf"
@@ -522,12 +527,13 @@ export default function OrderPrints() {
                 fontSize: "12px",
                 cursor: "pointer",
                 display: "inline-block",
-                textDecoration: "none"
+                textDecoration: "none",
               }}
             >
               Compress file size here
-            </a> <br/> 
-            
+            </a>
+            <br />
+
             <div className="input-row">
               <span>Colour options</span>
               <select
@@ -588,6 +594,7 @@ export default function OrderPrints() {
               onChange={(e) => setDescription(e.target.value)}
             />
 
+            {/* Coupon section */}
             <div className="input-row">
               <input
                 type="text"
@@ -606,7 +613,7 @@ export default function OrderPrints() {
                 {couponLoading ? "Checking..." : "Apply Coupon"}
               </button>
             </div>
-            
+
             {couponInfo && (
               <div
                 style={{
@@ -695,26 +702,26 @@ export default function OrderPrints() {
                     (Prints ₹{printCost} + Binding ₹{bindingCost})
                   </span>
                 </p>
-            
-                {/* Show student discount only when no coupon is applied */}
+
+                {/* Student discount only when no coupon is applied */}
                 {couponDiscountPercent === 0 && discountValue > 0 && (
                   <p>
-                    15% Student Discount on Prints: -₹{discountValue.toFixed(2)}
+                    15% Student Discount on Prints: -₹
+                    {discountValue.toFixed(2)}
                   </p>
                 )}
-            
-                {/* Show coupon discount only when coupon is applied */}
+
+                {/* Coupon discount only when coupon is applied */}
                 {couponDiscountPercent > 0 && couponDiscountAmount > 0 && (
                   <p>
                     Coupon Discount ({couponDiscountPercent}% on total): -₹
                     {couponDiscountAmount}
                   </p>
                 )}
-            
+
                 <p>New Price: ₹{discountPrice}</p>
               </div>
             )}
-
 
             <button
               className="order-btn"
