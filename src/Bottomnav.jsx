@@ -49,8 +49,8 @@ function BottomNav() {
       </button>
 
       <button
-        className={`nav-item ${isActive("/sellbooks") ? "active" : ""}`}
-        onClick={() => navigate("/sellbooks")}
+        className={`nav-item ${isActive("/sellbook") ? "active" : ""}`}
+        onClick={() => navigate("/sellbook")}
         aria-label="Sell Now"
       >
         <img src="/images/sell-now-icon.png" alt="Sell Now" />
