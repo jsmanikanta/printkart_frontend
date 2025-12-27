@@ -78,22 +78,25 @@ function CollegePYQ() {
   }
 
   return (
-    <div className="pyq-page">
-      <header className="pyq-header">
-        <span className="pyq-back-button" onClick={() => navigate(-1)}>
-          ←
-        </span>
-        <span className="pyq-header-title">ANITS Previous Year Question Papers </span>
-      </header>
-      <div className="pyq-content">
-        {error && <p className="pyq-error">{error}</p>}
+  <div className="pyq-page">
+    <header className="pyq-header">
+      <span className="pyq-back-button" onClick={() => navigate(-1)}>
+        ←
+      </span>
+      <span className="pyq-header-title">
+        Previous Year Question Papers
+      </span>
+    </header>
 
-        {papers.length === 0 && !error ? (
-          <p>No question papers available.</p>
-        ) : (
-          <div className="pyq-list">
-            {papers.map((paper) => (
-              <div className="pyq-card" key={paper.id}>
+    <div className="pyq-content">
+      {error && <p className="pyq-error">{error}</p>}
+
+      {papers.length === 0 && !error ? (
+        <p>No question papers available.</p>
+      ) : (
+        <div className="pyq-list">
+          {papers.map((paper) => (
+            <div className="pyq-card" key={paper.id}>
               {/* 1. Spiral image */}
               <div className="pyq-icon-area">
                 <img
@@ -103,20 +106,28 @@ function CollegePYQ() {
                 />
               </div>
 
+              {/* All text stacked vertically */}
               <div className="pyq-info-area-vertical">
-                <span>College Name:</span>
-                <div className="pyq-college-text">{paper.college}</div>
+                {/* 2. College name */}
+                <div className="pyq-field">
+                  <span className="pyq-label">College Name:</span>
+                  <div className="pyq-college-text">{paper.college}</div>
+                </div>
 
                 {/* 3. Branch */}
-                <div className="pyq-branch-text">
-                  <span>Branch</span>
-                  {paper.branch }
+                <div className="pyq-field">
+                  <span className="pyq-label">Branch:</span>
+                  <div className="pyq-branch-text">
+                    {paper.branch || "Common for all branches"}
+                  </div>
                 </div>
 
                 {/* 4. Year & Semester */}
-                <div className="pyq-year-sem-text">
-                  <span>Year & Semester</span>
-                  Year {paper.year} & Sem {paper.sem}
+                <div className="pyq-field">
+                  <span className="pyq-label">Year & Semester:</span>
+                  <div className="pyq-year-sem-text">
+                    Year {paper.year} • Sem {paper.sem}
+                  </div>
                 </div>
 
                 {/* 5. Tap to View (opens Cloudinary URL) */}
@@ -128,13 +139,13 @@ function CollegePYQ() {
                 </button>
               </div>
             </div>
- ))}
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
-  );
-}
+  </div>
+);
 
 export default CollegePYQ;
+
 
