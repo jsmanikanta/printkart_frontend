@@ -1,326 +1,395 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/sellbook.css";
 
+const categories = [
+  "School Books",
+  "College & University Books", 
+  "Competitive Exam Books",
+  "Fictional Books",
+  "Novels & Storybooks",
+  "Notes & Study Materials",
+  "Previous Year Papers",
+  "Non-Fiction Books",
+  "GATE",
+  "CAT", 
+  "IIT JEE",
+  "PYQ books",
+  "others"
+];
+
 const subcategoriesMap = {
   "School Books": [
-    "NCERT Books",
-    "State Board Books",
-    "CBSE Books",
-    "Sample Papers & Workbook",
-    "English Medium Textbooks",
-    "Telugu Medium Textbooks",
-    "Hindi Medium Textbooks",
+    "NCERT Books", "State Board Books", "CBSE Books", 
+    "Sample Papers & Workbook", "English Medium Textbooks",
+    "Telugu Medium Textbooks", "Hindi Medium Textbooks"
   ],
   "College & University Books": [
-    "Engineering Books",
-    "Medical Books",
-    "Commerce & Management Books",
-    "Arts & Humanities Books",
-    "Science & Technology Books",
-    "Semester-wise Guides",
-    "University Question Banks",
-    "Reference & Research Material",
+    "Engineering Books", "Medical Books", "Commerce & Management Books",
+    "Arts & Humanities Books", "Science & Technology Books",
+    "Semester-wise Guides", "University Question Banks", 
+    "Reference & Research Material"
   ],
   "Competitive Exam Books": [
-    "UPSC Exam Preparation",
-    "SSC Exams",
-    "Banking Exams (IBPS, SBI PO)",
-    "Railway Exams",
-    "Teaching & TET Exams",
-    "Defence Exams (NDA, CDS)",
-    "State PSCs (MPPSC, UPPSC etc.)",
-    "Mock Tests & Practice Papers",
+    "UPSC Exam Preparation", "SSC Exams", "Banking Exams (IBPS, SBI PO)",
+    "Railway Exams", "Teaching & TET Exams", "Defence Exams (NDA, CDS)",
+    "State PSCs (MPPSC, UPPSC etc.)", "Mock Tests & Practice Papers"
   ],
   "Fictional Books": [
-    "Contemporary Fiction",
-    "Historical Fiction",
-    "Mythological Fiction",
-    "Mystery & Thriller",
-    "Fantasy & Sci-Fi",
-    "Romance",
-    "Short Stories & Novellas",
-    "Classics & Translations",
+    "Contemporary Fiction", "Historical Fiction", "Mythological Fiction",
+    "Mystery & Thriller", "Fantasy & Sci-Fi", "Romance",
+    "Short Stories & Novellas", "Classics & Translations"
   ],
   "Novels & Storybooks": [
-    "Indian English Novels",
-    "Regional Language Novels",
-    "Mythology & Epics",
-    "Children’s Storybooks",
-    "Young Adult Novels",
-    "Biographies & Memoirs",
-    "Literary Award Winners",
-    "Book Series",
+    "Indian English Novels", "Regional Language Novels", "Mythology & Epics",
+    "Children's Storybooks", "Young Adult Novels", "Biographies & Memoirs",
+    "Literary Award Winners", "Book Series"
   ],
   "Notes & Study Materials": [
-    "Handwritten Notes",
-    "Printed Study Guides",
-    "Previous Year Question Papers",
-    "Model Answers",
-    "Lecture Notes & Summaries",
-    "Topic Wise Practice Sets",
-    "Solved Examples",
-    "Sample Question Papers",
+    "Handwritten Notes", "Printed Study Guides", "Previous Year Question Papers",
+    "Model Answers", "Lecture Notes & Summaries", "Topic Wise Practice Sets",
+    "Solved Examples", "Sample Question Papers"
   ],
   "Previous Year Papers": [
-    "UPSC Previous Papers",
-    "SSC Exam Past Papers",
-    "Bank Exam Previous Papers",
-    "State-Level Exams Papers",
-    "University Exam Papers",
-    "IIT JEE Question Papers",
-    "Medical Entrance Previous Papers",
-    "NET/SLET Previous Question Papers",
+    "UPSC Previous Papers", "SSC Exam Past Papers", "Bank Exam Previous Papers",
+    "State-Level Exams Papers", "University Exam Papers", "IIT JEE Question Papers",
+    "Medical Entrance Previous Papers", "NET/SLET Previous Question Papers"
   ],
   "Non-Fiction Books": [
-    "Biography & Autobiography",
-    "Self-Help & Motivational",
-    "Indian History & Culture",
-    "Politics & Current Affairs",
-    "Religion & Philosophy",
-    "Science & Technology",
-    "Travel & Exploration",
-    "Cookbooks & DIY",
+    "Biography & Autobiography", "Self-Help & Motivational", 
+    "Indian History & Culture", "Politics & Current Affairs",
+    "Religion & Philosophy", "Science & Technology",
+    "Travel & Exploration", "Cookbooks & DIY"
   ],
+  "GATE": ["GATE CS Notes", "GATE ME Notes", "GATE EE Notes", "GATE Previous Papers"],
+  "CAT": ["CAT Quant", "CAT Verbal", "CAT LRDI", "CAT Mock Tests"],
+  "IIT JEE": ["JEE Main Physics", "JEE Main Chemistry", "JEE Main Maths", "JEE Advanced"],
+  "PYQ books": ["JEE PYQ", "NEET PYQ", "BITSAT PYQ", "GATE PYQ"],
+  "others": ["Miscellaneous", "Rare Books", "Out of Print"]
 };
+
+const conditions = ["Brand New", "Like New", "Very Good", "Good", "Fair", "Poor"];
 
 export default function SellBooks() {
   const navigate = useNavigate();
-
-  const [selltype, setSelltype] = useState("sell");
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [categeory, setCategeory] = useState("");
-  const [subcategeory, setSubCategeory] = useState("");
-  const [condition, setCondition] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    categeory: "",
+    subcategeory: "",
+    condition: "",
+    description: "",
+    location: "",
+    selltype: "sell"
+  });
   const [photo, setPhoto] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  const handleSelltypeChange = (e) => {
-    const val = e.target.value;
-    setSelltype(val);
-    if (val === "donate") {
-      setPrice("0");
-    } else {
-      setPrice("");
+  // Auto-detect location
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        // You can use reverse geocoding API here for city name
+        setFormData(prev => ({
+          ...prev,
+          location: "New Delhi, India" // Default or detected location
+        }));
+      });
     }
+  }, []);
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) newErrors.name = "Book name is required";
+    if (!formData.categeory) newErrors.categeory = "Category is required";
+    if (!formData.subcategeory) newErrors.subcategeory = "Subcategory is required";
+    if (!formData.condition) newErrors.condition = "Condition is required";
+    if (!formData.description.trim()) newErrors.description = "Description is required";
+    if (!formData.location.trim()) newErrors.location = "Location is required";
+    if (formData.selltype === "sell" && !formData.price) newErrors.price = "Price is required for selling";
+
+    if (!photo) newErrors.photo = "Book photo is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: "" }));
+  };
+
+  const handleSellTypeChange = (e) => {
+    const value = e.target.value;
+    setFormData(prev => ({ 
+      ...prev, 
+      selltype: value,
+      price: value === "donate" ? "0" : prev.price 
+    }));
   };
 
   const handleCategoryChange = (e) => {
-    setCategeory(e.target.value);
-    setSubCategeory("");
+    const value = e.target.value;
+    setFormData(prev => ({ 
+      ...prev, 
+      categeory: value,
+      subcategeory: ""
+    }));
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Image size must be less than 5MB");
+        return;
+      }
+      setPhoto(file);
+      setPreview(URL.createObjectURL(file));
+      setErrors(prev => ({ ...prev, photo: "" }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      alert("Please fix the errors above");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("You must be logged in to list a book.");
-        setLoading(false);
+        alert("Please login to sell books");
+        navigate("/login");
         return;
       }
-      if (
-        !name.trim() ||
-        (!price.trim() && selltype === "sell") ||
-        !categeory.trim() ||
-        !subcategeory.trim() ||
-        !condition.trim() ||
-        !description.trim() ||
-        !location.trim()
-      ) {
-        alert("Please fill in all required fields before submitting!");
-        setLoading(false);
-        return;
-      }
-      const formData = new FormData();
-      formData.append("name", name.trim());
-      formData.append("price", selltype === "donate" ? 0 : Number(price));
-      formData.append("categeory", categeory.trim());
-      formData.append("selltype", selltype);
-      formData.append("condition", condition.trim());
-      formData.append("subcategeory", subcategeory.trim());
-      formData.append("description", description.trim());
-      formData.append("location", location.trim());
-      if (photo) formData.append("image", photo);
 
-      const res = await fetch(
-        `${import.meta.env.VITE_API_PATH}/books/sellbook`,
-        {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        }
-      );
+      const submitData = new FormData();
+      submitData.append("name", formData.name.trim());
+      submitData.append("price", formData.selltype === "donate" ? 0 : parseFloat(formData.price));
+      submitData.append("categeory", formData.categeory);
+      submitData.append("subcategeory", formData.subcategeory);
+      submitData.append("description", formData.description.trim());
+      submitData.append("location", formData.location.trim());
+      submitData.append("selltype", formData.selltype);
+      submitData.append("condition", formData.condition);
+      submitData.append("image", photo);
 
-      if (res.status === 403) {
-        alert("You are not authorized. Please log in again.");
-        setLoading(false);
-        return;
-      }
-      if (res.ok) {
-        alert("Your book listing has been submitted!");
+      const response = await fetch(`${import.meta.env.VITE_API_PATH}/api/books/sellbooks`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+        body: submitData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("✅ Book listed successfully! Check your email for confirmation.");
         navigate("/soldbooks");
       } else {
-        const errorMsg = await res.text();
-        alert(`Submission failed: ${errorMsg}`);
+        alert(`❌ Error: ${data.message || "Failed to list book"}`);
       }
-    } catch (err) {
-      console.error("Error sending details:", err);
-      alert("Error sending details. Check console for more info.");
+    } catch (error) {
+      console.error("Submit error:", error);
+      alert("❌ Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
     <div className="sellbooks-container">
-      <h2 className="sellbooks-heading">
-        Enter the details below to list your books for sale/donate
-      </h2>
+      <div className="sellbooks-header">
+        <h1 className="sellbooks-title">📚 List Your Book</h1>
+        <p className="sellbooks-subtitle">Sell or Donate your books to students in need</p>
+      </div>
+
       {loading ? (
-        <div className="loading-spinner">Submitting...</div>
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Listing your book...</p>
+        </div>
       ) : (
         <form className="sellbooks-form" onSubmit={handleSubmit}>
-          <div className="form-row">
-            <label className="photo-upload">
-              <span role="img" aria-label="upload">
-                📷
-              </span>
-              <br />
-              <span>Upload Photo</span>
+          {/* Photo Upload */}
+          <div className="form-group">
+            <label className="upload-label">
+              📷 Upload Book Photo <span className="required">*</span>
               <input
                 type="file"
                 accept="image/*"
-                style={{ display: "none" }}
-                onChange={(e) => setPhoto(e.target.files[0])}
+                onChange={handlePhotoChange}
+                className="file-input"
               />
             </label>
-            {photo && (
+            {errors.photo && <span className="error">{errors.photo}</span>}
+            {preview && (
               <div className="photo-preview">
-                <p>Selected file: {photo.name}</p>
-                <img
-                  src={URL.createObjectURL(photo)}
-                  alt="Preview"
-                  style={{
-                    maxWidth: "150px",
-                    maxHeight: "150px",
-                    marginTop: "10px",
-                  }}
-                />
+                <img src={preview} alt="Preview" />
+                <button 
+                  type="button" 
+                  onClick={() => {setPhoto(null); setPreview(null);}}
+                  className="remove-preview"
+                >
+                  ✕ Remove
+                </button>
               </div>
             )}
           </div>
+
+          {/* Basic Info */}
           <div className="form-row">
-            <div>
-              <label>Book Name</label>
+            <div className="form-group">
+              <label>Book Name <span className="required">*</span></label>
               <input
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Enter book title"
+                className={errors.name ? "input-error" : ""}
               />
+              {errors.name && <span className="error">{errors.name}</span>}
             </div>
-            {selltype === "sell" && (
-              <div>
-                <label>Price(Expected) (₹)</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                />
+
+            <div className="form-group">
+              <label htmlFor="selltype">List As</label>
+              <div className="radio-group">
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="selltype"
+                    value="sell"
+                    checked={formData.selltype === "sell"}
+                    onChange={handleSellTypeChange}
+                  />
+                  💰 Sell
+                </label>
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="selltype"
+                    value="donate"
+                    checked={formData.selltype === "donate"}
+                    onChange={handleSellTypeChange}
+                  />
+                  ❤️ Donate
+                </label>
               </div>
-            )}
+            </div>
           </div>
-          <div className="form-row">
-            <label>
+
+          {formData.selltype === "sell" && (
+            <div className="form-group">
+              <label>Price (₹) <span className="required">*</span></label>
               <input
-                type="radio"
-                value="sell"
-                checked={selltype === "sell"}
-                onChange={handleSelltypeChange}
-              />{" "}
-              Sell
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="donate"
-                checked={selltype === "donate"}
-                onChange={handleSelltypeChange}
-              />{" "}
-              Donate
-            </label>
-          </div>
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
+                min="1"
+                placeholder="Enter expected price"
+                className={errors.price ? "input-error" : ""}
+              />
+              {errors.price && <span className="error">{errors.price}</span>}
+            </div>
+          )}
+
+          {/* Category & Condition */}
           <div className="form-row">
-            <div>
-              <label>Category</label>
+            <div className="form-group">
+              <label>Category <span className="required">*</span></label>
               <select
-                value={categeory}
+                name="categeory"
+                value={formData.categeory}
                 onChange={handleCategoryChange}
-                required
+                className={errors.categeory ? "input-error" : ""}
               >
                 <option value="">Select Category</option>
-                {Object.keys(subcategoriesMap).map((cat) => (
-                  <option value={cat} key={cat}>
-                    {cat}
-                  </option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>
+              {errors.categeory && <span className="error">{errors.categeory}</span>}
             </div>
-            <div>
-              <label>Subcategory</label>
+
+            <div className="form-group">
+              <label>Subcategory <span className="required">*</span></label>
               <select
-                value={subcategeory}
-                onChange={(e) => setSubCategeory(e.target.value)}
-                required
+                name="subcategeory"
+                value={formData.subcategeory}
+                onChange={handleInputChange}
+                disabled={!formData.categeory}
+                className={errors.subcategeory ? "input-error" : ""}
               >
                 <option value="">Select Subcategory</option>
-                {(subcategoriesMap[categeory] || []).map((subcat) => (
-                  <option key={subcat} value={subcat}>
-                    {subcat}
-                  </option>
+                {(subcategoriesMap[formData.categeory] || []).map(sub => (
+                  <option key={sub} value={sub}>{sub}</option>
                 ))}
               </select>
+              {errors.subcategeory && <span className="error">{errors.subcategeory}</span>}
             </div>
-            <div>
-              <label>Condition</label>
+
+            <div className="form-group">
+              <label>Condition <span className="required">*</span></label>
+              <select
+                name="condition"
+                value={formData.condition}
+                onChange={handleInputChange}
+                className={errors.condition ? "input-error" : ""}
+              >
+                <option value="">Select Condition</option>
+                {conditions.map(cond => (
+                  <option key={cond} value={cond}>{cond}</option>
+                ))}
+              </select>
+              {errors.condition && <span className="error">{errors.condition}</span>}
+            </div>
+          </div>
+
+          {/* Description & Location */}
+          <div className="form-row">
+            <div className="form-group full-width">
+              <label>Description <span className="required">*</span></label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                rows="3"
+                placeholder="Detailed description of book condition, highlights, any markings, etc."
+                className={errors.description ? "input-error" : ""}
+              />
+              {errors.description && <span className="error">{errors.description}</span>}
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>Location <span className="required">*</span></label>
               <input
                 type="text"
-                value={condition}
-                onChange={(e) => setCondition(e.target.value)}
-                placeholder="Condition of the book"
-                required
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                placeholder="City, Area (ex: Delhi, Rohini)"
+                className={errors.location ? "input-error" : ""}
               />
+              {errors.location && <span className="error">{errors.location}</span>}
             </div>
           </div>
-          <div className="form-row">
-            <div className="desc-box">
-              <label>Description</label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={2}
-                required
-              />
-            </div>
-            <div className="desc-box">
-              <label>Location</label>
-              <textarea
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                rows={2}
-                required
-              />
-            </div>
-          </div>
-          <button type="submit" className="submit-btn">
-            Submit
+
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? "📤 Listing..." : "📤 List Book Now"}
           </button>
         </form>
       )}
