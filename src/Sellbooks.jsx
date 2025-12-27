@@ -83,64 +83,57 @@ const subcategoriesMap = {
 };
 
 const conditions = ["Brand New", "Like New", "Very Good", "Good", "Fair", "Poor"];
-
 export default function SellBooks() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    category: "",        
-    subcategory: "",     
+    category: "",
+    subcategory: "",
     condition: "",
     description: "",
     location: "New Delhi, India",
     selltype: "sell",
     soldstatus: "Instock"
   });
+
   const [photo, setPhoto] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("idle");
   const [errors, setErrors] = useState({});
-  const [userLocation, setUserLocation] = useState("New Delhi, India");
 
-  // Get user location
   useEffect(() => {
-    const getLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            try {
-              setUserLocation("Detected Location");
-              setFormData(prev => ({ ...prev, location: "New Delhi, India" }));
-            } catch (error) {
-              console.log("Location error:", error);
-            }
-          },
-          (error) => {
-            console.log("Geolocation denied:", error);
-          }
-        );
-      }
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
     };
-    getLocation();
-  }, []);
+  }, [preview]);
 
   const validateForm = useCallback(() => {
     const newErrors = {};
-    
-    if (!formData.name.trim()) newErrors.name = "Book name is required";
-    if (formData.name.trim().length < 2) newErrors.name = "Book name must be at least 2 characters";
-    if (!formData.category) newErrors.category = "Category selection required";  
-    if (!formData.subcategory) newErrors.subcategory = "Subcategory selection required";  
-    if (!formData.condition) newErrors.condition = "Condition selection required";
-    if (!formData.description.trim()) newErrors.description = "Description is required";
-    if (formData.description.trim().length < 10) newErrors.description = "Description must be at least 10 characters";
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Book name is required";
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = "Book name must be at least 2 characters";
+    }
+
+    if (!formData.category) newErrors.category = "Category is required";
+    if (!formData.subcategory) newErrors.subcategory = "Subcategory is required";
+    if (!formData.condition) newErrors.condition = "Condition is required";
+
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required";
+    } else if (formData.description.trim().length < 10) {
+      newErrors.description = "Description must be at least 10 characters";
+    }
+
     if (!formData.location.trim()) newErrors.location = "Location is required";
-    
+
     if (formData.selltype === "sell") {
-      if (!formData.price || parseFloat(formData.price) <= 0) {
-        newErrors.price = "Valid price required for selling (₹1+)";
+      if (!formData.price || Number(formData.price) <= 0) {
+        newErrors.price = "Valid price is required";
       }
     }
 
@@ -153,159 +146,100 @@ export default function SellBooks() {
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: "" }));
-    }
-  }, [errors]);
-
-  const handleSellTypeChange = useCallback((e) => {
-    const value = e.target.value;
-    setFormData(prev => ({ 
-      ...prev, 
-      selltype: value,
-      price: value === "donate" ? "0" : prev.price 
-    }));
-    if (errors.price) setErrors(prev => ({ ...prev, price: "" }));
-  }, [errors]);
-
-  const handleCategoryChange = useCallback((e) => {
-    const value = e.target.value;
-    setFormData(prev => ({ 
-      ...prev, 
-      category: value,     
-      subcategory: ""      
-    }));
-    if (errors.category) setErrors(prev => ({ ...prev, category: "" }));  
-    if (errors.subcategory) setErrors(prev => ({ ...prev, subcategory: "" }));  
-  }, [errors]);
-
-  const handlePhotoChange = useCallback((e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Validate file size (5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors(prev => ({ ...prev, photo: "Image size must be less than 5MB" }));
-        return;
-      }
-      
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        setErrors(prev => ({ ...prev, photo: "Please select a valid image file" }));
-        return;
-      }
-      
-      setPhoto(file);
-      setPreview(URL.createObjectURL(file));
-      setErrors(prev => ({ ...prev, photo: "" }));
-    }
+    setErrors(prev => ({ ...prev, [name]: "" }));
   }, []);
 
-  const handleRemovePhoto = useCallback(() => {
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      category: value,
+      subcategory: ""
+    }));
+    setErrors(prev => ({
+      ...prev,
+      category: "",
+      subcategory: ""
+    }));
+  };
+
+  const handleSellTypeChange = (e) => {
+    const value = e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      selltype: value,
+      price: value === "donate" ? "0" : ""
+    }));
+    setErrors(prev => ({ ...prev, price: "" }));
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setErrors(prev => ({ ...prev, photo: "Only image files allowed" }));
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setErrors(prev => ({ ...prev, photo: "Image must be under 5MB" }));
+      return;
+    }
+
+    if (preview) URL.revokeObjectURL(preview);
+
+    setPhoto(file);
+    setPreview(URL.createObjectURL(file));
+    setErrors(prev => ({ ...prev, photo: "" }));
+  };
+
+  const handleRemovePhoto = () => {
+    if (preview) URL.revokeObjectURL(preview);
     setPhoto(null);
     setPreview(null);
-    if (preview) URL.revokeObjectURL(preview);
-    setErrors(prev => ({ ...prev, photo: "Book photo is required" }));
-  }, [preview]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      setSubmitStatus("error");
-      setTimeout(() => setSubmitStatus("idle"), 3000);
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
     setSubmitStatus("submitting");
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); 
-
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("Please login to list books");
         navigate("/login");
         return;
       }
 
       const submitData = new FormData();
-      submitData.append("name", formData.name.trim());
-      submitData.append("price", formData.selltype === "donate" ? 0 : parseFloat(formData.price));
-      submitData.append("category", formData.category);    
-      submitData.append("subcategory", formData.subcategory); 
-      submitData.append("description", formData.description.trim());
-      submitData.append("location", formData.location.trim());
-      submitData.append("selltype", formData.selltype);
-      submitData.append("condition", formData.condition);
-      submitData.append("soldstatus", formData.soldstatus);
+      Object.entries({
+        ...formData,
+        price: formData.selltype === "donate" ? 0 : formData.price
+      }).forEach(([k, v]) => submitData.append(k, v));
+
       submitData.append("image", photo);
 
-      const apiUrl = `${import.meta.env.VITE_API_PATH}/books/sellbook`;
-      console.log("Submitting to:", apiUrl);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_PATH}/books/sellbook`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: submitData
+        }
+      );
 
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        signal: controller.signal,
-        headers: {
-          "Authorization": `Bearer ${token}`
-        },
-        body: submitData,
-      });
-
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error("Server error response:", errorData);
-        const errorObj = JSON.parse(errorData || '{"error":"Unknown server error"}');
-        throw new Error(errorObj.error || errorObj.message || `Server error ${response.status}`);
-      }
-
-      const data = await response.json();
+      if (!response.ok) throw new Error("Submission failed");
 
       setSubmitStatus("success");
-      alert(" Book listed successfully! Check your email for confirmation.");
-      
-      // Reset form
-      setFormData({
-        name: "",
-        price: "",
-        category: "",
-        subcategory: "",
-        condition: "",
-        description: "",
-        location: userLocation,
-        selltype: "sell",
-        soldstatus: "Instock"
-      });
-      setPhoto(null);
-      setPreview(null);
-      setErrors({});
-      
-      setTimeout(() => {
-        navigate("/soldbooks");
-      }, 1500);
-      
-    } catch (error) {
-      console.error("Submit error:", error);
-      
-      if (error.name === 'AbortError') {
-        alert(" Request timeout. Please try again with a smaller image.");
-      } else if (error.message.includes('Network') || error.message.includes('fetch')) {
-        alert("Network error. Please check your connection and try again.");
-      } else if (error.message.includes('401') || error.message.includes('403')) {
-        alert(" Session expired. Please login again.");
-        navigate("/login");
-      } else {
-        alert(` Error: ${error.message}`);
-      }
+      navigate("/soldbooks");
+    } catch (err) {
       setSubmitStatus("error");
+      alert(err.message);
     } finally {
-      if (timeoutId) clearTimeout(timeoutId);
       setLoading(false);
-      setTimeout(() => setSubmitStatus("idle"), 3000);
     }
   };
 
