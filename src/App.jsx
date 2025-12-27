@@ -24,6 +24,7 @@ import BottomNav from "./Bottomnav";
 import Categories from "./Categerioes";
 import VideoHelpSection from "./Help";
 import ComingSoon from "./CommingSoon";
+import BookListedSuccess from "./Booklisted";
 import CollegePYQ from "./Previouspaper";
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         <Route path="/all-categories" element={<Categories />} />
         <Route path="/help" element={<VideoHelpSection />} />
         <Route path="/soon" element={<ComingSoon />} />
+        <Route path="/thankyou" element ={<Booklisted/>}/>
         <Route path="/anits/previous-papers" element={<CollegePYQ/>} />
         <Route
           path="/book/:id"
