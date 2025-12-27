@@ -89,18 +89,18 @@ export default function SellBooks() {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    categeory: "",
-    subcategeory: "",
+    category: "",        // Fixed typo
+    subcategory: "",     // Fixed typo
     condition: "",
     description: "",
-    location: "",
+    location: "New Delhi, India",
     selltype: "sell",
     soldstatus: "Instock"
   });
   const [photo, setPhoto] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState("idle"); // idle, submitting, success, error
+  const [submitStatus, setSubmitStatus] = useState("idle");
   const [errors, setErrors] = useState({});
   const [userLocation, setUserLocation] = useState("New Delhi, India");
 
@@ -111,7 +111,6 @@ export default function SellBooks() {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             try {
-              // Simple location - replace with actual geocoding if needed
               setUserLocation("Detected Location");
               setFormData(prev => ({ ...prev, location: "New Delhi, India" }));
             } catch (error) {
@@ -132,15 +131,15 @@ export default function SellBooks() {
     
     if (!formData.name.trim()) newErrors.name = "Book name is required";
     if (formData.name.trim().length < 2) newErrors.name = "Book name must be at least 2 characters";
-    if (!formData.categeory) newErrors.categeory = "Category selection required";
-    if (!formData.subcategeory) newErrors.subcategeory = "Subcategory selection required";
+    if (!formData.category) newErrors.category = "Category selection required";  // Fixed field name
+    if (!formData.subcategory) newErrors.subcategory = "Subcategory selection required";  // Fixed field name
     if (!formData.condition) newErrors.condition = "Condition selection required";
     if (!formData.description.trim()) newErrors.description = "Description is required";
     if (formData.description.trim().length < 10) newErrors.description = "Description must be at least 10 characters";
     if (!formData.location.trim()) newErrors.location = "Location is required";
     
     if (formData.selltype === "sell") {
-      if (!formData.price || formData.price <= 0) {
+      if (!formData.price || parseFloat(formData.price) <= 0) {
         newErrors.price = "Valid price required for selling (₹1+)";
       }
     }
@@ -173,11 +172,11 @@ export default function SellBooks() {
     const value = e.target.value;
     setFormData(prev => ({ 
       ...prev, 
-      categeory: value,
-      subcategeory: ""
+      category: value,     // Fixed field name
+      subcategory: ""      // Fixed field name
     }));
-    if (errors.categeory) setErrors(prev => ({ ...prev, categeory: "" }));
-    if (errors.subcategeory) setErrors(prev => ({ ...prev, subcategeory: "" }));
+    if (errors.category) setErrors(prev => ({ ...prev, category: "" }));  // Fixed field name
+    if (errors.subcategory) setErrors(prev => ({ ...prev, subcategory: "" }));  // Fixed field name
   }, [errors]);
 
   const handlePhotoChange = useCallback((e) => {
@@ -220,6 +219,9 @@ export default function SellBooks() {
     setLoading(true);
     setSubmitStatus("submitting");
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -231,8 +233,8 @@ export default function SellBooks() {
       const submitData = new FormData();
       submitData.append("name", formData.name.trim());
       submitData.append("price", formData.selltype === "donate" ? 0 : parseFloat(formData.price));
-      submitData.append("categeory", formData.categeory);
-      submitData.append("subcategeory", formData.subcategeory);
+      submitData.append("category", formData.category);     // Fixed field name
+      submitData.append("subcategory", formData.subcategory); // Fixed field name
       submitData.append("description", formData.description.trim());
       submitData.append("location", formData.location.trim());
       submitData.append("selltype", formData.selltype);
@@ -240,46 +242,68 @@ export default function SellBooks() {
       submitData.append("soldstatus", formData.soldstatus);
       submitData.append("image", photo);
 
-      const response = await fetch(`${import.meta.env.VITE_API_PATH}/api/books/sellbooks`, {
+      const apiUrl = `${import.meta.env.VITE_API_PATH}/api/books/sellbooks`;
+      console.log("Submitting to:", apiUrl); // Debug log
+
+      const response = await fetch(apiUrl, {
         method: "POST",
+        signal: controller.signal,
         headers: {
           "Authorization": `Bearer ${token}`
+          // ✅ NO Content-Type - let browser set multipart boundary automatically
         },
         body: submitData,
       });
 
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error("Server error response:", errorData);
+        throw new Error(`Server error ${response.status}: ${errorData}`);
+      }
+
       const data = await response.json();
 
-      if (response.ok) {
-        setSubmitStatus("success");
-        alert("✅ Book listed successfully! Check your email for confirmation.");
-        // Reset form
-        setFormData({
-          name: "",
-          price: "",
-          categeory: "",
-          subcategeory: "",
-          condition: "",
-          description: "",
-          location: userLocation,
-          selltype: "sell",
-          soldstatus: "Instock"
-        });
-        setPhoto(null);
-        setPreview(null);
-        setErrors({});
-        setTimeout(() => {
-          navigate("/soldbooks");
-        }, 1500);
-      } else {
-        setSubmitStatus("error");
-        alert(` Error: ${data.message || data.error || "Failed to list book"}`);
-      }
+      setSubmitStatus("success");
+      alert("✅ Book listed successfully! Check your email for confirmation.");
+      
+      // Reset form
+      setFormData({
+        name: "",
+        price: "",
+        category: "",
+        subcategory: "",
+        condition: "",
+        description: "",
+        location: userLocation,
+        selltype: "sell",
+        soldstatus: "Instock"
+      });
+      setPhoto(null);
+      setPreview(null);
+      setErrors({});
+      
+      setTimeout(() => {
+        navigate("/soldbooks");
+      }, 1500);
+      
     } catch (error) {
       console.error("Submit error:", error);
+      
+      if (error.name === 'AbortError') {
+        alert("⏰ Request timeout. Please try again with a smaller image.");
+      } else if (error.message.includes('Network') || error.message.includes('fetch')) {
+        alert("🌐 Network error. Please check your connection and try again.");
+      } else if (error.message.includes('401')) {
+        alert("⚠️ Session expired. Please login again.");
+        navigate("/login");
+      } else {
+        alert(`❌ Error: ${error.message}`);
+      }
       setSubmitStatus("error");
-      alert("Network error. Please check your connection and try again.");
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
       setTimeout(() => setSubmitStatus("idle"), 3000);
     }
@@ -303,7 +327,7 @@ export default function SellBooks() {
         <form className="sellbooks-form" onSubmit={handleSubmit}>
           {/* Photo Upload */}
           <div className="form-section">
-            <h3> Book Photo <span className="required">*</span></h3>
+            <h3>Book Photo <span className="required">*</span></h3>
             <div className="form-group">
               <label className="upload-label">
                 <div className="upload-icon">📸</div>
@@ -337,7 +361,7 @@ export default function SellBooks() {
 
           {/* Basic Information */}
           <div className="form-section">
-            <h3> Basic Information</h3>
+            <h3>Basic Information</h3>
             <div className="form-row">
               <div className="form-group">
                 <label>Book Name <span className="required">*</span></label>
@@ -406,38 +430,38 @@ export default function SellBooks() {
               <div className="form-group">
                 <label>Category <span className="required">*</span></label>
                 <select
-                  name="categeory"
-                  value={formData.categeory}
+                  name="category"      // Fixed field name
+                  value={formData.category}
                   onChange={handleCategoryChange}
-                  className={errors.categeory ? "input-error" : ""}
+                  className={errors.category ? "input-error" : ""}
                 >
                   <option value="">Select Category</option>
                   {categories.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
                   ))}
                 </select>
-                {errors.categeory && <span className="error">{errors.categeory}</span>}
+                {errors.category && <span className="error">{errors.category}</span>}
               </div>
 
-                            <div className="form-group">
+              <div className="form-group">
                 <label>Subcategory <span className="required">*</span></label>
                 <select
-                  name="subcategeory"
-                  value={formData.subcategeory}
+                  name="subcategory"   // Fixed field name
+                  value={formData.subcategory}
                   onChange={handleInputChange}
-                  disabled={!formData.categeory}
-                  className={errors.subcategeory ? "input-error" : ""}
+                  disabled={!formData.category}
+                  className={errors.subcategory ? "input-error" : ""}
                 >
                   <option value="">Select Subcategory</option>
-                  {formData.categeory &&
-                    subcategoriesMap[formData.categeory]?.map((sub) => (
+                  {formData.category &&
+                    subcategoriesMap[formData.category]?.map((sub) => (
                       <option key={sub} value={sub}>
                         {sub}
                       </option>
                     ))}
                 </select>
-                {errors.subcategeory && (
-                  <span className="error">{errors.subcategeory}</span>
+                {errors.subcategory && (
+                  <span className="error">{errors.subcategory}</span>
                 )}
               </div>
             </div>
@@ -530,4 +554,3 @@ export default function SellBooks() {
     </div>
   );
 }
-
