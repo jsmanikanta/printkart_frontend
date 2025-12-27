@@ -115,24 +115,29 @@ export default function OrderPrints() {
     }
 
     let pricePerPage = 0;
+    
     if (color === "b/w" && sides === "2") pricePerPage = 1;
-    else if (color === "b/w" && sides === "1") pricePerPage = 1.7;
-    else if (color === "colour" && sides === "1") pricePerPage = 6;
-    else pricePerPage = 1.5;
+    else if (color === "b/w" && sides === "1") pricePerPage = 1;
+    else if (color === "colour" && sides === "1") pricePerPage = 2;
+    else pricePerPage = null;
+    if (pricePerPage === null) {
+      setErrorMessage("Please select a valid color and side option.");
+      setPrintCost(0);
+      return;
+    }
 
-    const printAmount = pricePerPage * pages * copies;
-    setPrintCost(printAmount);
-
+const printAmount = pricePerPage * pages * copies;
+setPrintCost(printAmount);
     let bindingAmount = 0;
     switch (binding) {
       case "spiral":
-        bindingAmount = 20 * copies;
+        bindingAmount = 25 * copies;
         break;
       case "stick":
-        bindingAmount = 20 * copies;
+        bindingAmount = 15 * copies;
         break;
       case "soft":
-        bindingAmount = 25 * copies;
+        bindingAmount = 30 * copies;
         break;
       case "book":
         bindingAmount = 150 * copies;
