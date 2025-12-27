@@ -242,7 +242,7 @@ export default function SellBooks() {
       submitData.append("soldstatus", formData.soldstatus);
       submitData.append("image", photo);
 
-      const apiUrl = `${import.meta.env.VITE_API_PATH}/api/books/sellbook`;
+      const apiUrl = `${import.meta.env.VITE_API_PATH}books/sellbook`;
       console.log("Submitting to:", apiUrl);
 
       const response = await fetch(apiUrl, {
