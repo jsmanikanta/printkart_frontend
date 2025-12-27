@@ -89,8 +89,8 @@ export default function SellBooks() {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    category: "",        // Fixed typo
-    subcategory: "",     // Fixed typo
+    category: "",        
+    subcategory: "",     
     condition: "",
     description: "",
     location: "New Delhi, India",
@@ -131,8 +131,8 @@ export default function SellBooks() {
     
     if (!formData.name.trim()) newErrors.name = "Book name is required";
     if (formData.name.trim().length < 2) newErrors.name = "Book name must be at least 2 characters";
-    if (!formData.category) newErrors.category = "Category selection required";  // Fixed field name
-    if (!formData.subcategory) newErrors.subcategory = "Subcategory selection required";  // Fixed field name
+    if (!formData.category) newErrors.category = "Category selection required";  
+    if (!formData.subcategory) newErrors.subcategory = "Subcategory selection required";  
     if (!formData.condition) newErrors.condition = "Condition selection required";
     if (!formData.description.trim()) newErrors.description = "Description is required";
     if (formData.description.trim().length < 10) newErrors.description = "Description must be at least 10 characters";
@@ -172,11 +172,11 @@ export default function SellBooks() {
     const value = e.target.value;
     setFormData(prev => ({ 
       ...prev, 
-      category: value,     // Fixed field name
-      subcategory: ""      // Fixed field name
+      category: value,     
+      subcategory: ""      
     }));
-    if (errors.category) setErrors(prev => ({ ...prev, category: "" }));  // Fixed field name
-    if (errors.subcategory) setErrors(prev => ({ ...prev, subcategory: "" }));  // Fixed field name
+    if (errors.category) setErrors(prev => ({ ...prev, category: "" }));  
+    if (errors.subcategory) setErrors(prev => ({ ...prev, subcategory: "" }));  
   }, [errors]);
 
   const handlePhotoChange = useCallback((e) => {
@@ -220,7 +220,7 @@ export default function SellBooks() {
     setSubmitStatus("submitting");
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+    const timeoutId = setTimeout(() => controller.abort(), 30000); 
 
     try {
       const token = localStorage.getItem("token");
@@ -233,8 +233,8 @@ export default function SellBooks() {
       const submitData = new FormData();
       submitData.append("name", formData.name.trim());
       submitData.append("price", formData.selltype === "donate" ? 0 : parseFloat(formData.price));
-      submitData.append("category", formData.category);     // Fixed field name
-      submitData.append("subcategory", formData.subcategory); // Fixed field name
+      submitData.append("category", formData.category);    
+      submitData.append("subcategory", formData.subcategory); 
       submitData.append("description", formData.description.trim());
       submitData.append("location", formData.location.trim());
       submitData.append("selltype", formData.selltype);
@@ -242,15 +242,14 @@ export default function SellBooks() {
       submitData.append("soldstatus", formData.soldstatus);
       submitData.append("image", photo);
 
-      const apiUrl = `${import.meta.env.VITE_API_PATH}/api/books/sellbooks`;
-      console.log("Submitting to:", apiUrl); // Debug log
+      const apiUrl = `${import.meta.env.VITE_API_PATH}/api/books/sellbook`;
+      console.log("Submitting to:", apiUrl);
 
       const response = await fetch(apiUrl, {
         method: "POST",
         signal: controller.signal,
         headers: {
           "Authorization": `Bearer ${token}`
-          // ✅ NO Content-Type - let browser set multipart boundary automatically
         },
         body: submitData,
       });
