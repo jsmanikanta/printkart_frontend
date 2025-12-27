@@ -164,70 +164,88 @@ export default function OrderPrints() {
   }, [color, sides, binding, pages, copies, activeTab, couponDiscountPercent]);
 
   const handleVerifyCoupon = async () => {
-    const token = localStorage.getItem("token");
-    
-    if (!token) {
-      alert("Please log in first.");
-      return;
-    }
+  const token = localStorage.getItem("token")?.trim();
+  
+  if (!token) {
+    alert("Please log in first.");
+    return;
+  }
 
-    if (!couponCode.trim()) {
-      alert("Please enter a coupon code.");
-      return;
-    }
+  if (!couponCode.trim()) {
+    alert("Please enter a coupon code.");
+    return;
+  }
 
-    try {
-      setCouponLoading(true);
-      setCouponInfo(null);
+  try {
+    setCouponLoading(true);
+    setCouponInfo(null);
 
-      console.log("Sending coupon request with token:", token ? "present" : "missing");
+    console.log("Sending coupon request. Token length:", token.length);
+    console.log("Full URL:", `${import.meta.env.VITE_API_PATH}/coupons/verify`);
+    console.log("Coupon code:", couponCode);
 
-      const res = await fetch(`${import.meta.env.VITE_API_PATH}/coupons/verify`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ code: couponCode }),
-      });
+    const res = await fetch(`${import.meta.env.VITE_API_PATH}/coupons/verify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
+    });
 
-      const data = await res.json();
-      console.log("Coupon response:", data);
+    console.log("Response status:", res.status);
+    console.log("Response headers:", Object.fromEntries(res.headers.entries()));
 
-      if (!res.ok || !data.success) {
-        setCouponDiscountPercent(0);
-        setCouponDiscountAmount(0);
-        setCouponInfo({
-          status: data.status || "invalid",
-          discountPercentage: 0,
-          message: data.error || "Invalid coupon",
-        });
-        return;
-      }
+    const data = await res.json();
+    console.log("Coupon response:", data);
 
-      const percent = data.data?.discountPercentage || 0;
-      setCouponDiscountPercent(percent);
-      setCouponInfo({
-        status: data.status,
-        discountPercentage: percent,
-        message:
-          data.status === "available"
-            ? `Coupon applied. Extra ${percent}% discount on total.`
-            : "Coupon already used.",
-      });
-    } catch (err) {
-      console.error("Coupon verify error:", err);
+    if (!res.ok) {
+      console.error("Server error:", res.status, data);
       setCouponDiscountPercent(0);
       setCouponDiscountAmount(0);
       setCouponInfo({
-        status: "error",
+        status: data.status || "error",
         discountPercentage: 0,
-        message: "Error verifying coupon.",
+        message: data.error || data.message || `Server error (${res.status})`,
       });
-    } finally {
-      setCouponLoading(false);
+      return;
     }
-  };
+
+    if (!data.success) {
+      setCouponDiscountPercent(0);
+      setCouponDiscountAmount(0);
+      setCouponInfo({
+        status: data.status || "invalid",
+        discountPercentage: 0,
+        message: data.error || data.message || "Invalid coupon",
+      });
+      return;
+    }
+
+    const percent = data.data?.discountPercentage || 0;
+    setCouponDiscountPercent(percent);
+    setCouponInfo({
+      status: data.status,
+      discountPercentage: percent,
+      message:
+        data.status === "available"
+          ? `Coupon applied! ${percent}% discount.`
+          : "Coupon already used by you.",
+    });
+
+  } catch (err) {
+    console.error("Network/Coupon verify error:", err);
+    setCouponDiscountPercent(0);
+    setCouponDiscountAmount(0);
+    setCouponInfo({
+      status: "error",
+      discountPercentage: 0,
+      message: "Network error. Please try again.",
+    });
+  } finally {
+    setCouponLoading(false);
+  }
+};
 
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
