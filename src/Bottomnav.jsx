@@ -7,6 +7,9 @@ function BottomNav() {
   const soon = () => {
     navigate("/soon");
   };
+  const sell =() =>{
+    navigate("/sellbooks");
+  }
   const cat = () => {
     navigate("/all-categories");
   };
