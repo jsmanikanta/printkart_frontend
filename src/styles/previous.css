@@ -1,0 +1,106 @@
+/* Root page */
+.pyq-page {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #ffffff;
+}
+
+/* Header */
+.pyq-header {
+  background-color: #b47545;
+  color: #000;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.pyq-back-button {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.pyq-header-title {
+  flex: 1;
+  text-align: left;
+}
+
+/* Content area */
+.pyq-content {
+  flex: 1;
+  padding: 16px 16px 72px 16px;
+  overflow-y: auto;
+}
+
+.pyq-error {
+  color: red;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+/* Card list */
+.pyq-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each card */
+.pyq-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+/* Spiral icon */
+.pyq-icon-area {
+  margin-right: 12px;
+}
+
+.pyq-paper-img {
+  height: 50px;
+  width: 50px;
+  object-fit: contain;
+}
+
+/* Info stacked vertically */
+.pyq-info-area-vertical {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* College, branch, year-sem */
+.pyq-college-text {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.pyq-branch-text {
+  font-size: 13px;
+  color: #555;
+}
+
+.pyq-year-sem-text {
+  font-size: 13px;
+  color: #555;
+}
+
+/* Tap to view button */
+.pyq-tap-button {
+  margin-top: 8px;
+  background-color: #82b6ff;
+  border-radius: 20px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
