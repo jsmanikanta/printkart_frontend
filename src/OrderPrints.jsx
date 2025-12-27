@@ -131,7 +131,7 @@ export default function OrderPrints() {
     setOriginalPrice(originalTotal);
 
     let discountAmount = 0;
-    if (activeTab === "student") discountAmount = printAmount * 0.25;
+    if (activeTab === "student") discountAmount = printAmount * 0.15;
     setDiscountValue(discountAmount);
 
     const finalTotal = Math.ceil(printAmount - discountAmount + bindingAmount);
@@ -573,7 +573,7 @@ export default function OrderPrints() {
                     (Prints ₹{printCost} + Binding ₹{bindingCost})
                   </span>
                 </p>
-                <p>25% Student Discount on Prints: -₹{discountValue.toFixed(2)}</p>
+                <p>15% Student Discount on Prints: -₹{discountValue.toFixed(2)}</p>
                 <p>New Price: ₹{discountPrice}</p>
               </div>
             )}
