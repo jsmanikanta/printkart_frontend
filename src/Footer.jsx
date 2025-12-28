@@ -62,7 +62,7 @@ function Footer() {
               <li onClick={Orderprints}>Project Reports</li>
               <li onClick={Orderprints}>Class Notes</li>
               <li onClick={Orderprints}>College Notices / PDFs</li>
-              <li onClick={Orderprints}>Spiral Bound Notebooks</li>
+              <li onClick={Orderprints}>Spiral Bindings</li>
               <li onClick={Orderprints}>Black & White / Color Prints</li>
             </ul>
           </div>
