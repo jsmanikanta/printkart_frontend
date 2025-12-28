@@ -39,7 +39,7 @@ function HomePage() {
   };
 
   const previous=()=>{
-    navigate("/anits/previous-papers")
+    navigate("/previous-papers")
   }
   // Fetch user profile for the header
   useEffect(() => {
