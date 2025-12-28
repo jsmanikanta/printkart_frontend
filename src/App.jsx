@@ -50,7 +50,7 @@ function App() {
         <Route path="/all-categories" element={<Categories />} />
         <Route path="/help" element={<VideoHelpSection />} />
         <Route path="/soon" element={<ComingSoon />} />
-        <Route path="/anits/previous-papers" element={<CollegePYQ/>} />
+        <Route path="/previous-papers" element={<CollegePYQ/>} />
         <Route
           path="/book/:id"
           element={<BookDetails onOrder={setOrderSummaryBookId} />}
