@@ -4,13 +4,14 @@ import "./styles/previous.css";
 import Loader from "./Loading";
 import { api_path } from "../data";
 import prints from "../public/images/spiral-binding-icon.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function CollegePYQ() {
   const [papers, setPapers] = useState([]);
-  const [loading, setLoading] = useState(true); // Start as true
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { college } = useParams(); // Get college from route: /:college/previous-years
 
   useEffect(() => {
     const fetchPapers = async () => {
@@ -19,43 +20,49 @@ function CollegePYQ() {
 
       const token = localStorage.getItem("token");
       
-      // Handle no token case
       if (!token) {
         setLoading(false);
         setError("Please login to view question papers.");
         return;
       }
 
+      // Use college param or fallback to 'anits'
+      const collegeName = college || 'anits';
+      const endpoint = `${collegeName}/previous-years`;
+
       try {
-        const res = await axios.get(`${api_path}/anits/previous-years`, {
+        console.log(`Fetching: ${api_path}/${endpoint}`); // Debug log
+        
+        const res = await axios.get(`${api_path}/${endpoint}`, {
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
           },
         });
 
         if (res.data?.success) {
           setPapers(res.data.data || []);
-          setError(""); // Clear any previous errors
         } else {
-          setError("No question papers available.");
           setPapers([]);
+          setError("No question papers available for this college.");
         }
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.error("API Error:", err.response?.data || err.message);
+        
         if (err.response?.status === 401) {
           localStorage.removeItem("token");
           navigate("/login");
-        } else {
-          setError("Failed to load question papers. Please try again.");
-          setPapers([]);
+          return;
         }
+        
+        setError(`Failed to load papers: ${err.response?.status || 'Network Error'}`);
+        setPapers([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPapers();
-  }, [navigate]);
+  }, [navigate, college]); // Add college as dependency
 
   const handleTapToView = (fileUrl) => {
     if (!fileUrl) {
@@ -65,106 +72,58 @@ function CollegePYQ() {
     window.open(fileUrl, "_blank");
   };
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="pyq-orders-loading">
-        <Loader />
-      </div>
-    );
-  }
+  // ALWAYS show header + consistent layout
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <div className="pyq-orders-loading">
+          <Loader />
+        </div>
+      );
+    }
 
-  // Error state
-  if (error) {
-    return (
-      <div className="pyq-page">
-        <header className="pyq-header">
-          <span className="pyq-back-button" onClick={() => navigate(-1)}>
-            ←
-          </span>
-          <span className="pyq-header-title">
-            Previous Year Question Papers
-          </span>
-        </header>
+    if (error) {
+      return (
         <div className="pyq-content">
           <p className="pyq-error">{error}</p>
-          {!localStorage.getItem("token") && (
-            <a href="/login" className="pyq-orders-login-btn">
-              Login to continue
-            </a>
-          )}
+          <a href="/login" className="pyq-orders-login-btn">
+            Login to continue
+          </a>
         </div>
-      </div>
-    );
-  }
+      );
+    }
 
-  // No papers state
-  if (papers.length === 0) {
-    return (
-      <div className="pyq-page">
-        <header className="pyq-header">
-          <span className="pyq-back-button" onClick={() => navigate(-1)}>
-            ←
-          </span>
-          <span className="pyq-header-title">
-            Previous Year Question Papers
-          </span>
-        </header>
+    if (papers.length === 0) {
+      return (
         <div className="pyq-content">
           <p>No question papers available.</p>
         </div>
-      </div>
-    );
-  }
+      );
+    }
 
-  // Success state - render papers
-  return (
-    <div className="pyq-page">
-      <header className="pyq-header">
-        <span className="pyq-back-button" onClick={() => navigate(-1)}>
-          ←
-        </span>
-        <span className="pyq-header-title">
-          Previous Year Question Papers
-        </span>
-      </header>
-
+    return (
       <div className="pyq-content">
         <div className="pyq-list">
-          {papers.map((paper) => (
-            <div className="pyq-card" key={paper.id || paper.file_url || Math.random()}>
+          {papers.map((paper, index) => (
+            <div className="pyq-card" key={paper.id || paper.file_url || index}>
               <div className="pyq-icon-area">
-                <img
-                  src={prints}
-                  alt="Paper icon"
-                  className="pyq-paper-img"
-                />
+                <img src={prints} alt="Paper icon" className="pyq-paper-img" />
               </div>
-
               <div className="pyq-info-area-vertical">
                 <div className="pyq-field-row">
-                  <span className="pyq-label-inline">
-                    College Name:&nbsp;
-                  </span>
-                  <span className="pyq-value-inline">{paper.college || "N/A"}</span>
+                  <span className="pyq-label-inline">College Name:&nbsp;</span>
+                  <span className="pyq-value-inline">{paper.college || college || "N/A"}</span>
                 </div>
-
                 <div className="pyq-field-row">
                   <span className="pyq-label-inline">Branch:&nbsp;</span>
-                  <span className="pyq-value-inline">
-                    {paper.branch || "Common for all branches"}
-                  </span>
+                  <span className="pyq-value-inline">{paper.branch || "Common"}</span>
                 </div>
-
                 <div className="pyq-field-row">
-                  <span className="pyq-label-inline">
-                    Year & Semester:&nbsp;
-                  </span>
+                  <span className="pyq-label-inline">Year & Semester:&nbsp;</span>
                   <span className="pyq-value-inline">
                     Year {paper.year || "N/A"} • Sem {paper.sem || "N/A"}
                   </span>
                 </div>
-
                 <button
                   className="pyq-tap-button"
                   onClick={() => handleTapToView(paper.file_url)}
@@ -176,6 +135,20 @@ function CollegePYQ() {
           ))}
         </div>
       </div>
+    );
+  };
+
+  return (
+    <div className="pyq-page">
+      <header className="pyq-header">
+        <span className="pyq-back-button" onClick={() => navigate(-1)}>
+          ←
+        </span>
+        <span className="pyq-header-title">
+          Previous Year Question Papers
+        </span>
+      </header>
+      {renderContent()}
     </div>
   );
 }
