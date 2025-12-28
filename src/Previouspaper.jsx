@@ -112,17 +112,21 @@ function CollegePYQ() {
               <div className="pyq-info-area-vertical">
                 <div className="pyq-field-row">
                   <span className="pyq-label-inline">College Name:&nbsp;</span>
-                  <span className="pyq-value-inline">{paper.college || college || "N/A"}</span>
+                  <span className="pyq-value-inline">{paper.college }</span>
                 </div>
                 <div className="pyq-field-row">
                   <span className="pyq-label-inline">Branch:&nbsp;</span>
-                  <span className="pyq-value-inline">{paper.branch || "Common"}</span>
+                  <span className="pyq-value-inline">{paper.branch}</span>
                 </div>
                 <div className="pyq-field-row">
                   <span className="pyq-label-inline">Year & Semester:&nbsp;</span>
                   <span className="pyq-value-inline">
-                    Year {paper.year || "N/A"} • Sem {paper.sem || "N/A"}
+                    Year {paper.year } • Sem {paper.sem}
                   </span>
+                </div>
+                <div className="pyq-field-row">
+                  <span className="pyq-label-inline">Subject:&nbsp;</span>
+                  <span className="pyq-value-inline">{paper.subject }</span>
                 </div>
                 <button
                   className="pyq-tap-button"
@@ -154,3 +158,4 @@ function CollegePYQ() {
 }
 
 export default CollegePYQ;
+
