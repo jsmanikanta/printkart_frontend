@@ -25,6 +25,7 @@ import Categories from "./Categerioes";
 import VideoHelpSection from "./Help";
 import ComingSoon from "./CommingSoon";
 import CollegePYQ from "./Previouspaper";
+import ThankYouPageHub from "./Thankyou";
 
 function App() {
   const [orderSummaryBookId, setOrderSummaryBookId] = useState(null);
@@ -51,6 +52,7 @@ function App() {
         <Route path="/help" element={<VideoHelpSection />} />
         <Route path="/soon" element={<ComingSoon />} />
         <Route path="/previous-papers" element={<CollegePYQ/>} />
+        <Route path="/thankyou" element={<ThankYouPageHub/>}/>
         <Route
           path="/book/:id"
           element={<BookDetails onOrder={setOrderSummaryBookId} />}
