@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function CollegePYQ() {
   const [papers, setPapers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Start as true
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -18,9 +18,11 @@ function CollegePYQ() {
       setError("");
 
       const token = localStorage.getItem("token");
+      
+      // Handle no token case
       if (!token) {
         setLoading(false);
-        navigate("/login");
+        setError("Please login to view question papers.");
         return;
       }
 
@@ -33,15 +35,19 @@ function CollegePYQ() {
 
         if (res.data?.success) {
           setPapers(res.data.data || []);
+          setError(""); // Clear any previous errors
         } else {
-          setError("Failed to load question papers.");
+          setError("No question papers available.");
+          setPapers([]);
         }
       } catch (err) {
+        console.error("Fetch error:", err);
         if (err.response?.status === 401) {
           localStorage.removeItem("token");
           navigate("/login");
         } else {
-          setError("Something went wrong while fetching question papers.");
+          setError("Failed to load question papers. Please try again.");
+          setPapers([]);
         }
       } finally {
         setLoading(false);
@@ -52,10 +58,14 @@ function CollegePYQ() {
   }, [navigate]);
 
   const handleTapToView = (fileUrl) => {
-    if (!fileUrl) return;
+    if (!fileUrl) {
+      alert("File not available");
+      return;
+    }
     window.open(fileUrl, "_blank");
   };
 
+  // Loading state
   if (loading) {
     return (
       <div className="pyq-orders-loading">
@@ -64,39 +74,65 @@ function CollegePYQ() {
     );
   }
 
-  if (!localStorage.getItem("token")) {
+  // Error state
+  if (error) {
     return (
-      <div className="pyq-orders-login-prompt">
-        <br />
-        Please{" "}
-        <a href="/login" className="pyq-orders-login-btn">
-          Login
-        </a>{" "}
-        to view college PYQ.
+      <div className="pyq-page">
+        <header className="pyq-header">
+          <span className="pyq-back-button" onClick={() => navigate(-1)}>
+            ←
+          </span>
+          <span className="pyq-header-title">
+            Previous Year Question Papers
+          </span>
+        </header>
+        <div className="pyq-content">
+          <p className="pyq-error">{error}</p>
+          {!localStorage.getItem("token") && (
+            <a href="/login" className="pyq-orders-login-btn">
+              Login to continue
+            </a>
+          )}
+        </div>
       </div>
     );
   }
+
+  // No papers state
+  if (papers.length === 0) {
+    return (
+      <div className="pyq-page">
+        <header className="pyq-header">
+          <span className="pyq-back-button" onClick={() => navigate(-1)}>
+            ←
+          </span>
+          <span className="pyq-header-title">
+            Previous Year Question Papers
+          </span>
+        </header>
+        <div className="pyq-content">
+          <p>No question papers available.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Success state - render papers
   return (
-  <div className="pyq-page">
-    <header className="pyq-header">
-      <span className="pyq-back-button" onClick={() => navigate(-1)}>
-        ←
-      </span>
-      <span className="pyq-header-title">
-        Previous Year Question Papers
-      </span>
-    </header>
+    <div className="pyq-page">
+      <header className="pyq-header">
+        <span className="pyq-back-button" onClick={() => navigate(-1)}>
+          ←
+        </span>
+        <span className="pyq-header-title">
+          Previous Year Question Papers
+        </span>
+      </header>
 
-    <div className="pyq-content">
-      {error && <p className="pyq-error">{error}</p>}
-
-      {papers.length === 0 && !error ? (
-        <p>No question papers available.</p>
-      ) : (
+      <div className="pyq-content">
         <div className="pyq-list">
           {papers.map((paper) => (
-            <div className="pyq-card" key={paper.id}>
-              {/* 1. Spiral image */}
+            <div className="pyq-card" key={paper.id || paper.file_url || Math.random()}>
               <div className="pyq-icon-area">
                 <img
                   src={prints}
@@ -105,17 +141,14 @@ function CollegePYQ() {
                 />
               </div>
 
-              {/* All text stacked vertically */}
               <div className="pyq-info-area-vertical">
-                {/* College */}
                 <div className="pyq-field-row">
                   <span className="pyq-label-inline">
                     College Name:&nbsp;
                   </span>
-                  <span className="pyq-value-inline">{paper.college}</span>
+                  <span className="pyq-value-inline">{paper.college || "N/A"}</span>
                 </div>
 
-                {/* Branch */}
                 <div className="pyq-field-row">
                   <span className="pyq-label-inline">Branch:&nbsp;</span>
                   <span className="pyq-value-inline">
@@ -123,13 +156,12 @@ function CollegePYQ() {
                   </span>
                 </div>
 
-                {/* Year & Semester */}
                 <div className="pyq-field-row">
                   <span className="pyq-label-inline">
                     Year & Semester:&nbsp;
                   </span>
                   <span className="pyq-value-inline">
-                    Year {paper.year} • Sem {paper.sem}
+                    Year {paper.year || "N/A"} • Sem {paper.sem || "N/A"}
                   </span>
                 </div>
 
@@ -137,24 +169,15 @@ function CollegePYQ() {
                   className="pyq-tap-button"
                   onClick={() => handleTapToView(paper.file_url)}
                 >
-                   Tap To View
+                  Tap To View
                 </button>
               </div>
             </div>
           ))}
         </div>
-      )}
+      </div>
     </div>
-  </div>
-);
-
+  );
 }
 
 export default CollegePYQ;
-
-
-
-
-
-
-
