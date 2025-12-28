@@ -137,12 +137,11 @@ export default function SellBooks() {
         return;
       }
 
-      // ✅ PERFECT MATCH WITH YOUR BACKEND
       const submitData = new FormData();
       submitData.append("name", formData.name.trim());
       submitData.append("price", formData.selltype === "donate" ? "0" : formData.price);
-      submitData.append("categeory", formData.category);           // ✅ Backend expects categeory
-      submitData.append("subcategeory", formData.subcategory);     // ✅ Backend expects subcategeory
+      submitData.append("categeory", formData.category);         
+      submitData.append("subcategeory", formData.subcategory);  
       submitData.append("condition", formData.condition);
       submitData.append("description", formData.description.trim());
       submitData.append("location", formData.location.trim());
