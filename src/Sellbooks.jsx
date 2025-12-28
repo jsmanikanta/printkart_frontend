@@ -169,7 +169,7 @@ export default function SellBooks() {
           subcategory: "",
           condition: "",
           description: "",
-          location: "New Delhi, India",
+          location: "",
           selltype: "sell",
           soldstatus: "Instock"
         });
