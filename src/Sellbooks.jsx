@@ -137,11 +137,12 @@ export default function SellBooks() {
         return;
       }
 
+      // ✅ PERFECT MATCH WITH YOUR BACKEND
       const submitData = new FormData();
       submitData.append("name", formData.name.trim());
       submitData.append("price", formData.selltype === "donate" ? "0" : formData.price);
-      submitData.append("categeory", formData.category);      // fixed spelling
-      submitData.append("subcategeory", formData.subcategory); // fixed spelling
+      submitData.append("categeory", formData.category);           // ✅ Backend expects categeory
+      submitData.append("subcategeory", formData.subcategory);     // ✅ Backend expects subcategeory
       submitData.append("condition", formData.condition);
       submitData.append("description", formData.description.trim());
       submitData.append("location", formData.location.trim());
@@ -152,7 +153,9 @@ export default function SellBooks() {
       const response = await fetch(`${import.meta.env.VITE_API_PATH}/books/sellbook`, {
         method: "POST",
         signal: controller.signal,
-        headers: { "Authorization": `Bearer ${token}` },
+        headers: { 
+          "Authorization": `Bearer ${token}`
+        },
         body: submitData
       });
 
@@ -171,6 +174,7 @@ export default function SellBooks() {
           soldstatus: "Instock"
         });
         setPhoto(null);
+        if (preview) URL.revokeObjectURL(preview);
         setPreview(null);
         setErrors({});
         setSubmitStatus("success");
@@ -184,6 +188,7 @@ export default function SellBooks() {
       if (error.name === "AbortError") alert("Request timeout. Try a smaller image.");
       else if (error.message.includes("401") || error.message.includes("403")) {
         alert("Please login again.");
+        localStorage.removeItem("token");
         navigate("/login");
       } else alert(`Submission failed: ${error.message}`);
       setSubmitStatus("error");
@@ -296,7 +301,6 @@ export default function SellBooks() {
             </div>
           </div>
 
-          {/* Description */}
           <div className="form-section">
             <h3>Description</h3>
             <div className="form-group">
@@ -306,7 +310,6 @@ export default function SellBooks() {
             </div>
           </div>
 
-          {/* Location */}
           <div className="form-section">
             <h3>Location</h3>
             <div className="form-group">
@@ -316,15 +319,16 @@ export default function SellBooks() {
             </div>
           </div>
 
-          {/* Submit */}
           <div className="form-actions">
             <button type="submit" className="submit-btn" disabled={loading || submitStatus === "submitting"}>
               {submitStatus === "submitting" ? "Submitting..." : formData.selltype === "donate" ? "Donate Book" : "List Book for Sale"}
             </button>
             {submitStatus === "success" && <p className="success-text">Book listed successfully!</p>}
+            {submitStatus === "error" && <p className="error-text">Please fix errors and try again</p>}
           </div>
         </form>
       )}
     </div>
   );
-                }
+}
+
