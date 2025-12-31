@@ -98,7 +98,7 @@ function Footer() {
       <a href="mailto:printkart0001@gmail.com">printkart0001@gmail.com</a>
     </div>
     <div className="footer-bottom">
-      <p>© 2025 My Book Hub. All rights reserved.</p>
+      <p>© 2026 My Book Hub. All rights reserved.</p>
     </div>
   </footer>
   );
