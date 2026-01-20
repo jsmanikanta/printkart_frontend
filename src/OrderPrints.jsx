@@ -122,9 +122,8 @@ export default function OrderPrints() {
 
     else pricePerPage = null;
     if (pricePerPage === null) {
-      setErrorMessage("Please select a valid color and side option.");
-      setPrintCost(0);
-      return;
+      alert("This option is unavailable please select a valid option");
+      navigate("/orderprints");
     }
 
 const printAmount = pricePerPage * pages * copies;
