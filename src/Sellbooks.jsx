@@ -69,7 +69,7 @@ export default function SellBooks() {
     if (!formData.subcategory) newErrors.subcategory = "Subcategory is required";
     if (!formData.condition) newErrors.condition = "Condition is required";
     if (!formData.description.trim()) newErrors.description = "Description is required";
-    else if (formData.description.trim().length < 10) newErrors.description = "Description must be at least 10 characters";
+    else if (formData.description.trim().length < 25) newErrors.description = "Description must be at least 25 characters";
     if (!formData.location.trim()) newErrors.location = "Location is required";
     if (formData.selltype === "sell" && (!formData.price || Number(formData.price) <= 0)) {
       newErrors.price = "Valid price is required";
@@ -101,7 +101,10 @@ export default function SellBooks() {
     const file = e.target.files[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) return setErrors(prev => ({ ...prev, photo: "Only image files allowed" }));
-    if (file.size > 5 * 1024 * 1024) return setErrors(prev => ({ ...prev, photo: "Image must be under 5MB" }));
+    if (file.size > 5 * 1024 * 1024) { // 5MB
+      alert("Image size exceeds 5MB. Please choose a smaller file.");
+      return setErrors(prev => ({ ...prev, photo: "Image must be under 5MB" }));
+    }
     if (preview) URL.revokeObjectURL(preview);
     setPhoto(file);
     setPreview(URL.createObjectURL(file));
@@ -330,4 +333,3 @@ export default function SellBooks() {
     </div>
   );
 }
-
