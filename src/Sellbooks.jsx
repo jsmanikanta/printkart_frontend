@@ -304,7 +304,7 @@ export default function SellBooks() {
             <h3>Description</h3>
             <div className="form-group">
               <label>Description <span className="required">*</span></label>
-              <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Mention edition, author, usage, markings, missing pages, etc." rows="5" maxLength={1000} className={errors.description ? "input-error" : ""} />
+              <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Mention edition, author, usage, markings, missing pages, etc (Minimum 25 characters required)." rows="5" maxLength={1000} className={errors.description ? "input-error" : ""} />
               {errors.description && <span className="error">{errors.description}</span>}
             </div>
           </div>
