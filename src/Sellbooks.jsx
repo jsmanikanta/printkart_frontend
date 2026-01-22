@@ -71,7 +71,7 @@ const subcategoriesMap = {
   "Thriller",
   "Action & Adventure",
   "Young adult",
-  "Historical Fiction"
+  "Historical Fiction",
   "Others"
 ],
     "Non-Fiction Books": [
