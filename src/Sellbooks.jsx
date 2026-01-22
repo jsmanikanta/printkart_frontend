@@ -11,10 +11,6 @@ const categories = [
   "Notes & Study Materials",
   "Previous Year Papers",
   "Non-Fiction Books",
-  "GATE",
-  "CAT",
-  "IIT JEE",
-  "PYQ books",
   "others"
 ];
 
