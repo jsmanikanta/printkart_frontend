@@ -3,13 +3,10 @@ import { useNavigate } from "react-router-dom";
 import "./styles/sellbook.css";
 
 const categories = [
-  "School Books",
+  "School Books (class 1-12)",
   "College & University Books",
   "Competitive Exam Books",
   "Fictional Books",
-  "Novels & Storybooks",
-  "Notes & Study Materials",
-  "Previous Year Papers",
   "Non-Fiction Books",
   "others"
 ];
