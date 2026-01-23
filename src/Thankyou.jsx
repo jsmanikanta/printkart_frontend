@@ -121,7 +121,7 @@ const ThankYouPageHub = () => {
 
         .status-icon {
           font-size: 24px;
-          background: linear-gradient(135deg, #10B981, #059669);
+          background-color: rgb(197, 138, 29);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -154,7 +154,7 @@ const ThankYouPageHub = () => {
 
         .thankyou-hub-btn {
           width: 100%;
-          background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+          background-color:rgb(197, 138, 29) ;
           color: white;
           border: none;
           padding: 18px;
