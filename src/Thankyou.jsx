@@ -119,9 +119,24 @@ const ThankYouPageHub = () => {
           transform: translateY(-1px);
         }
 
-        .status-icon {
+        .status-icon-1 {
           font-size: 24px;
-          background-color: #e67e22;
+          background-color: #9b59b6;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+        }
+
+        .status-icon-2 {
+          font-size: 24px;
+          background-color: #3498db;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -154,7 +169,7 @@ const ThankYouPageHub = () => {
 
         .thankyou-hub-btn {
           width: 100%;
-          background-color:#e67e22;
+          background-color:rgb(197, 138, 29);
           color: white;
           border: none;
           padding: 18px;
@@ -213,7 +228,7 @@ const ThankYouPageHub = () => {
           {/* Status Cards */}
           <div className="thankyou-hub-status">
             <div className="status-card">
-              <div className="status-icon">📞</div>
+              <div className="status-icon-1">📞</div>
               <div className="status-content">
                 <div className="status-title">Call Key</div>
                 <div className="status-desc">We will call you</div>
@@ -221,7 +236,7 @@ const ThankYouPageHub = () => {
             </div>
             
             <div className="status-card">
-              <div className="status-icon">⏰</div>
+              <div className="status-icon-2">⏰</div>
               <div className="status-content">
                 <div className="status-title">Soon</div>
                 <div className="status-desc">Within 24 hours</div>
@@ -231,7 +246,7 @@ const ThankYouPageHub = () => {
 
           {/* Action Button */}
           <button className="thankyou-hub-btn" onClick={handleGoHome}>
-            Go Home
+            Done
           </button>
         </div>
       </div>
