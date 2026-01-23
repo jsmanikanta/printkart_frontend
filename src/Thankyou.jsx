@@ -13,7 +13,7 @@ const ThankYouPageHub = () => {
       <style jsx>{`
         .thankyou-hub-page {
           min-height: 100vh;
-          background-color:#3498db ;
+          background-color:white ;
           display: flex;
           flex-direction: column;
           align-items: center;
