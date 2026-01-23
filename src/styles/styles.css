@@ -761,6 +761,9 @@ body {
 
   display: block;
 }
+
+/* --- General Form Styles (Reused from your previous forms) --- */
+
 .data-form {
   display: flex;
   flex-direction: column;
@@ -798,7 +801,7 @@ body {
 /* Styling for the banner container */
 .print-banner {
   width: 100%;
-  overflow: hidden; 
+  overflow: hidden; /* Hides any part of the image that spills over */
   margin-bottom: 10px;
 }
 
@@ -808,6 +811,8 @@ body {
   height: auto;
   display: block;
 }
+
+/* Responsive Design */
 /* Responsive Design */
 @media (min-width: 375px) {
   .phone-container {
@@ -958,13 +963,4 @@ body {
 .book-card:hover {
   transform: translateY(-2px);
   transition: transform 0.2s ease;
-}
-
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
 }
