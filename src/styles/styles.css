@@ -761,9 +761,6 @@ body {
 
   display: block;
 }
-
-/* --- General Form Styles (Reused from your previous forms) --- */
-
 .data-form {
   display: flex;
   flex-direction: column;
@@ -801,7 +798,7 @@ body {
 /* Styling for the banner container */
 .print-banner {
   width: 100%;
-  overflow: hidden; /* Hides any part of the image that spills over */
+  overflow: hidden; 
   margin-bottom: 10px;
 }
 
@@ -811,8 +808,6 @@ body {
   height: auto;
   display: block;
 }
-
-/* Responsive Design */
 /* Responsive Design */
 @media (min-width: 375px) {
   .phone-container {
