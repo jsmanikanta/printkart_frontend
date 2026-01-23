@@ -71,7 +71,7 @@ function BottomNav() {
         onClick={handlePrintClick}
         aria-label="Print"
       >
-        <img src="/images/print-icon.png" alt="Print" style={printAnimation} />
+        <img src="/images/print-icon.jpeg" alt="Print" style={printAnimation} />
         <span>PrintKart</span>
       </button>
     </nav>
