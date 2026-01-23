@@ -1,4 +1,3 @@
-/* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -47,7 +46,6 @@
   color: #f27909; /* highlight to match theme */
 }
 
-/* Global default font */
 body {
   font-family: "Inter", sans-serif;
 }
@@ -811,9 +809,6 @@ body {
   height: auto;
   display: block;
 }
-
-/* Responsive Design */
-/* Responsive Design */
 @media (min-width: 375px) {
   .phone-container {
     max-width: 375px;
@@ -949,7 +944,6 @@ body {
   }
 }
 
-/* Hover Effects */
 .nav-item:hover {
   opacity: 0.7;
 }
