@@ -72,7 +72,7 @@ function BottomNav() {
         aria-label="Print"
       >
         <img src="/images/print-icon.png" alt="Print" style={printAnimation} />
-        <span>Print</span>
+        <span>PrintKart</span>
       </button>
     </nav>
   );
