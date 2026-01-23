@@ -128,8 +128,7 @@ export default function SellBooks() {
     if (!formData.category) newErrors.category = "Category is required";
     if (!formData.subcategory) newErrors.subcategory = "Subcategory is required";
     if (!formData.condition) newErrors.condition = "Condition is required";
-    if (!formData.description.trim()) newErrors.description = "Description is required";
-    else if (formData.description.trim().length < 25) newErrors.description = "Description must be at least 25 characters";
+    else if (formData.description.trim().length < 10) newErrors.description = "Description must be at least 10 characters";
     if (!formData.location.trim()) newErrors.location = "Location is required";
     if (formData.selltype === "sell" && (!formData.price || Number(formData.price) <= 0)) {
       newErrors.price = "Valid price is required";
@@ -367,7 +366,7 @@ export default function SellBooks() {
             <h3>Description</h3>
             <div className="form-group">
               <label>Description <span className="required">*</span></label>
-              <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Mention edition, author, usage, markings, missing pages, etc (Minimum 25 characters required)." rows="5" maxLength={1000} className={errors.description ? "input-error" : ""} />
+              <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Mention edition, author, usage, markings, missing pages, etc." rows="5" maxLength={1000} className={errors.description ? "input-error" : ""} />
               {errors.description && <span className="error">{errors.description}</span>}
             </div>
           </div>
