@@ -760,8 +760,6 @@ body {
   display: block;
 }
 
-/* --- General Form Styles (Reused from your previous forms) --- */
-
 .data-form {
   display: flex;
   flex-direction: column;
@@ -784,7 +782,6 @@ body {
 }
 
 .btn-submit {
-  /* Style for the Save buttons */
   padding: 12px 25px;
   font-size: 16px;
   font-weight: 700;
@@ -799,11 +796,10 @@ body {
 /* Styling for the banner container */
 .print-banner {
   width: 100%;
-  overflow: hidden; /* Hides any part of the image that spills over */
+  overflow: hidden; 
   margin-bottom: 10px;
 }
 
-/* Styling for the image itself */
 .print-banner .banner-img {
   width: 100%;
   height: auto;
@@ -943,11 +939,6 @@ body {
     grid-template-columns: 1fr;
   }
 }
-
-.nav-item:hover {
-  opacity: 0.7;
-}
-
 .category-item:hover,
 .printout-item:hover {
   transform: scale(1.05);
