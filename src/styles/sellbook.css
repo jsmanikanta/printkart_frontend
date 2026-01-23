@@ -2,7 +2,6 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -183,7 +182,7 @@ input:focus, select:focus, textarea:focus {
 .submit-btn {
   width: 100%;
   padding: 1.25rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #c47b1b;
   color: white;
   border: none;
   border-radius: 15px;
