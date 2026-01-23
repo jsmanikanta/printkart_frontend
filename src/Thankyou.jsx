@@ -13,7 +13,7 @@ const ThankYouPageHub = () => {
       <style jsx>{`
         .thankyou-hub-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+          background-color:#3498db ;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -121,7 +121,7 @@ const ThankYouPageHub = () => {
 
         .status-icon {
           font-size: 24px;
-          background-color: rgb(197, 138, 29);
+          background-color: #e67e22;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -154,7 +154,7 @@ const ThankYouPageHub = () => {
 
         .thankyou-hub-btn {
           width: 100%;
-          background-color:rgb(197, 138, 29) ;
+          background-color:#e67e22;
           color: white;
           border: none;
           padding: 18px;
@@ -193,14 +193,6 @@ const ThankYouPageHub = () => {
       `}</style>
 
       <div className="thankyou-hub-page">
-        {/* Replace with your actual logo */}
-        <div className="thankyou-hub-logo">
-          <div style={{fontSize: '28px', fontWeight: 'bold', color: '#10B981'}}>
-            📚 BookHub
-          </div>
-        </div>
-
-        {/* Main Content */}
         <div className="thankyou-hub-container">
           {/* Success Checkmark */}
           <div className="thankyou-hub-checkmark">
