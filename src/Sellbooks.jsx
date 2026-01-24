@@ -39,7 +39,6 @@ const subcategoriesMap = {
   "MBA",
   "MD/MS",
   "LLM",
-  "Certificate",
   "Diploma",
   "MPhil/PhD",
   "Others"
