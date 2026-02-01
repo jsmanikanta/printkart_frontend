@@ -129,6 +129,7 @@ body {
   align-items: center;
   gap: 3px;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .user-avatar {

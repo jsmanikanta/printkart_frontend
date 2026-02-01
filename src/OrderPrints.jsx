@@ -23,6 +23,8 @@ const COLOR_OPTIONS = [
 const SIDES_OPTIONS = [
   { value: "1", label: "Single Side" },
   { value: "2", label: "Double Side" },
+  { value: "2 per side", label: "2 per side (Front & Back)" },
+  { value: "4 per side", label: "4 per side (Front & Back)" },
 ];
 
 const BINDING_OPTIONS = [
@@ -71,9 +73,7 @@ export default function OrderPrints() {
   const [couponDiscountPercent, setCouponDiscountPercent] = useState(0);
   const [couponDiscountAmount, setCouponDiscountAmount] = useState(0);
 
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
-
-  // Redirect if not logged in
+  const MAX_FILE_SIZE = 10 * 1024 * 1024;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -115,19 +115,20 @@ export default function OrderPrints() {
     }
 
     let pricePerPage = 0;
-    
+
     if (color === "b/w" && sides === "2") pricePerPage = 1;
     else if (color === "b/w" && sides === "1") pricePerPage = 1.5;
     else if (color === "colour" && sides === "1") pricePerPage = 6;
-
+    else if (color === "b/w" && sides === "4 per side") pricePerPage = 0.29;
+    else if (color === "b/w" && sides === "2 per side") pricePerPage = 0.5;
     else pricePerPage = null;
     if (pricePerPage === null) {
       alert("This option is unavailable please select a valid option");
       navigate("/orderprints");
     }
 
-const printAmount = pricePerPage * pages * copies;
-setPrintCost(printAmount);
+    const printAmount = pricePerPage * pages * copies;
+    setPrintCost(printAmount);
     let bindingAmount = 0;
     switch (binding) {
       case "spiral":
@@ -160,7 +161,9 @@ setPrintCost(printAmount);
       const finalTotal = Math.ceil(originalTotal - studentDiscount);
       setDiscountPrice(finalTotal);
     } else {
-      const couponAmt = Math.ceil((originalTotal * couponDiscountPercent) / 100);
+      const couponAmt = Math.ceil(
+        (originalTotal * couponDiscountPercent) / 100,
+      );
       setDiscountValue(0);
       setCouponDiscountAmount(couponAmt);
       const finalTotal = Math.max(0, originalTotal - couponAmt);
@@ -169,87 +172,92 @@ setPrintCost(printAmount);
   }, [color, sides, binding, pages, copies, activeTab, couponDiscountPercent]);
 
   const handleVerifyCoupon = async () => {
-  const token = localStorage.getItem("token")?.trim();
-  
-  if (!token) {
-    alert("Please log in first.");
-    return;
-  }
+    const token = localStorage.getItem("token")?.trim();
 
-  if (!couponCode.trim()) {
-    alert("Please enter a coupon code.");
-    return;
-  }
-
-  try {
-    setCouponLoading(true);
-    setCouponInfo(null);
-
-    console.log("Sending coupon request. Token length:", token.length);
-    console.log("Coupon code:", couponCode);
-
-    const res = await fetch(`${import.meta.env.VITE_API_PATH}/coupon/verify`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
-    });
-
-    console.log("Response status:", res.status);
-    console.log("Response headers:", Object.fromEntries(res.headers.entries()));
-
-    const data = await res.json();
-    console.log("Coupon response:", data);
-
-    if (!res.ok) {
-      console.error("Server error:", res.status, data);
-      setCouponDiscountPercent(0);
-      setCouponDiscountAmount(0);
-      setCouponInfo({
-        status: data.status || "error",
-        discountPercentage: 0,
-        message: data.error || data.message || `Server error (${res.status})`,
-      });
+    if (!token) {
+      alert("Please log in first.");
       return;
     }
 
-    if (!data.success) {
-      setCouponDiscountPercent(0);
-      setCouponDiscountAmount(0);
-      setCouponInfo({
-        status: data.status || "invalid",
-        discountPercentage: 0,
-        message: data.error || data.message || "Invalid coupon",
-      });
+    if (!couponCode.trim()) {
+      alert("Please enter a coupon code.");
       return;
     }
 
-    const percent = data.data?.discountPercentage || 0;
-    setCouponDiscountPercent(percent);
-    setCouponInfo({
-      status: data.status,
-      discountPercentage: percent,
-      message:
-        data.status === "available"
-          ? `Coupon applied! ${percent}% discount.`
-          : "Coupon already used by you.",
-    });
+    try {
+      setCouponLoading(true);
+      setCouponInfo(null);
 
-  } catch (err) {
-    console.error("Network/Coupon verify error:", err);
-    setCouponDiscountPercent(0);
-    setCouponDiscountAmount(0);
-    setCouponInfo({
-      status: "error",
-      discountPercentage: 0,
-      message: "Network error. Please try again.",
-    });
-  } finally {
-    setCouponLoading(false);
-  }
-};
+      console.log("Sending coupon request. Token length:", token.length);
+      console.log("Coupon code:", couponCode);
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_PATH}/coupon/verify`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
+        },
+      );
+
+      console.log("Response status:", res.status);
+      console.log(
+        "Response headers:",
+        Object.fromEntries(res.headers.entries()),
+      );
+
+      const data = await res.json();
+      console.log("Coupon response:", data);
+
+      if (!res.ok) {
+        console.error("Server error:", res.status, data);
+        setCouponDiscountPercent(0);
+        setCouponDiscountAmount(0);
+        setCouponInfo({
+          status: data.status || "error",
+          discountPercentage: 0,
+          message: data.error || data.message || `Server error (${res.status})`,
+        });
+        return;
+      }
+
+      if (!data.success) {
+        setCouponDiscountPercent(0);
+        setCouponDiscountAmount(0);
+        setCouponInfo({
+          status: data.status || "invalid",
+          discountPercentage: 0,
+          message: data.error || data.message || "Invalid coupon",
+        });
+        return;
+      }
+
+      const percent = data.data?.discountPercentage || 0;
+      setCouponDiscountPercent(percent);
+      setCouponInfo({
+        status: data.status,
+        discountPercentage: percent,
+        message:
+          data.status === "available"
+            ? `Coupon applied! ${percent}% discount.`
+            : "Coupon already used by you.",
+      });
+    } catch (err) {
+      console.error("Network/Coupon verify error:", err);
+      setCouponDiscountPercent(0);
+      setCouponDiscountAmount(0);
+      setCouponInfo({
+        status: "error",
+        discountPercentage: 0,
+        message: "Network error. Please try again.",
+      });
+    } finally {
+      setCouponLoading(false);
+    }
+  };
 
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
@@ -309,7 +317,7 @@ setPrintCost(printAmount);
       (!college.trim() || !year.trim() || !section.trim() || !rollno.trim())
     ) {
       return alert(
-        "Fill college, year, section, registration number for students."
+        "Fill college, year, section, registration number for students.",
       );
     }
 
@@ -362,13 +370,16 @@ setPrintCost(printAmount);
         formData.append("address", address.trim());
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_PATH}/orders/orderprints`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${import.meta.env.VITE_API_PATH}/orders/orderprints`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+      );
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
@@ -384,7 +395,7 @@ setPrintCost(printAmount);
       setLoading(false);
     }
   };
-  
+
   return (
     <>
       {loading ? (
@@ -430,13 +441,15 @@ setPrintCost(printAmount);
               value={mobile}
               maxLength={10}
               onChange={(e) => {
-                const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 10);
+                const digitsOnly = e.target.value
+                  .replace(/\D/g, "")
+                  .slice(0, 10);
                 setMobile(digitsOnly);
               }}
               required
             />
             <p>
-              For bulk orders please contact Hemanth:{" "}
+              To Custom orders please contact Hemanth:{" "}
               <a href="tel:+919182415750">+91 9182415750</a>
             </p>
 
@@ -495,11 +508,6 @@ setPrintCost(printAmount);
             )}
 
             <div className="input-row">
-              <label htmlFor="pdfFile" className="order-label">
-                Upload PDF
-                <sub>Max Size: 10MB</sub>
-              </label>
-
               <input
                 id="pdfFile"
                 type="file"
@@ -642,8 +650,8 @@ setPrintCost(printAmount);
                     couponInfo.status === "available"
                       ? "#04793f"
                       : couponInfo.status === "used"
-                      ? "#c27b00"
-                      : "#c02a1e",
+                        ? "#c27b00"
+                        : "#c02a1e",
                 }}
               >
                 {couponInfo.message}{" "}
