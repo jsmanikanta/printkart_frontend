@@ -35,7 +35,7 @@ function BottomNav() {
         onClick={() => navigate("/")}
         aria-label="Home"
       >
-        <img src="../public/images/home-icon.png" alt="Home" />
+        <img src="/images/home-icon.png" alt="Home" />
         <span>Home</span>
       </button>
 
@@ -44,7 +44,7 @@ function BottomNav() {
         onClick={() => navigate("/soon")}
         aria-label="My book"
       >
-        <img src="../public/images/my-book-icon.png" alt="My book" />
+        <img src="/images/my-book-icon.png" alt="My book" />
         <span>My book</span>
       </button>
 
@@ -53,7 +53,7 @@ function BottomNav() {
         onClick={() => navigate("/sellbook")}
         aria-label="Sell Now"
       >
-        <img src="../public/images/sell-now-icon.png" alt="Sell Now" />
+        <img src="/images/sell-now-icon.png" alt="Sell Now" />
         <span>Sell Now</span>
       </button>
 
@@ -62,7 +62,7 @@ function BottomNav() {
         onClick={cat}
         aria-label="Category"
       >
-        <img src="../public/images/category-icon.png" alt="Category" />
+        <img src="/images/category-icon.png" alt="Category" />
         <span>Category</span>
       </button>
 
@@ -71,7 +71,7 @@ function BottomNav() {
         onClick={handlePrintClick}
         aria-label="Print"
       >
-        <img src="../public/images/print-icon.jpeg" alt="Print" />
+        <img src="/images/print-icon.jpeg" alt="Print" />
         <span>PrintKart</span>
       </button>
     </nav>

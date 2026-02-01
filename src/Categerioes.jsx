@@ -5,12 +5,12 @@ import "./styles/categories.css";
 function Categories() {
   const [active, setActive] = useState("books");
   const navigate = useNavigate();
-  const soon=()=>{
+  const soon = () => {
     navigate("/soon");
-  }
-  const prints=()=>{
+  };
+  const prints = () => {
     navigate("/orderprints");
-  }
+  };
 
   const categories = [
     {
@@ -28,31 +28,31 @@ function Categories() {
     {
       label: "Competitive Exam Books",
       desc: "Crack NEET, JEE, UPSC & More Top-Selling Prep Books!",
-      image: "./images/competitive.png",
+      image: "/images/competitive.png",
       route: "/category/competitive-exam",
     },
     {
       label: "Fictional Books",
       desc: "Get Lost in Imaginary Worlds - Novels, Fantasy & More",
-      image: "./images/fictional.png",
+      image: "/images/fictional.png",
       route: "/category/fiction",
     },
     {
       label: "Novels & Storybooks",
       desc: "Feel Every Emotion - Romantic, Classic & Hindi Stories",
-      image: "./images/novels.png",
+      image: "/images/novels.png",
       route: "/category/novels-storybooks",
     },
     {
       label: "Notes & Study Materials",
       desc: "Handwritten Notes, Assignments & Projects - All in One Place!",
-      image: "./images/notes.png",
+      image: "/images/notes.png",
       route: "/category/notes-study",
     },
     {
       label: "Previous Year Papers",
       desc: "Practice with Real Questions - Boards, Competitive & University Exams!",
-      image: "./images/previous.png",
+      image: "/images/previous.png",
       route: "/category/previous-papers",
     },
     {
@@ -66,22 +66,22 @@ function Categories() {
   const printouts = [
     {
       label: "Assignments",
-      image: "../public/images/assignments-icon.png",
+      image: "/images/assignments-icon.png",
       route: "/printout/assignments",
     },
     {
       label: "Project Reports",
-      image: "./images/project-report-icon.png",
+      image: "/images/project-report-icon.png",
       route: "/printout/project-reports",
     },
     {
       label: "Spiral Binding",
-      image: "./images/spiral-binding-icon.png",
+      image: "/images/spiral-binding-icon.png",
       route: "/printout/spiral-binding",
     },
     {
       label: "B/W & Color Prints",
-      image: "./images/bw-color-icon.png",
+      image: "/images/bw-color-icon.png",
       route: "/printout/bw-color",
     },
   ];
@@ -89,26 +89,28 @@ function Categories() {
   return (
     <div className="categories-root">
       <div className="categories-tabs">
-        <button className={`tab-btn ${active === "books" ? "active" : ""}`} onClick={() => setActive("books")}>
+        <button
+          className={`tab-btn ${active === "books" ? "active" : ""}`}
+          onClick={() => setActive("books")}
+        >
           Book Category
         </button>
-        <button className={`tab-btn ${active === "prints" ? "active" : ""}`} onClick={() => setActive("prints")}>
+        <button
+          className={`tab-btn ${active === "prints" ? "active" : ""}`}
+          onClick={() => setActive("prints")}
+        >
           Printouts
         </button>
       </div>
       <div className="categories-panels">
-        <section className={`categories-section ${active !== "books" ? "hidden-section" : ""}`}>
+        <section
+          className={`categories-section ${active !== "books" ? "hidden-section" : ""}`}
+        >
           <h3 className="section-title">Books Categories</h3>
           <div className="category-grid">
             {categories.map((cat) => (
-              <div
-                className="category-item"
-                key={cat.label}
-                onClick={soon}>
-                <img
-                  src={cat.image}
-                  alt={cat.label}
-                />
+              <div className="category-item" key={cat.label} onClick={soon}>
+                <img src={cat.image} alt={cat.label} />
                 <span>
                   {cat.label}
                   <br />
@@ -118,18 +120,14 @@ function Categories() {
             ))}
           </div>
         </section>
-        <section className={`printouts-section ${active !== "prints" ? "hidden-section" : ""}`}>
+        <section
+          className={`printouts-section ${active !== "prints" ? "hidden-section" : ""}`}
+        >
           <h3 className="section-title">Printouts Categories</h3>
           <div className="printout-categories">
             {printouts.map((p) => (
-              <div
-                className="printout-item"
-                key={p.label}
-                onClick={prints}>
-                <img
-                  src={p.image}
-                  alt={p.label}
-                />
+              <div className="printout-item" key={p.label} onClick={prints}>
+                <img src={p.image} alt={p.label} />
                 <span>{p.label}</span>
               </div>
             ))}

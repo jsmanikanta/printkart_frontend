@@ -3,7 +3,7 @@ import axios from "axios";
 import "./styles/previous.css";
 import Loader from "./Loading";
 import { api_path } from "../data";
-import prints from "../public/images/spiral-binding-icon.png";
+import prints from "/images/spiral-binding-icon.png";
 import { useNavigate, useParams } from "react-router-dom";
 
 function CollegePYQ() {

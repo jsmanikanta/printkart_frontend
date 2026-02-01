@@ -90,7 +90,7 @@ function HomePage() {
                 </h2>
               </div>
               <div className="hero-image">
-                <img src="../public/images/book-illustration.png" alt="Books" />
+                <img src="/images/book-illustration.png" alt="Books" />
               </div>
             </div>
           </section>
@@ -191,7 +191,7 @@ function HomePage() {
                 onClick={() => navigate("/orderprints")}
               >
                 <img
-                  src="../public/images/spiral-binding-icon.png"
+                  src="/images/spiral-binding-icon.png"
                   alt="Spiral binding"
                 />
                 <span>B&W or color</span>
@@ -200,7 +200,7 @@ function HomePage() {
                 className="printout-item"
                 onClick={() => navigate("/orderprints")}
               >
-                <img src="../public/images/assignments-icon.png" alt="Assignments" />
+                <img src="/images/assignments-icon.png" alt="Assignments" />
                 <span>Spiral binding</span>
               </div>
               <div
@@ -208,7 +208,7 @@ function HomePage() {
                 onClick={() => navigate("/orderprints")}
               >
                 <img
-                  src="../public/images/project-report-icon.png"
+                  src="/images/project-report-icon.png"
                   alt="Project Report"
                 />
                 <span> Assignment</span>
@@ -217,7 +217,7 @@ function HomePage() {
                 className="printout-item"
                 onClick={() => navigate("/orderprints")}
               >
-                <img src="../public/images/bw-color-icon.png" alt="BW Color" />
+                <img src="/images/bw-color-icon.png" alt="BW Color" />
                 <span>project Report</span>
               </div>
             </div>

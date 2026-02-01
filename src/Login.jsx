@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { api_path } from "../data";
 import "./styles/auth.css";
-import logoImg from "../public/images/logo.png";
+import logoImg from "/images/logo.png";
 import Loader from "./Loading";
 
 function Login() {

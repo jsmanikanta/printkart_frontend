@@ -17,7 +17,7 @@ export default function ComingSoon() {
         </a>
       </div>
       <footer style={styles.footer}>
-        © 2025 MyBookHub. All rights reserved.
+        © 2026 MyBookHub. All rights reserved.
       </footer>
     </div>
   );

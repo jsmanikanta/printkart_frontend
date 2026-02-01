@@ -3,25 +3,25 @@ import React from "react";
 function VideoHelpSection() {
   const mediaItems = [
     {
-      src: "../public/images/prices.jpeg",
+      src: "/images/prices.jpeg",
       type: "image",
       title: "Price List",
       about: "Detailed print & binding prices",
     },
     {
-      src: "../public/images/Login.mp4", 
+      src: "/images/Login.mp4", 
       type: "video",
       title: "Account Setup & Login", 
       about: "How to Create a New Account, Login & Reset Password – Step by Step Guide.", 
     }, 
     {
-      src: "../public/images/orderprints.mp4",
+      src: "/images/orderprints.mp4",
       type: "video",
       title: "Ordering Prints",
       about: "How to Order Printouts & Upload Files Without Any Difficulty ",
     },
     {
-      src: "../public/images/Payment.mp4", 
+      src: "/images/Payment.mp4", 
       type: "video",
       title: "How to pay", 
       about: "How to Pay Using QR Scanner or UPI ID. "
@@ -99,7 +99,7 @@ function VideoHelpSection() {
               <video
                 className="help-media help-video"
                 controls
-                poster={item.poster || "../public/images/video-poster.jpg"}
+                poster={item.poster || "/images/video-poster.jpg"}
                 preload="metadata"
               >
                 <source src={item.src} type="video/mp4" />

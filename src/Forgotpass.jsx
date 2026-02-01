@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./styles/forgotpass.css";
-import logoImg from "../public/images/logo.png";
+import logoImg from "/images/logo.png";
 import { useNavigate } from "react-router-dom";
 import { api_path } from "../data";
 import Loader from "./Loading";
