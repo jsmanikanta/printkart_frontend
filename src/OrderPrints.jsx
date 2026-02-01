@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import "pdfjs-dist/build/pdf.worker.mjs";
 import "./styles/orderprints.css";
-import qrImg from "/images/qr.jpg";
+import qrImg from "../public/images/qr.jpg";
 
 const colleges = [
   "Anil Neerukonda Institute of Technology & Sciences (ANITS), Visakhapatnam",

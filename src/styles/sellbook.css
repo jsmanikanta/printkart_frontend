@@ -163,7 +163,7 @@ input:focus, select:focus, textarea:focus {
 .loading-container {
   text-align: center;
   padding: 4rem;
-  color: white;
+  color: black;
 }
 
 .spinner {

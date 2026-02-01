@@ -63,16 +63,16 @@ function Header() {
         <div className="header-actions">
           <div className="user-profile" onClick={goToLogin}>
             <div className="user-avatar">
-              <img src="/images/user-avatar.png" alt="User" />
+              <img src="../public/images/user-avatar.png" alt="User" />
             </div>
             <span className="login-text">{userName ? userName : "Login"}</span>
           </div>
           <div className="help-section" onClick={goToHelp}>
-            <img src="/images/help-icon.png" alt="Help" className="help-icon" />
+            <img src="../public/images/help-icon.png" alt="Help" className="help-icon" />
             <span className="help-text">Help</span>
           </div>
           <div className="cart-section" onClick={goToCart}>
-            <img src="/images/cart-icon.png" alt="Cart" className="cart-icon" />
+            <img src="../public/images/cart-icon.png" alt="Cart" className="cart-icon" />
             <span className="cart-text">My Bag</span>
           </div>
         </div>

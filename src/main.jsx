@@ -5,9 +5,9 @@ import App from "./App.jsx";
 
 const rootElement = document.getElementById("root");
 createRoot(rootElement).render(
-  <React.StrictMode>
+  //<React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>
+  //</React.StrictMode>
 );

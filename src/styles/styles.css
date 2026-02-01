@@ -140,6 +140,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .user-avatar img {
@@ -164,6 +165,7 @@ body {
   width: 16px;
   height: 16px;
   object-fit: contain;
+  cursor: pointer;
 }
 
 @media (max-width: 480px) {

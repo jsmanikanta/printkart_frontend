@@ -28,37 +28,37 @@ function Categories() {
     {
       label: "Competitive Exam Books",
       desc: "Crack NEET, JEE, UPSC & More Top-Selling Prep Books!",
-      image: "/images/competitive.png",
+      image: "./images/competitive.png",
       route: "/category/competitive-exam",
     },
     {
       label: "Fictional Books",
       desc: "Get Lost in Imaginary Worlds - Novels, Fantasy & More",
-      image: "/images/fictional.png",
+      image: "./images/fictional.png",
       route: "/category/fiction",
     },
     {
       label: "Novels & Storybooks",
       desc: "Feel Every Emotion - Romantic, Classic & Hindi Stories",
-      image: "/images/novels.png",
+      image: "./images/novels.png",
       route: "/category/novels-storybooks",
     },
     {
       label: "Notes & Study Materials",
       desc: "Handwritten Notes, Assignments & Projects - All in One Place!",
-      image: "/images/notes.png",
+      image: "./images/notes.png",
       route: "/category/notes-study",
     },
     {
       label: "Previous Year Papers",
       desc: "Practice with Real Questions - Boards, Competitive & University Exams!",
-      image: "/images/previous.png",
+      image: "./images/previous.png",
       route: "/category/previous-papers",
     },
     {
       label: "Non-Fiction Books",
       desc: "Real Stories, Real Knowledge: Self-Help to Science",
-      image: "/images/non-fictional.png",
+      image: "./images/non-fictional.png",
       route: "/category/nonfiction",
     },
   ];
@@ -66,22 +66,22 @@ function Categories() {
   const printouts = [
     {
       label: "Assignments",
-      image: "/images/assignments-icon.png",
+      image: "../public/images/assignments-icon.png",
       route: "/printout/assignments",
     },
     {
       label: "Project Reports",
-      image: "/images/project-report-icon.png",
+      image: "./images/project-report-icon.png",
       route: "/printout/project-reports",
     },
     {
       label: "Spiral Binding",
-      image: "/images/spiral-binding-icon.png",
+      image: "./images/spiral-binding-icon.png",
       route: "/printout/spiral-binding",
     },
     {
       label: "B/W & Color Prints",
-      image: "/images/bw-color-icon.png",
+      image: "./images/bw-color-icon.png",
       route: "/printout/bw-color",
     },
   ];

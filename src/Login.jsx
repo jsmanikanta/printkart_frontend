@@ -15,7 +15,7 @@ function Login() {
 
   const handleChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
-    setErrorMsg(""); // clear error when user starts typing
+    setErrorMsg(""); 
   };
 
   const handleSubmit = async (e) => {
@@ -29,7 +29,7 @@ function Login() {
       });
       if (response.data.success && response.data.token) {
         localStorage.setItem("token", response.data.token);
-        navigate("/");
+        window.location.href = "/";
       } else {
         setErrorMsg("Login failed. Please try again.");
       }
