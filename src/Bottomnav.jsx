@@ -7,9 +7,9 @@ function BottomNav() {
   const soon = () => {
     navigate("/soon");
   };
-  const sell =() =>{
+  const sell = () => {
     navigate("/sellbook");
-  }
+  };
   const cat = () => {
     navigate("/all-categories");
   };
@@ -68,8 +68,10 @@ function BottomNav() {
 
       <button
         className={`nav-item ${isActive("/orderprints") ? "active" : ""}`}
-        onClick={handlePrintClick}
         aria-label="Print"
+        onClick={() =>
+          (window.location.href = "https://printkart.onrender.com")
+        }
       >
         <img src="/images/print-icon.jpeg" alt="Print" />
         <span>PrintKart</span>

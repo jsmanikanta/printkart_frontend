@@ -22,8 +22,8 @@ function HomePage() {
     navigate("/signup");
   };
 
-  const Orderprints = () => {
-    navigate("/orderprints");
+  const goToPrintKart = () => {
+    window.location.href = "https://printkart.onrender.com";
   };
 
   const Accounts = () => {
@@ -34,9 +34,9 @@ function HomePage() {
     navigate("/sellbooks");
   };
 
-  const previous=()=>{
-    navigate("/previous-papers")
-  }
+  const previous = () => {
+    navigate("/previous-papers");
+  };
   // Fetch user profile for the header
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -185,40 +185,32 @@ function HomePage() {
           {/* Printouts Categories */}
           <section className="printouts-section">
             <h3 className="section-title">Printouts Categories</h3>
+
             <div className="printout-categories">
-              <div
-                className="printout-item"
-                onClick={() => navigate("/orderprints")}
-              >
+              <div className="printout-item" onClick={goToPrintKart}>
                 <img
                   src="/images/spiral-binding-icon.png"
                   alt="Spiral binding"
                 />
                 <span>B&W or color</span>
               </div>
-              <div
-                className="printout-item"
-                onClick={() => navigate("/orderprints")}
-              >
+
+              <div className="printout-item" onClick={goToPrintKart}>
                 <img src="/images/assignments-icon.png" alt="Assignments" />
                 <span>Spiral binding</span>
               </div>
-              <div
-                className="printout-item"
-                onClick={() => navigate("/orderprints")}
-              >
+
+              <div className="printout-item" onClick={goToPrintKart}>
                 <img
                   src="/images/project-report-icon.png"
                   alt="Project Report"
                 />
-                <span> Assignment</span>
+                <span>Assignment</span>
               </div>
-              <div
-                className="printout-item"
-                onClick={() => navigate("/orderprints")}
-              >
+
+              <div className="printout-item" onClick={goToPrintKart}>
                 <img src="/images/bw-color-icon.png" alt="BW Color" />
-                <span>project Report</span>
+                <span>Project Report</span>
               </div>
             </div>
           </section>
