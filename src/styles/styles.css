@@ -100,7 +100,6 @@ body {
   user-select: none;
   flex-shrink: 0;
   white-space: nowrap;
-  padding-top: 13px;
 }
 
 .logo .orange {
