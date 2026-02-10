@@ -1,0 +1,146 @@
+.profile-page {
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* Loading */
+.profile-loading {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+/* Login prompt */
+.profile-login-prompt {
+  text-align: center;
+  padding: 30px;
+}
+
+.profile-login-btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Profile Card */
+.profile-card {
+  background: #f7b488;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.profile-avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: 0.2px;
+}
+
+.profile-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  opacity: 0.9;
+}
+
+/* Menu */
+.profile-menu {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-menu-item {
+  width: 100%;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.profile-menu-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-menu-icon {
+  font-size: 18px;
+  width: 24px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.profile-menu-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+}
+
+.profile-menu-arrow {
+  font-size: 22px;
+  font-weight: 900;
+  color: #111;
+  opacity: 0.65;
+  line-height: 1;
+}
+
+.profile-menu-empty {
+  width: 18px;
+}
+
+/* Optional Stats */
+.profile-stats {
+  margin-top: 18px;
+}
+
+.profile-stat-card {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.profile-stat-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.profile-stat-value {
+  font-weight: 900;
+  font-size: 18px;
+}

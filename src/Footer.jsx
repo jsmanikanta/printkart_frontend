@@ -95,7 +95,7 @@ function Footer() {
     </div>
     <div style={{ marginTop: "20px", marginBottom: "10px" }}>
       <strong>Mail Us: </strong>
-      <a href="mailto:printkart0001@gmail.com">printkart0001@gmail.com</a>
+      <a href="mailto: support@mybookhub.store">support@mybookhub.store</a>
     </div>
     <div className="footer-bottom">
       <p>© 2026 My Book Hub. All rights reserved.</p>

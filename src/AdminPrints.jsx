@@ -22,7 +22,6 @@ export default function AdminPrints() {
     "Out for delivery",
     "Delivered",
     "Cancelled"
-   
   ];
 
   const Books = () => {

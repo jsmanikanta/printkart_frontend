@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api_path } from "../data";
 import "./styles/auth.css";
@@ -14,9 +13,16 @@ function Login() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e) => {
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
-    setErrorMsg(""); 
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setErrorMsg("");
   };
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/profile", { replace: true });
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
