@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import { api_path } from "../data";
 import "./styles/auth.css";
 import logoImg from "/images/logo.png";
@@ -12,36 +14,55 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    setErrorMsg("");
-  };
-  
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/profile", { replace: true });
-    }
+    if (token) navigate("/profile", { replace: true });
   }, [navigate]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
+    if (errorMsg) setErrorMsg("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const credential = inputs.credential.trim();
+    const password = inputs.password;
+
+    if (!credential || !password) {
+      setErrorMsg("Please enter your email/mobile and password.");
+      return;
+    }
+
     setLoading(true);
     setErrorMsg("");
+
     try {
-      const response = await axios.post(`${api_path}/user/login/`, {
-        identifier: inputs.credential,
-        password: inputs.password,
-      });
-      if (response.data.success && response.data.token) {
-        localStorage.setItem("token", response.data.token);
+      // remove trailing slash to avoid backend route mismatch
+      const url = `${api_path}/user/login`;
+
+      const res = await axios.post(
+        url,
+        { identifier: credential, password },
+        { headers: { "Content-Type": "application/json" } },
+      );
+
+      const data = res?.data;
+
+      if (data?.success && data?.token) {
+        localStorage.setItem("token", data.token);
         window.location.href = "/";
       } else {
-        setErrorMsg("Login failed. Please try again.");
+        setErrorMsg(data?.error || "Login failed. Please try again.");
       }
-    } catch (error) {
+    } catch (err) {
       const msg =
-        error.response?.data?.error || "Login failed. Please try again.";
+        err?.response?.data?.error ||
+        err?.response?.data?.message ||
+        err?.message ||
+        "Login failed. Please try again.";
       setErrorMsg(msg);
     } finally {
       setLoading(false);
@@ -51,16 +72,19 @@ function Login() {
   return (
     <>
       {loading && <Loader />}
+
       {!loading && (
         <div className="auth-modal-overlay">
           <div className="auth-modal">
             <div className="modal-header" onClick={() => navigate("/")}>
               <img src={logoImg} alt="Logo" className="modal-logo" />
             </div>
+
             <h2 className="modal-title">
               Buy &amp; Sell Old Books.
               <br /> Order Printout Instantly!
             </h2>
+
             <form className="auth-form" onSubmit={handleSubmit}>
               <input
                 type="text"
@@ -71,6 +95,7 @@ function Login() {
                 required
                 autoComplete="username"
               />
+
               <input
                 type="password"
                 name="password"
@@ -80,11 +105,14 @@ function Login() {
                 required
                 autoComplete="current-password"
               />
+
               {errorMsg && <div className="error-message">{errorMsg}</div>}
-              <button type="submit" className="auth-btn">
-                Continue
+
+              <button type="submit" className="auth-btn" disabled={loading}>
+                {loading ? "Signing in..." : "Continue"}
               </button>
             </form>
+
             <div className="auth-links">
               <button
                 type="button"
@@ -94,6 +122,7 @@ function Login() {
                 Forgot Password?
               </button>
             </div>
+
             <div className="switch-auth">
               New here?
               <button

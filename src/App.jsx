@@ -6,7 +6,6 @@ import Homepage from "./Homepage";
 import Signup from "./Signup";
 import Login from "./Login";
 import Cart from "./Cart";
-import OrderPrints from "./OrderPrints";
 import ForgotPassword from "./Forgotpass";
 import SellBooks from "./Sellbooks";
 import Header from "./Header";
@@ -32,7 +31,6 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/prints-cart" element={<Cart />} />
-        <Route path="/orderprints" element={<OrderPrints />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/sellbook" element={<SellBooks />} />
         <Route path="/adminprints" element={<AdminPrints />} />

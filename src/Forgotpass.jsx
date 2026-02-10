@@ -6,18 +6,22 @@ import { api_path } from "../data";
 import Loader from "./Loading";
 
 export default function ForgotPassword() {
+  const navigate = useNavigate();
+
   const [identifier, setIdentifier] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+
   const goToLogin = () => navigate("/login");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-    const goToLogin = () => navigate("/login");
+
     if (!identifier || !newPassword || !confirm) {
       setError("All fields are required.");
       return;
@@ -36,16 +40,18 @@ export default function ForgotPassword() {
       const res = await fetch(`${api_path}/user/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier, newPassword }),
+        body: JSON.stringify({ identifier: identifier.trim(), newPassword }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Unknown error");
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || data.message || "Unknown error");
+
       setSuccess("Password reset successful! You can now login.");
       setIdentifier("");
       setNewPassword("");
       setConfirm("");
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Reset failed");
     } finally {
       setLoading(false);
     }
@@ -60,6 +66,7 @@ export default function ForgotPassword() {
           <form className="resetpw-container" onSubmit={handleSubmit}>
             <img src={logoImg} className="resetpw-logo" alt="Logo" />
             <h2 className="resetpw-title">Reset Password</h2>
+
             <input
               className="resetpw-input"
               type="text"
@@ -68,6 +75,7 @@ export default function ForgotPassword() {
               onChange={(e) => setIdentifier(e.target.value)}
               required
             />
+
             <input
               className="resetpw-input"
               type="password"
@@ -76,6 +84,7 @@ export default function ForgotPassword() {
               onChange={(e) => setNewPassword(e.target.value)}
               required
             />
+
             <input
               className="resetpw-input"
               type="password"
@@ -84,13 +93,16 @@ export default function ForgotPassword() {
               onChange={(e) => setConfirm(e.target.value)}
               required
             />
+
             {error && <div className="resetpw-error">{error}</div>}
             {success && <div className="resetpw-success">{success}</div>}
+
             <button className="resetpw-btn" type="submit" disabled={loading}>
               {loading ? "Saving..." : "Reset Password"}
             </button>
-            <div className="resetpw-back" onClick={goToLogin}>
-              <a href="/login">Back to Login</a>
+
+            <div className="resetpw-back" onClick={goToLogin} style={{ cursor: "pointer" }}>
+              Back to Login
             </div>
           </form>
         </div>
