@@ -9,16 +9,15 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      setLoading(true);
-
       const token = localStorage.getItem("token");
+
+      // Not logged in
       if (!token) {
         setUser(null);
-        setOrders([]);
         setLoading(false);
         return;
       }
@@ -28,16 +27,22 @@ export default function Profile() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (response?.data?.user) {
-          setUser(response.data.user);
-          setOrders(response.data.orders || []);
+        // ✅ Your backend returns the user object directly (not { user: ... })
+        const u = response?.data;
+
+        if (u && u._id) {
+          setUser(u);
         } else {
           setUser(null);
-          setOrders([]);
         }
       } catch (err) {
         console.log(err);
-        
+
+        // Token expired/invalid
+        if (err?.response?.status === 401 || err?.response?.status === 403) {
+          localStorage.removeItem("token");
+        }
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -67,7 +72,7 @@ export default function Profile() {
   if (!user) {
     return (
       <div className="profile-login-prompt">
-        <p>Please login to view your profile and orders.</p>
+        <p>Please login to view your profile.</p>
         <button className="profile-login-btn" onClick={goToLogin}>
           Login
         </button>
@@ -75,10 +80,20 @@ export default function Profile() {
     );
   }
 
-  // User data
-  const name = user?.name || user?.fullName || "User";
+  // ✅ According to your backend output fields
+  const name = user?.fullname || "User";
   const email = user?.email || "";
-  const phone = user?.phone || user?.mobile || "";
+  const phone = user?.mobileNumber || "";
+
+  const birthday = user?.birthday
+    ? new Date(user.birthday).toLocaleDateString()
+    : "";
+  const location = user?.location || "";
+  const college = user?.college || "";
+  const year = user?.year || "";
+  const branch = user?.branch || "";
+  const rollno = user?.rollno || "";
+  const usertype = user?.usertype || "";
 
   return (
     <div className="profile-page">
@@ -100,6 +115,25 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Extra details (from backend output) */}
+      <div className="profile-details">
+        {usertype ? (
+          <div className="profile-text">User Type: {usertype}</div>
+        ) : null}
+        {birthday ? (
+          <div className="profile-text">Birthday: {birthday}</div>
+        ) : null}
+        {location ? (
+          <div className="profile-text">Location: {location}</div>
+        ) : null}
+        {college ? (
+          <div className="profile-text">College: {college}</div>
+        ) : null}
+        {year ? <div className="profile-text">Year: {year}</div> : null}
+        {branch ? <div className="profile-text">Branch: {branch}</div> : null}
+        {rollno ? <div className="profile-text">Roll No: {rollno}</div> : null}
+      </div>
+
       {/* Menu */}
       <div className="profile-menu">
         <MenuItem
@@ -113,14 +147,6 @@ export default function Profile() {
         <MenuItem title="Help & Support" icon="🎧" onClick={goToHelp} />
         <MenuItem title="Setting" icon="⚙️" arrow onClick={goToSettings} />
       </div>
-
-      {/* Optional quick stat */}
-      {/* <div className="profile-stats">
-        <div className="profile-stat-card">
-          <div className="profile-stat-title">Total Orders</div>
-          <div className="profile-stat-value">{orders.length}</div>
-        </div>
-      </div> */}
     </div>
   );
 }

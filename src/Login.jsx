@@ -40,7 +40,6 @@ function Login() {
     setErrorMsg("");
 
     try {
-      // remove trailing slash to avoid backend route mismatch
       const url = `${api_path}/user/login`;
 
       const res = await axios.post(
@@ -53,7 +52,9 @@ function Login() {
 
       if (data?.success && data?.token) {
         localStorage.setItem("token", data.token);
-        window.location.href = "/";
+
+        // ✅ go to profile after login
+        navigate("/profile", { replace: true });
       } else {
         setErrorMsg(data?.error || "Login failed. Please try again.");
       }
