@@ -52,9 +52,8 @@ function Login() {
 
       if (data?.success && data?.token) {
         localStorage.setItem("token", data.token);
-
-        // ✅ go to profile after login
         navigate("/profile", { replace: true });
+        window.location.reload();
       } else {
         setErrorMsg(data?.error || "Login failed. Please try again.");
       }

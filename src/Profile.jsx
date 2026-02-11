@@ -26,10 +26,7 @@ export default function Profile() {
         const response = await axios.get(`${api_path}/user/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        // ✅ Your backend returns the user object directly (not { user: ... })
         const u = response?.data;
-
         if (u && u._id) {
           setUser(u);
         } else {
@@ -37,8 +34,6 @@ export default function Profile() {
         }
       } catch (err) {
         console.log(err);
-
-        // Token expired/invalid
         if (err?.response?.status === 401 || err?.response?.status === 403) {
           localStorage.removeItem("token");
         }
@@ -53,12 +48,11 @@ export default function Profile() {
 
   // Navigation
   const goToLogin = () => navigate("/login");
-  const goToPickupAddress = () => navigate("/pickup-address");
-  const goToWishlist = () => navigate("/wishlist");
-  const goToOrderHistory = () => navigate("/orders");
+  const goToPickupAddress = () => navigate("/cominsoon");
+  const goToWishlist = () => navigate("/comminsoon");
+  const goToOrderHistory = () => navigate("/commingsoon");
   const goToHelp = () => navigate("/help");
-  const goToSettings = () => navigate("/settings");
-
+  const goToSettings = () => navigate("/comingsoon");
   // Loading UI
   if (loading) {
     return (
