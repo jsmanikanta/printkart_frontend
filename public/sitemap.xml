@@ -7,12 +7,12 @@
   </url>
 
   <url>
-    <loc>https://mybookhub.store/login</loc>
+    <loc>https://printkart.mybookhub.store/login</loc>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://mybookhub.store/sellbook</loc>
+    <loc>https://printkart.mybookhub.store/prints-cart</loc>
     <priority>0.8</priority>
   </url>
 
