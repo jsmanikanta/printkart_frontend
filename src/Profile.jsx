@@ -14,8 +14,6 @@ export default function Profile() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       const token = localStorage.getItem("token");
-
-      // Not logged in
       if (!token) {
         setUser(null);
         setLoading(false);
@@ -48,8 +46,8 @@ export default function Profile() {
 
   // Navigation
   const goToLogin = () => navigate("/login");
-  const goToPickupAddress = () => navigate("/cominsoon");
-  const goToWishlist = () => navigate("/comminsoon");
+  const goToPickupAddress = () => navigate("/mylocations");
+  const goToWishlist = () => navigate("/commingsoon");
   const goToOrderHistory = () => navigate("/commingsoon");
   const goToHelp = () => navigate("/help");
   const goToSettings = () => navigate("/comingsoon");
@@ -62,7 +60,6 @@ export default function Profile() {
     );
   }
 
-  // Not logged in UI
   if (!user) {
     return (
       <div className="profile-login-prompt">
@@ -74,7 +71,6 @@ export default function Profile() {
     );
   }
 
-  // ✅ According to your backend output fields
   const name = user?.fullname || "User";
   const email = user?.email || "";
   const phone = user?.mobileNumber || "";
@@ -91,7 +87,6 @@ export default function Profile() {
 
   return (
     <div className="profile-page">
-      {/* Profile Card */}
       <div className="profile-card">
         <div className="profile-avatar">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none">
@@ -107,9 +102,9 @@ export default function Profile() {
           {email ? <div className="profile-text">{email}</div> : null}
           {phone ? <div className="profile-text">{phone}</div> : null}
         </div>
-      </div>
+      </div>   
+         <br />
 
-      {/* Extra details (from backend output) */}
       <div className="profile-details">
         {usertype ? (
           <div className="profile-text">User Type: {usertype}</div>

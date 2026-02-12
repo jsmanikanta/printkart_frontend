@@ -1,0 +1,120 @@
+.pa-wrap {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 14px 16px 28px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.pa-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pa-back {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.pa-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pa-pin {
+  font-size: 18px;
+}
+
+.pa-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pa-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+  margin-top: 2px;
+  margin-bottom: -8px;
+}
+
+.pa-input {
+  height: 40px;
+  border: 1px solid #d7d7d7;
+  border-radius: 10px;
+  padding: 0 12px;
+  outline: none;
+  font-size: 14px;
+  background: #fff;
+}
+
+.pa-input::placeholder {
+  color: #777;
+}
+
+.pa-row {
+  display: flex;
+  gap: 12px;
+}
+
+.pa-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pa-hint {
+  font-size: 12px;
+  color: #666;
+  margin-top: -2px;
+}
+
+.pa-submit {
+  margin-top: 10px;
+  height: 42px;
+  border: none;
+  border-radius: 22px;
+  background: #4caf7a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  width: 140px;
+  align-self: center;
+  box-shadow: 0 8px 16px rgba(76, 175, 122, 0.25);
+}
+
+.pa-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.pa-msg {
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.pa-err {
+  background: #ffe7e7;
+  color: #b30000;
+  border: 1px solid #ffd0d0;
+}
+
+.pa-ok {
+  background: #e9fff1;
+  color: #0b6b2b;
+  border: 1px solid #c9f5d7;
+}

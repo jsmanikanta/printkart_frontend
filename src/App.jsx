@@ -19,6 +19,8 @@ import ComingSoon from "./CommingSoon";
 import CollegePYQ from "./Previouspaper";
 import ThankYouPageHub from "./Thankyou";
 import Profile from "./Profile";
+import PickupAddress from "./Getlocations";
+import Addlocation from "./Addlocation";
 
 function App() {
   const [orderSummaryBookId, setOrderSummaryBookId] = useState(null);
@@ -38,9 +40,11 @@ function App() {
         <Route path="/all-categories" element={<Categories />} />
         <Route path="/help" element={<VideoHelpSection />} />
         <Route path="/soon" element={<ComingSoon />} />
-        <Route path="/previous-papers" element={<CollegePYQ/>} />
-        <Route path="/thankyou" element={<ThankYouPageHub/>}/>
-        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/previous-papers" element={<CollegePYQ />} />
+        <Route path="/thankyou" element={<ThankYouPageHub />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/mylocations" element={<PickupAddress />} />
+        <Route path="/addlocation" element={<Addlocation />} />
       </Routes>
       <BottomNav />
       <Footer />
