@@ -1,0 +1,72 @@
+.settings-page {
+  min-height: 100vh;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  color: #111;
+}
+
+.settings-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.settings-backBtn {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.settings-titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-gear {
+  font-size: 18px;
+}
+
+.settings-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.settings-divider {
+  height: 1px;
+  background: #e6e6e6;
+  width: 100%;
+}
+
+.settings-list {
+  width: 100%;
+}
+
+.settings-item {
+  width: 100%;
+  padding: 16px 16px;
+  background: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+}
+
+.settings-itemText {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2b2b2b;
+}
+
+.settings-chevron {
+  font-size: 22px;
+  color: #8a8a8a;
+  line-height: 1;
+}

@@ -1,0 +1,147 @@
+/* Full page light gray background (like most websites) */
+.faq-page {
+  min-height: 100vh;
+  background: #f5f6f8;
+  padding: 40px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* White card container */
+.faq-card {
+  width: 100%;
+  max-width: 760px;
+  background: #ffffff;
+  border: 1px solid #e9eaee;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* Header */
+.faq-header {
+  padding: 22px 22px 10px;
+  border-bottom: 1px solid #f0f1f5;
+}
+
+.faq-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.faq-subtitle {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* FAQ list */
+.faq-list {
+  padding: 10px 10px 0;
+}
+
+.faq-item {
+  border: 1px solid #eef0f4;
+  border-radius: 12px;
+  margin: 10px 12px;
+  overflow: hidden;
+}
+
+/* Question row */
+.faq-question {
+  width: 100%;
+  background: #ffffff;
+  border: none;
+  padding: 16px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  text-align: left;
+}
+
+.faq-question:hover {
+  background: #fafafa;
+}
+
+.faq-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  line-height: 1;
+  color: #111827;
+  flex: 0 0 auto;
+}
+
+/* Answer (dropdown animation) */
+.faq-answer-wrap {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 280ms ease;
+}
+
+.faq-item.open .faq-answer-wrap {
+  max-height: 520px; /* enough for content; increase if you add long answers */
+}
+
+.faq-answer {
+  padding: 0 16px 16px;
+  color: #374151;
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.faq-text {
+  margin: 10px 0 10px;
+}
+
+.faq-steps {
+  margin: 0 0 10px 18px;
+  padding: 0;
+}
+
+.faq-steps li {
+  margin: 6px 0;
+}
+
+.faq-note {
+  margin: 0;
+  color: #4b5563;
+}
+
+/* Footer */
+.faq-footer {
+  padding: 14px 22px 18px;
+  border-top: 1px solid #f0f1f5;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.faq-header-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.back-arrow {
+  font-size: 22px;
+  cursor: pointer;
+  color: #111;
+  transition: 0.2s ease;
+}
+
+.back-arrow:hover {
+  color: #4CAF50;
+  transform: translateX(-3px);
+}

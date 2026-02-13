@@ -144,3 +144,40 @@
   font-weight: 900;
   font-size: 18px;
 }
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: 0.2s ease;
+  border-radius: 10px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: large;
+}
+
+.menu-item:hover {
+  background: #f5f5f5;
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-icon {
+  font-size: 18px;
+}
+
+.menu-title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.menu-arrow {
+  font-size: 20px;
+  color: #999;
+}

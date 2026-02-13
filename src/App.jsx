@@ -21,6 +21,9 @@ import ThankYouPageHub from "./Thankyou";
 import Profile from "./Profile";
 import PickupAddress from "./Getlocations";
 import Addlocation from "./Addlocation";
+import Settings from "./Settings";
+import StudentInformation from "./Studentinfo";
+import FAQ from "./Faq";
 
 function App() {
   const [orderSummaryBookId, setOrderSummaryBookId] = useState(null);
@@ -45,6 +48,9 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/mylocations" element={<PickupAddress />} />
         <Route path="/addlocation" element={<Addlocation />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/student-details" element={<StudentInformation />} />
+        <Route path="/faq" element={<FAQ />} />
       </Routes>
       <BottomNav />
       <Footer />

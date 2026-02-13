@@ -1,10 +1,22 @@
+/* NEW: full screen wrapper to prevent white strip */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;   /* full white background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Your existing loader styles (same colors/animation) */
 .loader-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: #ffffff;
   font-family: "Poppins", sans-serif;
 }
 
@@ -18,28 +30,24 @@
 .page {
   width: 12px;
   height: 40px;
-  background: #3498db; /* Blue theme color */
+  background: #3498db; /* Blue */
   border-radius: 4px;
-  animation: flip 1s infinite;
+  animation: flip 1s infinite ease-in-out;
 }
 
 .page:nth-child(2) {
-  background: #9b59b6; /* Purple for theme consistency */
+  background: #9b59b6; /* Purple */
   animation-delay: 0.2s;
 }
 
 .page:nth-child(3) {
-  background: #e67e22; /* Orange for matching cards */
+  background: #e67e22; /* Orange */
   animation-delay: 0.4s;
 }
 
 @keyframes flip {
-  0%, 100% {
-    transform: scaleY(1);
-  }
-  50% {
-    transform: scaleY(0.3);
-  }
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.3); }
 }
 
 .loading-text {
